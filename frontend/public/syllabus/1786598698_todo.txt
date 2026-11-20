@@ -1,0 +1,140 @@
+# To-Do List Management System
+
+tasks = []
+
+
+# Function to add task
+def add_task():
+    try:
+        task_name = input("Enter task name: ")
+        priority = input("Enter priority (High/Medium/Low): ")
+
+        task = {
+            "task": task_name,
+            "priority": priority,
+            "status": "Pending"
+        }
+
+        tasks.append(task)
+
+        print("\nTask added successfully!")
+
+    except Exception as e:
+        print("Error:", e)
+
+
+# Function to display all tasks
+def display_tasks():
+
+    if len(tasks) == 0:
+        print("\nNo tasks found!")
+        return
+
+    print("\n========== TASK DETAILS ==========")
+
+    for task in tasks:
+        print("\nTask     :", task["task"])
+        print("Priority :", task["priority"])
+        print("Status   :", task["status"])
+
+
+# Function to search task
+def search_task():
+
+    task_name = input("Enter task name to search: ")
+
+    for task in tasks:
+
+        if task["task"].lower() == task_name.lower():
+
+            print("\nTask Found!")
+
+            print("Task     :", task["task"])
+            print("Priority :", task["priority"])
+            print("Status   :", task["status"])
+
+            return
+
+    print("Task not found!")
+
+
+# Function to mark task as completed
+def complete_task():
+
+    task_name = input("Enter task name to complete: ")
+
+    for task in tasks:
+
+        if task["task"].lower() == task_name.lower():
+
+            task["status"] = "Completed"
+
+            print("\nTask completed successfully!")
+
+            return
+
+    print("Task not found!")
+
+
+# Function to save tasks to file
+def save_to_file():
+
+    if len(tasks) == 0:
+        print("No task data to save!")
+        return
+
+    try:
+
+        with open("todo.txt", "a") as file:
+
+            for task in tasks:
+
+                file.write("=======\n")
+                file.write("Task     : " + task["task"] + "\n")
+                file.write("Priority : " + task["priority"] + "\n")
+                file.write("Status   : " + task["status"] + "\n")
+
+        print("\nTask data saved successfully!")
+
+    except Exception as e:
+        print("Error while saving file:", e)
+
+
+# Main Menu
+while True:
+
+    print("\n==============================")
+    print("      TO-DO LIST SYSTEM")
+    print("==============================")
+
+    print("1. Add Task")
+    print("2. Display Tasks")
+    print("3. Search Task")
+    print("4. Complete Task")
+    print("5. Save Data to File")
+    print("6. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        add_task()
+
+    elif choice == "2":
+        display_tasks()
+
+    elif choice == "3":
+        search_task()
+
+    elif choice == "4":
+        complete_task()
+
+    elif choice == "5":
+        save_to_file()
+
+    elif choice == "6":
+        print("Thank you!")
+        break
+
+    else:
+        print("Invalid choice! Please select 1-6.")
+

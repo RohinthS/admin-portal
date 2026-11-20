@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+       <h2>Student Attendance Tracker</h2>
+    </div>
+    <div class="card">
+        <div class="form-row">
+            <input class="flex-input" id="StudentName" type="text" id ="a">
+            <button class="btn btn-addstudent" onclick="addStudent()">AddStudent</button>
+        </div> 
+    </div>
+    <div class="display">
+        <div class= "display-box present-card">
+            <h3 id="presentCount">0</h3>
+            <p>Present</p>
+        </div>
+        <div class="display-box  absent-card">
+            <h3 id="absentCount">0</h3>
+            <p>Absent</p>
+        </div>
+        <div class="display-box  total-card">
+            <h3 id="totalCount">0</h3>
+            <p>Total Students</p>
+        </div>  
+
+    </div>
+    
+    
+    
+    
+    
+    <table>
+        <thead>
+            <th scope="col">SNo</th>
+            <th scope="col">StudentsName</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </thead>
+        <tbody id="StudentTable">
+
+        </tbody>
+    </table>
+</body>
+<script>
+    let Students =[];
+    function addStudent(){
+        let name = document.getElementById("StudentName").value 
+
+        if(name === ""){
+            alert("Enter Student Name");
+            return;
+        }
+        Students.push({
+            name:name,
+            status:"Absent"
+        });
+        document.getElementById("StudentName").value="";
+        displayStudents();
+    } 
+
+    function markPresent(index){
+        Students[index].status = "Present";
+        displayStudents();
+    }
+
+    function markAbsent(index){
+        Students[index].status = "Absent";
+        displayStudents();
+    }
+
+    function markDelete(index){
+        Students.splice(index,1);
+        displayStudents();
+    }
+
+    function displayStudents(){
+
+        let table= document.getElementById("StudentTable");
+        table.innerHTML="";
+        let present=0;
+        let absent=0;
+
+        Students.forEach((Student,index)=>{
+            
+
+            table.innerHTML += `
+                <tr>
+                    <td>${index+1}</td>
+                    <td>${Student.name}</td>
+                    <td><span class="status ${Student.status.toLowerCase()}">${Student.status}</span></td>
+                    <td>
+                        <button class="btn btn-present" onclick="markPresent(${index})">Present</button>
+                        <button class="btn btn-absent" onclick="markAbsent(${index})">Absent</button>
+                        <button class="btn btn-delete" onclick="markDelete(${index})">Delete</button>
+                    </td>
+                </tr> `          
+
+
+           
+            
+
+        });
+
+        present = Students.filter(
+            Student => Student.status === "Present"
+        ).length;
+
+        absent = Students.filter(
+            Student => Student.status === "Absent"
+        ).length;
+
+        document.getElementById("presentCount").innerText = present;
+        document.getElementById("absentCount").innerText = absent;
+        document.getElementById("totalCount").innerText=Students.length;
+
+       
+    }
+</script>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentor-Controlled Offline Progression & Exam Portal Prototype</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+    .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-track { background: #f1f5f9; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 p-3 sm:p-6 min-h-screen">
+  <div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Prototype Header & Persona Switcher -->
+    <header class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 font-extrabold text-xs uppercase tracking-wide">
+            Live Architecture Prototype
+          </span>
+          <span class="text-xs font-bold text-slate-400">Offline Classroom &rarr; Online Assessment</span>
+        </div>
+        <h1 class="text-lg sm:text-xl font-black text-slate-900 mt-1">
+          Mentor-Controlled Module Progression & Exam Portal
+        </h1>
+        <p class="text-xs text-slate-500 mt-0.5">
+          Dual-Gated Progression: Mentors unlock module exams offline; students must pass to advance.
+        </p>
+      </div>
+
+      <!-- Persona Switcher -->
+      <div class="flex items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200 shrink-0 self-start md:self-auto">
+        <button id="btn-mentor-view" onclick="switchView('mentor')" class="px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-indigo-600 text-white shadow-xs">
+          <span>👨‍🏫 Mentor Console (Offline Delivery)</span>
+        </button>
+        <button id="btn-student-view" onclick="switchView('student')" class="px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <span>🎓 Student Portal (Rohinth S)</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Global Course & Batch Filter Bar -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="font-bold text-slate-500">Course Syllabus:</span>
+        <select id="course-select" onchange="onCourseChange()" class="px-3 py-1.5 rounded-xl border border-slate-300 font-bold bg-slate-50 text-slate-800">
+          <option value="py-basic">Basic Python Course (10 Modules)</option>
+          <option value="py-adv">Advanced Python Course (7 Modules)</option>
+          <option value="java-basic">Basic Java Course (8 Modules)</option>
+          <option value="java-adv">Advanced Java Syllabus (10 Modules)</option>
+          <option value="full-py">Full Stack AI Python (Multi-Domain)</option>
+          <option value="full-java">Full Stack AI Java (Multi-Domain)</option>
+        </select>
+
+        <span class="font-bold text-slate-500 ml-2">Active Batch:</span>
+        <select id="batch-select" onchange="onBatchChange()" class="px-3 py-1.5 rounded-xl border border-slate-300 font-bold bg-slate-50 text-indigo-700">
+          <option value="batch-morning">🌅 Morning Batch (9:30 AM - 12:30 PM)</option>
+          <option value="batch-evening">🌆 Evening Batch (2:00 PM - 5:00 PM)</option>
+          <option value="batch-weekend">⚡ Weekend Fast-Track Batch</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-3 font-semibold text-slate-500">
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Completed in Class</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> In-Progress</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span> Locked</span>
+      </div>
+    </div>
+
+    <!-- VIEW 1: MENTOR CONSOLE -->
+    <div id="view-mentor" class="space-y-6">
+      <div class="bg-indigo-900 text-white rounded-2xl p-5 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-300">Offline Classroom Instructor Mode</span>
+          <h2 class="text-base sm:text-lg font-black mt-0.5">Classroom Syllabus Delivery & Assessment Publishing</h2>
+          <p class="text-xs text-indigo-200 mt-1 max-w-2xl">
+            You are teaching this course offline. Check off syllabus topics as they are completed in the classroom. When all topics of a module are finished, click <strong>"Complete Module & Publish Test"</strong> to unlock the exam for students of this batch.
+          </p>
+        </div>
+        <div class="bg-indigo-950/60 p-3 rounded-xl border border-indigo-700/60 text-xs shrink-0 space-y-1">
+          <div class="text-indigo-300 font-bold">Assigned Mentor:</div>
+          <div class="font-extrabold text-white text-sm">Kavitha R (Senior AI Instructor)</div>
+          <div class="text-emerald-400 font-bold text-[11px]">✓ Classroom Room 4B • On Track</div>
+        </div>
+      </div>
+
+      <!-- Modules Progression Management -->
+      <div id="mentor-modules-container" class="space-y-4">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Batch Student Gradebook & Retake Approvals -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+          <div>
+            <h3 class="font-black text-slate-900 text-sm sm:text-base flex items-center gap-2">
+              <span>📊 Batch Gradebook & Progression Roster</span>
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Morning Batch</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Review student assessment attempts, grades, passing eligibility, and grant retakes.
+            </p>
+          </div>
+          <div class="text-xs font-bold text-slate-500">
+            Passing Criteria: <span class="text-emerald-600 font-black">≥ 60%</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                <th class="p-3">Student Name & ID</th>
+                <th class="p-3">Module Milestone</th>
+                <th class="p-3">Attempt #</th>
+                <th class="p-3">Score & Grade</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="mentor-gradebook-tbody" class="divide-y divide-slate-100 font-medium">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: STUDENT PORTAL -->
+    <div id="view-student" class="space-y-6 hidden">
+      <!-- Student Banner -->
+      <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-2xl p-5 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Student Learning Journey</span>
+          <h2 class="text-base sm:text-lg font-black mt-0.5">Rohinth S (Roll: WGG26002)</h2>
+          <p class="text-xs text-slate-300 mt-1 max-w-2xl">
+            Enrolled in <strong>Morning Batch (9:30 AM - 12:30 PM)</strong>. Assessments unlock automatically once your mentor completes offline classroom teaching. Pass each assessment (≥ 60%) to earn credits and unlock the next module.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="bg-white/10 p-3 rounded-xl border border-white/10 text-center">
+            <span class="text-[10px] text-slate-400 font-bold block uppercase">Earned Credits</span>
+            <span id="student-credits" class="text-xl font-black text-emerald-400">+125 pts</span>
+          </div>
+          <div class="bg-white/10 p-3 rounded-xl border border-white/10 text-center">
+            <span class="text-[10px] text-slate-400 font-bold block uppercase">Passed Modules</span>
+            <span id="student-passed-count" class="text-xl font-black text-indigo-300">1 / 10</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Syllabus Roadmap -->
+      <div class="space-y-4">
+        <h3 class="text-sm font-black text-slate-900 flex items-center justify-between">
+          <span>📚 Course Syllabus & Sequential Assessments</span>
+          <span class="text-xs font-bold text-slate-400">Lock Rule: Gate 1 (Mentor Offline) + Gate 2 (Exam Pass)</span>
+        </h3>
+
+        <div id="student-modules-container" class="space-y-3">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Simulation Modal: Take Exam -->
+    <div id="exam-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 animate-in fade-in">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-indigo-50 text-indigo-700">Official Module Assessment</span>
+            <h4 id="modal-exam-title" class="font-black text-slate-900 text-base mt-1">Module Assessment</h4>
+          </div>
+          <button onclick="closeExamModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">&times;</button>
+        </div>
+
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Simulate student exam submission to test the auto-grading, pass/fail gating, and next-module unlocking workflow:
+        </p>
+
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-slate-700">Select Simulation Outcome:</label>
+          <div class="grid grid-cols-2 gap-3 text-xs font-bold">
+            <button onclick="submitExamSimulation(85)" class="p-3 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition text-left space-y-1 cursor-pointer">
+              <div class="font-extrabold">✅ Pass (85% - Grade A)</div>
+              <div class="text-[11px] font-normal text-emerald-700">Passes criteria. Earns +75 credits. Next module becomes eligible!</div>
+            </button>
+            <button onclick="submitExamSimulation(42)" class="p-3 rounded-xl border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 transition text-left space-y-1 cursor-pointer">
+              <div class="font-extrabold">❌ Fail (42% - Grade F)</div>
+              <div class="text-[11px] font-normal text-rose-700">Below 60%. Next module stays locked. Retake enabled!</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button onclick="closeExamModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Syllabus Data based on the uploaded docx syllabus files
+    const COURSES = {
+      'py-basic': {
+        title: 'Basic Python Course',
+        duration: '2 Months',
+        modules: [
+          { num: 1, title: 'Introduction to Python & Syntax', topics: ['What is Python?', 'Syntax & Indentation', 'Variables & Data Types', 'Type Casting'], qCount: 15 },
+          { num: 2, title: 'Operators & Expressions', topics: ['Arithmetic & Relational', 'Logical & Bitwise', 'Assignment Operators'], qCount: 15 },
+          { num: 3, title: 'Control Statements & Loops', topics: ['if-elif-else Conditionals', 'While & For Loops', 'Break & Continue', 'Pass statement'], qCount: 20 },
+          { num: 4, title: 'String Manipulation & Slicing', topics: ['String Methods', 'Indexing & Slicing', 'f-Strings Formatting'], qCount: 15 },
+          { num: 5, title: 'Data Structures (Lists, Tuples, Dictionaries, Sets)', topics: ['List operations & Comprehensions', 'Tuple immutability', 'Dictionary key-values', 'Set operations'], qCount: 25 },
+          { num: 6, title: 'Functions, Scope & Lambda', topics: ['Function definition & arguments', 'Return values', 'Scope (LEGB)', 'Lambda expressions'], qCount: 20 },
+          { num: 7, title: 'Exception & File Handling', topics: ['try-except-finally blocks', 'Custom Exceptions', 'File Reading & Writing with context manager'], qCount: 15 },
+          { num: 8, title: 'Object-Oriented Programming (OOP)', topics: ['Classes & Objects', 'Inheritance & Polymorphism', 'Encapsulation', 'Dunder methods'], qCount: 25 },
+          { num: 9, title: 'GUI Programming (Tkinter)', topics: ['Tkinter Widgets', 'Event Binding', 'Layout Managers (pack, grid)'], qCount: 15 },
+          { num: 10, title: 'Database Integration (PostgreSQL)', topics: ['PostgreSQL setup', 'psycopg2 connection', 'CRUD operations', 'Transaction Commit/Rollback'], qCount: 25 }
+        ]
+      },
+      'py-adv': {
+        title: 'Advanced Python Course',
+        duration: '2 Months',
+        modules: [
+          { num: 1, title: 'Advanced Python & OOPS Refresher', topics: ['Decorators & Generators', 'Metaclasses', 'Advanced OOP patterns'], qCount: 20 },
+          { num: 2, title: 'FastAPI Fundamentals with PostgreSQL', topics: ['Routing & Path params', 'Pydantic validation', 'Async endpoints', 'SQLAlchemy ORM'], qCount: 25 },
+          { num: 3, title: 'Django Web Framework with PostgreSQL', topics: ['MVT Architecture', 'Django Models & Admin', 'Django REST Framework (DRF)'], qCount: 25 },
+          { num: 4, title: 'NumPy for Scientific Computing', topics: ['ndarray creation', 'Broadcasting', 'Vectorized math operations'], qCount: 20 },
+          { num: 5, title: 'Pandas Data Analysis & Wrangling', topics: ['Series & DataFrames', 'Filtering & GroupBy', 'Handling Missing Data'], qCount: 25 },
+          { num: 6, title: 'Data Visualization with Matplotlib & Seaborn', topics: ['Line & Bar charts', 'Histograms & Heatmaps', 'Custom styling'], qCount: 20 },
+          { num: 7, title: 'Capstone Industry Projects', topics: ['End-to-End API deployment', 'Full Pipeline verification'], qCount: 30 }
+        ]
+      },
+      'java-basic': {
+        title: 'Basic Java Course',
+        duration: '2 Months',
+        modules: [
+          { num: 1, title: 'Java Fundamentals & Environment', topics: ['JDK, JRE, JVM', 'Environment Setup', 'Writing First Program'], qCount: 15 },
+          { num: 2, title: 'Variables, Data Types & Operators', topics: ['Primitive vs Non-primitive', 'Type conversion', 'Arithmetic & Logical ops'], qCount: 15 },
+          { num: 3, title: 'Conditional Statements & Loops', topics: ['if-else & switch', 'for, while, do-while loops'], qCount: 15 },
+          { num: 4, title: 'Arrays & String Handling', topics: ['1D/2D Arrays', 'String Pool', 'StringBuilder & StringBuffer'], qCount: 20 },
+          { num: 5, title: 'Object-Oriented Programming (OOP)', topics: ['Constructors', 'Inheritance', 'Interfaces & Abstract Classes'], qCount: 25 },
+          { num: 6, title: 'Collections Framework & Exceptions', topics: ['List, Set, Map implementations', 'try-catch-finally', 'Custom Exceptions'], qCount: 25 },
+          { num: 7, title: 'Database Connectivity (MySQL & JDBC)', topics: ['JDBC Drivers', 'PreparedStatement', 'ResultSets'], qCount: 20 },
+          { num: 8, title: 'REST API Development Fundamentals', topics: ['HTTP Methods', 'Spring Boot Starter Web basics'], qCount: 25 }
+        ]
+      },
+      'java-adv': {
+        title: 'Advanced Java Syllabus',
+        duration: '2.5 Months',
+        modules: [
+          { num: 1, title: 'Java Core Review & Memory Architecture', topics: ['Stack vs Heap', 'Garbage Collection Algorithms', 'JVM Tuning'], qCount: 20 },
+          { num: 2, title: 'Multithreading & Concurrency', topics: ['Thread Lifecycle', 'Synchronization & Locks', 'ExecutorService & ThreadPools'], qCount: 25 },
+          { num: 3, title: 'Java I/O, NIO & Serialization', topics: ['Streams vs Buffers', 'File Channels', 'Custom Serialization'], qCount: 20 },
+          { num: 4, title: 'Spring Boot Framework Architecture', topics: ['Dependency Injection', 'Spring Boot Auto-configuration', 'Application Properties'], qCount: 25 },
+          { num: 5, title: 'RESTful Microservices & Spring Data JPA', topics: ['Controller routing', 'Entity mappings & Repositories', 'DTO pattern'], qCount: 25 },
+          { num: 6, title: 'Spring Security & JWT Authentication', topics: ['Filter chains', 'Token generation & validation', 'Role-Based Access Control'], qCount: 25 },
+          { num: 7, title: 'DevOps & Cloud Deployment', topics: ['Dockerization', 'CI/CD pipeline basics', 'Cloud hosting'], qCount: 25 }
+        ]
+      },
+      'full-py': {
+        title: 'Full Stack AI Python Program',
+        duration: '4 Months',
+        modules: [
+          { num: 1, title: 'HTML5 Semantic Architecture', topics: ['Tags & DOM Tree', 'Forms & Inputs', 'Media elements'], qCount: 20 },
+          { num: 2, title: 'CSS3, Modern Flexbox & Grid', topics: ['Box Model', 'Flexbox layout', 'Grid responsive systems'], qCount: 20 },
+          { num: 3, title: 'JavaScript Core & Async APIs', topics: ['ES6+ syntax', 'DOM Events', 'Promises, Fetch & Async/Await'], qCount: 25 },
+          { num: 4, title: 'React.js Component Architecture', topics: ['Hooks (useState, useEffect)', 'Context API', 'Client-side Routing'], qCount: 25 },
+          { num: 5, title: 'Python Core & Advanced Backend', topics: ['Data structures', 'OOP', 'FastAPI REST APIs'], qCount: 30 },
+          { num: 6, title: 'AI Application Integration', topics: ['Prompt Engineering', 'LangChain / LLM APIs', 'Vector Embeddings'], qCount: 25 }
+        ]
+      },
+      'full-java': {
+        title: 'Full Stack AI Java Program',
+        duration: '4 Months',
+        modules: [
+          { num: 1, title: 'HTML5 Semantic Architecture', topics: ['Tags & DOM Tree', 'Forms & Inputs', 'Media elements'], qCount: 20 },
+          { num: 2, title: 'CSS3, Modern Flexbox & Grid', topics: ['Box Model', 'Flexbox layout', 'Grid responsive systems'], qCount: 20 },
+          { num: 3, title: 'JavaScript Core & Async APIs', topics: ['ES6+ syntax', 'DOM Events', 'Promises, Fetch & Async/Await'], qCount: 25 },
+          { num: 4, title: 'React.js Component Architecture', topics: ['Hooks (useState, useEffect)', 'Context API', 'Client-side Routing'], qCount: 25 },
+          { num: 5, title: 'Java Enterprise & Spring Boot', topics: ['OOP', 'Spring Boot REST', 'Spring Data JPA'], qCount: 30 },
+          { num: 6, title: 'Spring AI & LLM Integration', topics: ['Spring AI starters', 'ChatClient & Advisors', 'RAG architecture'], qCount: 25 }
+        ]
+      }
+    };
+
+    // State
+    let currentCourseKey = 'py-basic';
+    let currentBatch = 'batch-morning';
+    let currentView = 'mentor';
+
+    // Mock Database of Mentor Offline Module Completions per Course & Batch
+    const batchProgress = {
+      'py-basic': {
+        'batch-morning': {
+          1: { mentorCompleted: true, topicsDone: 4, testPublished: true },
+          2: { mentorCompleted: true, topicsDone: 3, testPublished: true },
+          3: { mentorCompleted: false, topicsDone: 2, testPublished: false },
+          4: { mentorCompleted: false, topicsDone: 0, testPublished: false },
+          5: { mentorCompleted: false, topicsDone: 0, testPublished: false },
+          6: { mentorCompleted: false, topicsDone: 0, testPublished: false },
+          7: { mentorCompleted: false, topicsDone: 0, testPublished: false },
+          8: { mentorCompleted: false, topicsDone: 0, testPublished: false },
+          9: { mentorCompleted: false, topicsDone: 0, testPublished: false },
+          10: { mentorCompleted: false, topicsDone: 0, testPublished: false }
+        }
+      }
+    };
+
+    // Mock Student Standing for Rohinth S
+    const studentStanding = {
+      name: 'Rohinth S',
+      id: 'WGG26002',
+      credits: 125,
+      modules: {
+        1: { passed: true, attempts: [{ score: 88, grade: 'A', date: '2026-11-15' }] },
+        2: { passed: false, attempts: [] }
+      }
+    };
+
+    let activeModalModuleNum = null;
+
+    function getModuleState(courseKey, batchId, modNum) {
+      if (!batchProgress[courseKey]) batchProgress[courseKey] = {};
+      if (!batchProgress[courseKey][batchId]) {
+        batchProgress[courseKey][batchId] = {};
+        for (let i = 1; i <= 10; i++) {
+          batchProgress[courseKey][batchId][i] = { mentorCompleted: i === 1, topicsDone: i === 1 ? 4 : 0, testPublished: i === 1 };
+        }
+      }
+      return batchProgress[courseKey][batchId][modNum] || { mentorCompleted: false, topicsDone: 0, testPublished: false };
+    }
+
+    function switchView(view) {
+      currentView = view;
+      const btnMentor = document.getElementById('btn-mentor-view');
+      const btnStudent = document.getElementById('btn-student-view');
+      const viewMentor = document.getElementById('view-mentor');
+      const viewStudent = document.getElementById('view-student');
+
+      if (view === 'mentor') {
+        btnMentor.className = 'px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-indigo-600 text-white shadow-xs';
+        btnStudent.className = 'px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900';
+        viewMentor.classList.remove('hidden');
+        viewStudent.classList.add('hidden');
+        renderMentorView();
+      } else {
+        btnStudent.className = 'px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-indigo-600 text-white shadow-xs';
+        btnMentor.className = 'px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900';
+        viewStudent.classList.remove('hidden');
+        viewMentor.classList.add('hidden');
+        renderStudentView();
+      }
+    }
+
+    function onCourseChange() {
+      currentCourseKey = document.getElementById('course-select').value;
+      if (!COURSES[currentCourseKey]) currentCourseKey = 'py-basic';
+      renderCurrent();
+    }
+
+    function onBatchChange() {
+      currentBatch = document.getElementById('batch-select').value;
+      renderCurrent();
+    }
+
+    function renderCurrent() {
+      if (currentView === 'mentor') renderMentorView();
+      else renderStudentView();
+    }
+
+    function toggleMentorModule(modNum) {
+      const state = getModuleState(currentCourseKey, currentBatch, modNum);
+      const course = COURSES[currentCourseKey];
+      const mod = course.modules.find(m => m.num === modNum);
+
+      if (!state.mentorCompleted) {
+        state.mentorCompleted = true;
+        state.topicsDone = mod.topics.length;
+        state.testPublished = true;
+      } else {
+        state.mentorCompleted = false;
+        state.testPublished = false;
+      }
+      renderMentorView();
+    }
+
+    function renderMentorView() {
+      const container = document.getElementById('mentor-modules-container');
+      const course = COURSES[currentCourseKey];
+      let html = '';
+
+      course.modules.forEach(mod => {
+        const state = getModuleState(currentCourseKey, currentBatch, mod.num);
+        const isDone = state.mentorCompleted;
+
+        html += `
+          <div class="rounded-2xl border transition p-4 sm:p-5 ${isDone ? 'bg-emerald-50/50 border-emerald-300' : 'bg-white border-slate-200'}">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-[10px] font-black uppercase px-2 py-0.5 rounded ${isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">
+                    Module ${mod.num}
+                  </span>
+                  <span class="text-xs font-bold text-slate-400">Classroom Offline Delivery</span>
+                  ${isDone ? '<span class="text-[11px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">✓ Taught & Published</span>' : '<span class="text-[11px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">⏳ Classroom In-Progress</span>'}
+                </div>
+                <h4 class="font-black text-slate-900 text-sm sm:text-base">${mod.title}</h4>
+                <div class="text-xs text-slate-500 flex items-center gap-1.5 flex-wrap pt-1">
+                  <span class="font-bold text-slate-600">Syllabus Topics:</span>
+                  ${mod.topics.map(t => `<span class="bg-white border border-slate-200 px-2 py-0.5 rounded text-[11px]">${t}</span>`).join('')}
+                </div>
+              </div>
+
+              <!-- Mentor Action Button -->
+              <div class="flex items-center gap-2 shrink-0 pt-2 md:pt-0">
+                ${isDone ? `
+                  <button onclick="toggleMentorModule(${mod.num})" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white text-rose-600 border border-rose-200 hover:bg-rose-50 transition cursor-pointer">
+                    ↩ Re-Open Module in Class
+                  </button>
+                  <span class="px-3 py-2 rounded-xl bg-emerald-600 text-white font-extrabold text-xs flex items-center gap-1 shadow-xs">
+                    <span>✓ Assessment Unlocked</span>
+                  </span>
+                ` : `
+                  <button onclick="toggleMentorModule(${mod.num})" class="px-4 py-2.5 rounded-xl text-xs font-black bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-600/20 transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                    <span>⚡ Mark Module Completed & Publish Assessment</span>
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      renderGradebook();
+    }
+
+    function renderGradebook() {
+      const tbody = document.getElementById('mentor-gradebook-tbody');
+      const mod1 = studentStanding.modules[1];
+      const mod2 = studentStanding.modules[2];
+
+      tbody.innerHTML = `
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="p-3">
+            <div class="font-bold text-slate-900">${studentStanding.name}</div>
+            <div class="font-mono text-[10px] text-slate-400 font-bold">${studentStanding.id}</div>
+          </td>
+          <td class="p-3">
+            <span class="font-bold">Module 1: Python Intro</span>
+          </td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded bg-slate-100 font-bold">Attempt #1</span>
+          </td>
+          <td class="p-3">
+            <span class="font-black text-emerald-600">88%</span>
+            <span class="font-bold text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 ml-1">Grade A</span>
+          </td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px]">Passed</span>
+          </td>
+          <td class="p-3 text-right">
+            <button class="text-indigo-600 font-bold hover:underline" onclick="alert('Student score report:\\n• Correct: 18/20\\n• Credits: +75\\n• Eligibility: Qualified for Module 2')">View Report</button>
+          </td>
+        </tr>
+
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="p-3">
+            <div class="font-bold text-slate-900">${studentStanding.name}</div>
+            <div class="font-mono text-[10px] text-slate-400 font-bold">${studentStanding.id}</div>
+          </td>
+          <td class="p-3">
+            <span class="font-bold">Module 2: Operators</span>
+          </td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded bg-slate-100 font-bold">
+              ${mod2?.attempts?.length > 0 ? `Attempt #${mod2.attempts.length}` : 'Not attempted'}
+            </span>
+          </td>
+          <td class="p-3">
+            ${mod2?.attempts?.length > 0 ? `
+              <span class="font-black ${mod2.passed ? 'text-emerald-600' : 'text-rose-600'}">${mod2.attempts[mod2.attempts.length - 1].score}%</span>
+              <span class="font-bold text-[10px] px-1.5 py-0.5 rounded ${mod2.passed ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'} ml-1">
+                Grade ${mod2.attempts[mod2.attempts.length - 1].grade}
+              </span>
+            ` : '<span class="text-slate-400 italic">Pending</span>'}
+          </td>
+          <td class="p-3">
+            ${mod2?.passed ? '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px]">Passed</span>' : (mod2?.attempts?.length > 0 ? '<span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold text-[11px]">Needs Retake</span>' : '<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-bold text-[11px]">Ready</span>')}
+          </td>
+          <td class="p-3 text-right">
+            <button class="px-2 py-1 rounded bg-indigo-50 text-indigo-700 font-bold hover:bg-indigo-100 transition" onclick="alert('Retake Voucher granted for Rohinth S for Module 2 Assessment.')">Grant Retake Voucher</button>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderStudentView() {
+      const container = document.getElementById('student-modules-container');
+      const course = COURSES[currentCourseKey];
+      let html = '';
+      let passedCount = 0;
+
+      course.modules.forEach(mod => {
+        const mentorState = getModuleState(currentCourseKey, currentBatch, mod.num);
+        const stuMod = studentStanding.modules[mod.num] || { passed: false, attempts: [] };
+
+        if (stuMod.passed) passedCount++;
+
+        const priorPassed = mod.num === 1 || (studentStanding.modules[mod.num - 1]?.passed === true);
+        const mentorDone = mentorState.mentorCompleted;
+
+        let statusBadge = '';
+        let actionBtn = '';
+        let cardBg = 'bg-white border-slate-200';
+
+        if (stuMod.passed) {
+          cardBg = 'bg-emerald-50/50 border-emerald-300';
+          const latest = stuMod.attempts[stuMod.attempts.length - 1];
+          statusBadge = `<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs">✓ Passed (${latest.score}% • Grade ${latest.grade})</span>`;
+          actionBtn = `<button onclick="alert('Viewing completed assessment review for Module ${mod.num}')" class="px-3.5 py-2 rounded-xl text-xs font-bold border border-emerald-300 bg-white text-emerald-800 hover:bg-emerald-50 transition cursor-pointer">Review Results</button>`;
+        } else if (stuMod.attempts.length > 0 && !stuMod.passed) {
+          cardBg = 'bg-rose-50/40 border-rose-300';
+          const latest = stuMod.attempts[stuMod.attempts.length - 1];
+          statusBadge = `<span class="px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 font-extrabold text-xs">⚠️ Failed (${latest.score}% • Grade ${latest.grade})</span>`;
+          actionBtn = `<button onclick="openExamModal(${mod.num})" class="px-4 py-2 rounded-xl text-xs font-black bg-rose-600 hover:bg-rose-700 text-white shadow-md shadow-rose-600/20 transition cursor-pointer active:scale-95">⚡ Retake Assessment</button>`;
+        } else if (!priorPassed) {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-bold text-xs">🔒 Prerequisite Locked</span>`;
+          actionBtn = `<div class="text-[11px] text-slate-400 font-bold italic">Complete and pass Module ${mod.num - 1} first</div>`;
+        } else if (!mentorDone) {
+          cardBg = 'bg-amber-50/30 border-amber-200';
+          statusBadge = `<span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs">🔒 Mentor Teaching in Class</span>`;
+          actionBtn = `<div class="text-[11px] text-amber-700 font-bold">Awaiting mentor to complete offline classroom delivery</div>`;
+        } else {
+          cardBg = 'bg-indigo-50/40 border-indigo-300 ring-2 ring-indigo-500/20';
+          statusBadge = `<span class="px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 font-extrabold text-xs animate-pulse">Ready to Take Assessment</span>`;
+          actionBtn = `<button onclick="openExamModal(${mod.num})" class="px-4 py-2 rounded-xl text-xs font-black bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-600/20 transition cursor-pointer active:scale-95">✍️ Start Assessment</button>`;
+        }
+
+        html += `
+          <div class="rounded-2xl border transition p-4 sm:p-5 ${cardBg}">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-[10px] font-black uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700">Module ${mod.num}</span>
+                  ${statusBadge}
+                </div>
+                <h4 class="font-black text-slate-900 text-sm sm:text-base">${mod.title}</h4>
+                <div class="text-xs text-slate-500 flex items-center gap-1.5 flex-wrap pt-0.5">
+                  ${mod.topics.map(t => `<span class="bg-slate-100 px-2 py-0.5 rounded text-[10px] font-semibold text-slate-600">${t}</span>`).join('')}
+                </div>
+              </div>
+              <div class="shrink-0 flex items-center justify-end">
+                ${actionBtn}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      document.getElementById('student-passed-count').innerText = `${passedCount} / ${course.modules.length}`;
+      document.getElementById('student-credits').innerText = `+${studentStanding.credits} pts`;
+    }
+
+    function openExamModal(modNum) {
+      activeModalModuleNum = modNum;
+      const course = COURSES[currentCourseKey];
+      const mod = course.modules.find(m => m.num === modNum);
+      document.getElementById('modal-exam-title').innerText = `Module ${modNum}: ${mod.title}`;
+      document.getElementById('exam-modal').classList.remove('hidden');
+    }
+
+    function closeExamModal() {
+      document.getElementById('exam-modal').classList.add('hidden');
+    }
+
+    function submitExamSimulation(score) {
+      const isPass = score >= 60;
+      const grade = score >= 90 ? 'S' : (score >= 75 ? 'A' : (score >= 60 ? 'B' : (score >= 50 ? 'C' : 'F')));
+
+      if (!studentStanding.modules[activeModalModuleNum]) {
+        studentStanding.modules[activeModalModuleNum] = { passed: false, attempts: [] };
+      }
+
+      studentStanding.modules[activeModalModuleNum].attempts.push({
+        score,
+        grade,
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      if (isPass) {
+        studentStanding.modules[activeModalModuleNum].passed = true;
+        studentStanding.credits += 75;
+      } else {
+        studentStanding.modules[activeModalModuleNum].passed = false;
+      }
+
+      closeExamModal();
+      renderStudentView();
+
+      alert(
+        isPass
+          ? `🎉 Congratulations! You scored ${score}% (Grade ${grade}).\n\n• Passed Module ${activeModalModuleNum}\n• Earned +75 Credits\n• Next Module assessment will be available as soon as your mentor completes classroom delivery!`
+          : `⚠️ Assessment Result: You scored ${score}% (Grade ${grade}).\n\nPassing requirement is 60%. Please review module topics and click 'Retake Assessment' to try again.`
+      );
+    }
+
+    // Initialize
+    renderCurrent();
+  </script>
+</body>
+</html>

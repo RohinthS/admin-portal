@@ -1,0 +1,245 @@
+Buy food|Medium|Completed
+buy food|High|Completed
+Play|High|Completed
+
+
+import os
+
+
+FILE_NAME = "todos.txt"
+
+
+
+todos = []
+
+
+def add_todo():
+    task = input("Enter Task: ").strip()
+
+    if task == "":
+        print("Task cannot be empty!")
+        return
+
+    priority = input("Enter Priority (High/Medium/Low): ").strip().capitalize()
+
+    if priority not in ["High", "Medium", "Low"]:
+        print("Invalid Priority! Please enter High, Medium, or Low.")
+        return
+
+    status = input("Enter Status (Pending/Completed): ").strip().capitalize()
+
+    if status not in ["Pending", "Completed"]:
+        print("Invalid Status! Please enter Pending or Completed.")
+        return
+
+    todo = {
+        "task": task,
+        "priority": priority,
+        "status": status
+    }
+
+    todos.append(todo)
+
+    print("To-Do Added Successfully!")
+
+
+# =========================================================
+# VIEW TODOS
+# =========================================================
+
+def view_todos():
+    if len(todos) == 0:
+        print("\nNo To-Dos Available!")
+        return
+
+    print("\n========== TO-DO LIST ==========")
+
+    for number, todo in enumerate(todos, start=1):
+        print("To-Do No. :", number)
+        print("Task      :", todo["task"])
+        print("Priority  :", todo["priority"])
+        print("Status    :", todo["status"])
+        print("-------------------------------")
+
+
+# =========================================================
+# SEARCH TODO
+# =========================================================
+
+def search_todo():
+    search_task = input("Enter Task to Search: ").strip()
+
+    if search_task == "":
+        print("Search task cannot be empty!")
+        return
+
+    found = False
+
+    for todo in todos:
+        if todo["task"].lower() == search_task.lower():
+
+            print("\n========== TO-DO FOUND ==========")
+            print("Task     :", todo["task"])
+            print("Priority :", todo["priority"])
+            print("Status   :", todo["status"])
+
+            found = True
+            break
+
+    if not found:
+        print("To-Do Not Found!")
+
+
+# =========================================================
+# DELETE TODO
+# =========================================================
+
+def delete_todo():
+    delete_task = input("Enter Task to Delete: ").strip()
+
+    if delete_task == "":
+        print("Task cannot be empty!")
+        return
+
+    found = False
+
+    for todo in todos:
+        if todo["task"].lower() == delete_task.lower():
+
+            todos.remove(todo)
+
+            print("To-Do Deleted Successfully!")
+            found = True
+            break
+
+    if not found:
+        print("To-Do Not Found!")
+
+
+# =========================================================
+# SAVE TODOS
+# =========================================================
+
+def save_todos():
+    try:
+        with open(FILE_NAME, "w", encoding="utf-8") as file:
+
+            for todo in todos:
+                line = (
+                    todo["task"] + "|" +
+                    todo["priority"] + "|" +
+                    todo["status"] + "\n"
+                )
+
+                file.write(line)
+
+        print("\nData Saved Successfully!")
+        print("File saved at:")
+        print(os.path.abspath(FILE_NAME))
+
+    except Exception as e:
+        print("Error while saving data:", e)
+
+
+# =========================================================
+# LOAD TODOS
+# =========================================================
+
+def load_data():
+    global todos
+
+    try:
+        with open(FILE_NAME, "r", encoding="utf-8") as file:
+
+            todos = []
+
+            for line in file:
+
+                line = line.strip()
+
+                # Ignore empty lines
+                if line == "":
+                    continue
+
+                data = line.split("|")
+
+                # Make sure the line has exactly 3 values
+                if len(data) != 3:
+                    print("Skipped invalid data:", line)
+                    continue
+
+                todo = {
+                    "task": data[0],
+                    "priority": data[1],
+                    "status": data[2]
+                }
+
+                todos.append(todo)
+
+        print("\nData Loaded Successfully!")
+        print("File loaded from:")
+        print(os.path.abspath(FILE_NAME))
+
+    except FileNotFoundError:
+        print("\nNo Saved Data Found!")
+        print("A new file will be created when you save.")
+
+    except Exception as e:
+        print("Error while loading data:", e)
+
+
+# =========================================================
+# MENU
+# =========================================================
+
+def menu():
+    print("\n======================================")
+    print("      TO-DO LIST MANAGEMENT SYSTEM")
+    print("======================================")
+    print("1. Add To-Do")
+    print("2. View To-Dos")
+    print("3. Search To-Do")
+    print("4. Delete To-Do")
+    print("5. Save To-Dos")
+    print("6. Load Data")
+    print("7. Exit")
+    print("======================================")
+
+
+# =========================================================
+# MAIN PROGRAM
+# =========================================================
+
+# Automatically load saved data when program starts
+load_data()
+
+while True:
+
+    menu()
+
+    choice = input("Enter your choice: ").strip()
+
+    if choice == "1":
+        add_todo()
+
+    elif choice == "2":
+        view_todos()
+
+    elif choice == "3":
+        search_todo()
+
+    elif choice == "4":
+        delete_todo()
+
+    elif choice == "5":
+        save_todos()
+
+    elif choice == "6":
+        load_data()
+
+    elif choice == "7":
+        print("\nThank you for using To-Do List Management System!")
+        break
+
+    else:
+        print("\nInvalid Choice! Please enter a number from 1 to 7.")

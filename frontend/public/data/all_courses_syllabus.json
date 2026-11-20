@@ -1,0 +1,2612 @@
+[
+  {
+    "id": "course-py-basic",
+    "course_name": "Basic Python Course",
+    "category": "AI & Python Ecosystem",
+    "duration_months": 2,
+    "course_fee": 15000,
+    "syllabus_file": "Basic Python Course.docx",
+    "description": "Comprehensive 10-module Python programming foundation covering syntax, data structures, OOP, Tkinter GUI, and PostgreSQL.",
+    "modules": [
+      {
+        "id": "py-basic-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Module 1: Introduction to Python",
+        "topic": "Python",
+        "description": "Python history, features, syntax indentation, keywords, identifiers, input/output functions, variables, data types, type casting, comments.",
+        "durationDays": 5,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "What is Python?",
+          "History & Features",
+          "Syntax & Indentation",
+          "Keywords & Identifiers",
+          "I/O Functions",
+          "Variables & Data Types",
+          "Type Casting",
+          "Comments"
+        ]
+      },
+      {
+        "id": "py-basic-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Module 2: Operators",
+        "topic": "Python",
+        "description": "Arithmetic, comparison, logical, assignment, membership (in, not in), and identity operators (is, is not).",
+        "durationDays": 4,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Arithmetic Operators",
+          "Comparison Operators",
+          "Logical Operators",
+          "Assignment Operators",
+          "Membership & Identity Operators"
+        ]
+      },
+      {
+        "id": "py-basic-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Module 3: Control Statements",
+        "topic": "Python",
+        "description": "Decision making with if, if-else, nested if, elif ladders, Match Case, for loops, while loops, break, continue, and pass statements.",
+        "durationDays": 6,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "if and if-else",
+          "Nested if",
+          "elif ladder & Match Case",
+          "For Loops & Range",
+          "While Loops",
+          "Break, Continue, Pass"
+        ]
+      },
+      {
+        "id": "py-basic-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Module 4: Strings",
+        "topic": "Python",
+        "description": "String fundamentals, indexing, slicing [start:stop:step], built-in string methods, and f-string formatting.",
+        "durationDays": 5,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "String Introduction",
+          "String Indexing & Slicing",
+          "String Methods (strip, replace, split, join)",
+          "String Formatting & f-strings"
+        ]
+      },
+      {
+        "id": "py-basic-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Module 5: Data Structures",
+        "topic": "Python",
+        "description": "Lists, list methods, nested lists, tuples, tuple operations, sets, set methods, dictionaries, dictionary methods, and nested dictionaries.",
+        "durationDays": 8,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Lists & List Comprehensions",
+          "Nested Lists",
+          "Tuples & Operations",
+          "Sets & Set Operations",
+          "Dictionaries & Methods",
+          "Nested Dictionaries"
+        ]
+      },
+      {
+        "id": "py-basic-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Module 6: Functions",
+        "topic": "Python",
+        "description": "Function definition, parameters, return values, variable-length arguments (*args, **kwargs), lambda functions, and scope.",
+        "durationDays": 6,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Defining Functions",
+          "Parameters & Return Values",
+          "Types of Functions",
+          "Python *args & **kwargs",
+          "Lambda Anonymous Functions",
+          "Variable Scope"
+        ]
+      },
+      {
+        "id": "py-basic-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Module 7: Exception & File Handling",
+        "topic": "Python",
+        "description": "Text file operations (read, write, append), context managers, Python exceptions, try-except-finally blocks, and custom exceptions.",
+        "durationDays": 6,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "File Handling (open, read, write, with)",
+          "Text Files & CSVs",
+          "Python Built-in Exceptions",
+          "try, except, finally Blocks",
+          "User-defined Custom Exceptions"
+        ]
+      },
+      {
+        "id": "py-basic-mod-8",
+        "moduleNumber": 8,
+        "moduleName": "Module 8: Introduction to OOP",
+        "topic": "Python",
+        "description": "Class & Object architecture, constructors (__init__), Abstraction, Encapsulation, Single and Multiple Inheritance, Polymorphism, and Mini Project.",
+        "durationDays": 8,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Class & Object",
+          "Constructors & self",
+          "Abstraction",
+          "Encapsulation & Private Members",
+          "Inheritance Hierarchies",
+          "Polymorphism & Method Overriding",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "py-basic-mod-9",
+        "moduleNumber": 9,
+        "moduleName": "Module 9: GUI with Tkinter",
+        "topic": "Python",
+        "description": "Tkinter GUI framework, layout managers (pack, grid), UI components (buttons, entry, labels, canvas), event handling, and Mini Project.",
+        "durationDays": 5,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Introduction to Tkinter",
+          "Windows & Frames",
+          "Tkinter Widgets",
+          "Layout Managers",
+          "Event Binding",
+          "Desktop Mini Project"
+        ]
+      },
+      {
+        "id": "py-basic-mod-10",
+        "moduleNumber": 10,
+        "moduleName": "Module 10: Database – PostgreSQL",
+        "topic": "Python",
+        "description": "PostgreSQL installation, connection via psycopg2/SQLAlchemy, database and table design, full CRUD operations, and capstone mini project.",
+        "durationDays": 7,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "PostgreSQL Setup",
+          "Database Connections",
+          "Create Tables & Schemas",
+          "CRUD Operations",
+          "Parameterized Queries",
+          "Capstone Mini Project"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "course-py-adv",
+    "course_name": "Advanced Python Course",
+    "category": "AI & Python Ecosystem",
+    "duration_months": 2,
+    "course_fee": 20000,
+    "syllabus_file": "Advanced Python Course.docx",
+    "description": "Advanced Python course covering FastAPI with PostgreSQL, Django ORM, NumPy, Pandas, Matplotlib, and Capstone Projects.",
+    "modules": [
+      {
+        "id": "py-adv-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Module 1: Advanced Python Foundations",
+        "topic": "Python",
+        "description": "Advanced Python introduction, conditional statements, data structures (List, Tuple, Set, Dictionary), exception handling, and deep OOP concepts.",
+        "durationDays": 7,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Python Refresher",
+          "Conditional Statements",
+          "Data Structures (List, Tuple, Set, Dictionary)",
+          "Exception Handling",
+          "OOP Concepts"
+        ]
+      },
+      {
+        "id": "py-adv-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Module 2: FastAPI with PostgreSQL",
+        "topic": "Python",
+        "description": "FastAPI fundamentals, asynchronous routing, Pydantic schemas, database integration with PostgreSQL, JWT authentication, and Mini Project.",
+        "durationDays": 10,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "FastAPI Fundamentals & Routing",
+          "Data Validation with Pydantic",
+          "Database Integration",
+          "Authentication & Authorization",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "py-adv-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Module 3: Django with PostgreSQL",
+        "topic": "Python",
+        "description": "Django framework environment setup, routing, views, Django ORM database layer, user authentication, and Django REST Framework (DRF) APIs.",
+        "durationDays": 10,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Introduction & Setup",
+          "Routing & Views",
+          "Models & ORM",
+          "Auth & User Management",
+          "Django REST Framework",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "py-adv-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Module 4: NumPy for Data Engineering",
+        "topic": "Python",
+        "description": "NumPy array architecture, ndarray objects, multi-dimensional array slicing, vectorized operations, linear algebra, and data interrogation.",
+        "durationDays": 6,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Introduction to NumPy",
+          "Core ndarray Object",
+          "Indexing, Slicing & Striding",
+          "Vectorized Math Operations"
+        ]
+      },
+      {
+        "id": "py-adv-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Module 5: Pandas Data Analysis",
+        "topic": "Python",
+        "description": "Pandas Series and DataFrames, data I/O (CSV, Excel, SQL), indexing, selecting, filtering, data cleaning, handling missing values, and visualization.",
+        "durationDays": 8,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Pandas Introduction",
+          "Data Input & Output (I/O)",
+          "Indexing & Filtering",
+          "Data Cleaning & Preprocessing",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "py-adv-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Module 6: Matplotlib & Data Visualization",
+        "topic": "Python",
+        "description": "Matplotlib plotting fundamentals, standard charts, graph customization & styling, subplots, and working with external data streams.",
+        "durationDays": 6,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Matplotlib Introduction",
+          "Basic Plotting & Standard Charts",
+          "Graph Styling & Customization",
+          "Advanced Subplots",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "py-adv-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Module 7: Capstone Projects",
+        "topic": "Python",
+        "description": "Full-cycle enterprise software development: Inventory Management System, AI Powered Resume Analyzer, Job Portal, Hospital Management, and Online Examination Platform.",
+        "durationDays": 14,
+        "suggestedDuration": 45,
+        "suggestedQuestions": 25,
+        "subtopics": [
+          "Inventory Management System",
+          "AI Powered Resume Analyzer",
+          "Job Portal",
+          "Hospital Management",
+          "Online Examination Platform"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "course-java-basic",
+    "course_name": "Basic Java Course",
+    "category": "Java Enterprise Ecosystem",
+    "duration_months": 2,
+    "course_fee": 15000,
+    "syllabus_file": "Basic_java_course.docx",
+    "description": "Foundational 8-module Java programming course covering JDK architecture, control statements, arrays, strings, OOP, MySQL, and REST API development.",
+    "modules": [
+      {
+        "id": "java-basic-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Module 1: Java Fundamentals",
+        "topic": "Java",
+        "description": "Java Introduction, JDK, JRE, JVM architecture, environment setup, and writing first compiled Java console program.",
+        "durationDays": 5,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Java Introduction",
+          "JDK, JRE, JVM",
+          "Installation & Setup",
+          "First Java Program"
+        ]
+      },
+      {
+        "id": "java-basic-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Module 2: Introduction to JAVA",
+        "topic": "Java",
+        "description": "Variables, primitive & non-primitive data types, type casting, Scanner input, and operators.",
+        "durationDays": 5,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Variables & Memory",
+          "Data Types",
+          "Input & Output",
+          "Operators"
+        ]
+      },
+      {
+        "id": "java-basic-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Module 3: Conditional Statements & Looping",
+        "topic": "Java",
+        "description": "Control statements (if, if-else, switch), loops (for, while, do-while), and jump statements.",
+        "durationDays": 6,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Control Statements",
+          "Loops",
+          "Jump Statements (break, continue)"
+        ]
+      },
+      {
+        "id": "java-basic-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Module 4: Arrays & Strings",
+        "topic": "Java",
+        "description": "Single & Multi-Dimensional Arrays, StringBuilder, String manipulation, method overloading, and recursion.",
+        "durationDays": 7,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Arrays",
+          "StringBuilder",
+          "String Manipulation",
+          "Method Overloading",
+          "Recursion"
+        ]
+      },
+      {
+        "id": "java-basic-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Module 5: Object-Oriented Programming",
+        "topic": "Java",
+        "description": "Classes, objects, constructors, Inheritance, Polymorphism, Encapsulation, and Abstraction.",
+        "durationDays": 8,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Class & Object",
+          "Constructor",
+          "Inheritance",
+          "Polymorphism",
+          "Encapsulation",
+          "Abstraction"
+        ]
+      },
+      {
+        "id": "java-basic-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Module 6: Advanced Java Core",
+        "topic": "Java",
+        "description": "Interfaces, Packages, Exception Handling, File Handling, and Generics.",
+        "durationDays": 8,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Interfaces",
+          "Packages",
+          "Exception Handling",
+          "File Handling",
+          "Generics"
+        ]
+      },
+      {
+        "id": "java-basic-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Module 7: Database – MySQL",
+        "topic": "Java",
+        "description": "MySQL installation, schema creation, database tables, SQL queries, JDBC connectivity, CRUD operations, and Mini Project.",
+        "durationDays": 7,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Install MySQL",
+          "Create Database & Table",
+          "CRUD Operations",
+          "JDBC Connectivity",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "java-basic-mod-8",
+        "moduleNumber": 8,
+        "moduleName": "Module 8: REST API Development",
+        "topic": "Java",
+        "description": "REST architecture concepts, HTTP methods (GET, POST, PUT, DELETE), JSON serialization, and API testing with Postman.",
+        "durationDays": 7,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "REST Concepts",
+          "HTTP Methods",
+          "JSON",
+          "Postman API Testing"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "course-java-adv",
+    "course_name": "Advanced Java Syllabus",
+    "category": "Java Enterprise Ecosystem",
+    "duration_months": 3,
+    "course_fee": 25000,
+    "syllabus_file": "Advanced_Java_Syllabus.docx",
+    "description": "Comprehensive 10-module enterprise Java program covering multithreading, JDBC, Spring Boot, REST APIs, and DevOps deployment.",
+    "modules": [
+      {
+        "id": "java-adv-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Module 1: Java Fundamentals & Architecture",
+        "topic": "Java",
+        "description": "Java Introduction, JDK, JRE, JVM internals, bytecode execution, installation, and environment setup.",
+        "durationDays": 5,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Java Introduction",
+          "JDK, JRE, JVM",
+          "Installation & Setup",
+          "First Java Program"
+        ]
+      },
+      {
+        "id": "java-adv-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Module 2: Java Language Core",
+        "topic": "Java",
+        "description": "Variables, data types, standard I/O, operators, and type conversion.",
+        "durationDays": 4,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Variables",
+          "Data Types",
+          "Input & Output",
+          "Operators"
+        ]
+      },
+      {
+        "id": "java-adv-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Module 3: Conditional Statements & Looping",
+        "topic": "Java",
+        "description": "Control statements, conditional branching, iteration loops, and nested control flow.",
+        "durationDays": 5,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Control Statements",
+          "Loops"
+        ]
+      },
+      {
+        "id": "java-adv-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Module 4: Arrays, Strings & Recursion",
+        "topic": "Java",
+        "description": "Single and multi-dimensional arrays, StringBuilder, string manipulation, method overloading, and recursion.",
+        "durationDays": 6,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Arrays",
+          "StringBuilder",
+          "String Manipulation",
+          "Method Overloading",
+          "Recursion"
+        ]
+      },
+      {
+        "id": "java-adv-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Module 5: Object-Oriented Programming",
+        "topic": "Java",
+        "description": "Class & Object, constructor overloading, Inheritance, Polymorphism, Encapsulation, and Abstraction.",
+        "durationDays": 7,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Class & Object",
+          "Constructor",
+          "Inheritance",
+          "Polymorphism",
+          "Encapsulation",
+          "Abstraction"
+        ]
+      },
+      {
+        "id": "java-adv-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Module 6: Multithreading & Concurrency",
+        "topic": "Java",
+        "description": "Thread lifecycle, Thread class, Runnable interface, thread synchronization, thread pools, and race conditions.",
+        "durationDays": 7,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Thread Lifecycle",
+          "Runnable Interface",
+          "Synchronization",
+          "Thread Pools"
+        ]
+      },
+      {
+        "id": "java-adv-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Module 7: Java I/O, JDBC & Transactions",
+        "topic": "Java",
+        "description": "Byte and character streams, object serialization, JDBC connectivity, PreparedStatements, Transactions, and JDBC CRUD Application.",
+        "durationDays": 8,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Streams",
+          "Serialization",
+          "JDBC Connectivity",
+          "CRUD Operations",
+          "Prepared Statements",
+          "Transactions",
+          "JDBC CRUD App"
+        ]
+      },
+      {
+        "id": "java-adv-mod-8",
+        "moduleNumber": 8,
+        "moduleName": "Module 8: Spring Boot Framework",
+        "topic": "Java",
+        "description": "Spring Fundamentals, Dependency Injection, Spring Boot Setup, Spring MVC (Controllers, Views, Request Mapping), Spring Data JPA, and Spring Security (JWT).",
+        "durationDays": 12,
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25,
+        "subtopics": [
+          "Spring Fundamentals",
+          "Dependency Injection",
+          "Spring Boot Setup",
+          "Spring MVC",
+          "Spring Data JPA",
+          "Spring Security Basics & JWT"
+        ]
+      },
+      {
+        "id": "java-adv-mod-9",
+        "moduleNumber": 9,
+        "moduleName": "Module 9: API & Backend Development",
+        "topic": "Java",
+        "description": "REST API Development, HTTP Methods, JSON, Postman, Spring REST API (CRUD, Exception Handling, Validation), Payment Gateway API integration, and Student REST API.",
+        "durationDays": 10,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "REST API Development",
+          "HTTP Methods",
+          "JSON",
+          "Postman",
+          "Spring REST API",
+          "Exception Handling",
+          "Validation",
+          "Payment Gateway APIs",
+          "Student REST API"
+        ]
+      },
+      {
+        "id": "java-adv-mod-10",
+        "moduleNumber": 10,
+        "moduleName": "Module 10: Local & DevOps Fundamentals",
+        "topic": "Java",
+        "description": "Git & GitHub version control, production deployment basics, AWS cloud fundamentals, and cloud deployment on Render.",
+        "durationDays": 7,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Git & GitHub",
+          "Deployment Basics",
+          "AWS Basics",
+          "Render Cloud Deployment"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "course-fsai-py",
+    "course_name": "Full Stack AI Python",
+    "category": "AI & Python Ecosystem",
+    "duration_months": 6,
+    "course_fee": 45000,
+    "syllabus_file": "Full_Stack_AI_Python_Course_syllabus.docx",
+    "description": "End-to-end full stack program combining HTML5/CSS3/JavaScript, React.js frontend architecture, Python backend, FastAPI microservices, and Generative AI.",
+    "modules": [
+      {
+        "id": "fsai-py-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Module 1: HTML & CSS Web Foundation",
+        "topic": "HTML",
+        "additionalTopics": [
+          "HTML",
+          "CSS"
+        ],
+        "description": "Static & dynamic web architecture, HTML tags, semantic elements, tables, forms with validation, CSS box model, Flexbox layouts, CSS Grid, and responsive web design.",
+        "durationDays": 10,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "HTML Page Structure",
+          "Forms with Validation",
+          "CSS Box Model",
+          "Flexbox & Positioning",
+          "CSS Grid & Responsive Design"
+        ]
+      },
+      {
+        "id": "fsai-py-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Module 2: JavaScript & Modern DOM",
+        "topic": "JavaScript",
+        "description": "JavaScript & ECMAScript, variables, loops, arrays, objects, DOM selection & event handling, asynchronous JavaScript (Promises, async/await), Fetch API, and LocalStorage.",
+        "durationDays": 10,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "JavaScript Fundamentals",
+          "Arrays & Objects",
+          "DOM Selection & Events",
+          "Async/Await & Fetch API",
+          "LocalStorage"
+        ]
+      },
+      {
+        "id": "fsai-py-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Module 3: React.js Component Architecture",
+        "topic": "React",
+        "description": "React foundations, functional components, props, useState, useEffect, custom hooks, React Router, Tailwind CSS styling, Zustand state management, and Axios API fetching.",
+        "durationDays": 14,
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25,
+        "subtopics": [
+          "Components & Props",
+          "useState & Events",
+          "useEffect & Hooks",
+          "React Router & Tailwind CSS",
+          "Global State (Zustand)",
+          "API Data Fetching (Axios)"
+        ]
+      },
+      {
+        "id": "fsai-py-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Module 4: Python Core Foundations",
+        "topic": "Python",
+        "description": "Python syntax, variables, data types, operators, conditional branching, loops, strings, lists, tuples, sets, dictionaries, and functions (*args, **kwargs, lambdas).",
+        "durationDays": 12,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Python Syntax",
+          "Data Types & Operators",
+          "Control Flow & Loops",
+          "Collections (Lists, Tuples, Sets, Dicts)",
+          "Functions & Lambdas"
+        ]
+      },
+      {
+        "id": "fsai-py-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Module 5: Python OOP, Files & PostgreSQL",
+        "topic": "Python",
+        "description": "OOP (Classes, Inheritance, Polymorphism, Abstraction, Encapsulation), file handling, exception handling, Tkinter GUI, and PostgreSQL database integration.",
+        "durationDays": 12,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "OOP Architecture",
+          "Inheritance & Polymorphism",
+          "Exception & File Handling",
+          "Tkinter GUI",
+          "PostgreSQL Database Integration"
+        ]
+      },
+      {
+        "id": "fsai-py-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Module 6: FastAPI Microservices",
+        "topic": "Python",
+        "description": "FastAPI setup with Uvicorn, virtual environments, request routing, Pydantic schemas, database integration, JWT authentication, and REST API development.",
+        "durationDays": 10,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "FastAPI Setup",
+          "Core Routing",
+          "Pydantic Validation",
+          "Database Integration",
+          "JWT Authentication",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "fsai-py-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Module 7: AI & Generative AI Applications",
+        "topic": "Python",
+        "description": "Generative AI fundamentals, LLM API integration (Gemini / OpenAI), Prompt Engineering, vector embeddings, AI chatbot development, and capstone AI project.",
+        "durationDays": 12,
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25,
+        "subtopics": [
+          "Generative AI Basics",
+          "Prompt Engineering",
+          "LLM API Integration",
+          "AI Chatbot Development",
+          "Capstone AI Project"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "course-fsai-java",
+    "course_name": "Full Stack AI Java",
+    "category": "Java Enterprise Ecosystem",
+    "duration_months": 6,
+    "course_fee": 45000,
+    "syllabus_file": "Fullstack_AI_Java.docx",
+    "description": "Comprehensive enterprise full stack program combining HTML5/CSS3/JavaScript, React.js frontend, Java Core/OOP, MySQL, Spring Boot microservices, and Spring AI.",
+    "modules": [
+      {
+        "id": "fsai-java-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Module 1: Web Frontend Engineering (HTML, CSS, JS)",
+        "topic": "HTML",
+        "additionalTopics": [
+          "HTML",
+          "CSS",
+          "JavaScript"
+        ],
+        "description": "Web architecture, HTML semantic markup, forms, CSS box model, Flexbox, Grid, JavaScript fundamentals, DOM events, and Async/Await fetch operations.",
+        "durationDays": 12,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "HTML Structure & Semantic Forms",
+          "CSS Flexbox & Responsive Grid",
+          "JavaScript Fundamentals",
+          "DOM Events & Fetch API"
+        ]
+      },
+      {
+        "id": "fsai-java-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Module 2: React.js Component Architecture",
+        "topic": "React",
+        "description": "React components, props, useState, useEffect, React Router, Tailwind CSS, global state management with Zustand, Axios API integration, and testing.",
+        "durationDays": 12,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "React Components & Props",
+          "State Management (useState, useEffect)",
+          "React Router & Tailwind CSS",
+          "Global State (Zustand) & Axios"
+        ]
+      },
+      {
+        "id": "fsai-java-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Module 3: Java Language Core & Control Flow",
+        "topic": "Java",
+        "description": "JDK/JRE/JVM, data types, operators, conditional statements, loops, arrays, strings, StringBuilder, and recursion.",
+        "durationDays": 10,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Java Fundamentals & JVM",
+          "Variables, Data Types & Operators",
+          "Conditional Statements & Loops",
+          "Arrays & Strings"
+        ]
+      },
+      {
+        "id": "fsai-java-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Module 4: Java OOP & Advanced Core Concepts",
+        "topic": "Java",
+        "description": "Classes, constructors, Inheritance, Polymorphism, Encapsulation, Abstraction, Interfaces, Packages, Exception Handling, File I/O, Collections, and Generics.",
+        "durationDays": 12,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Class & Constructors",
+          "Inheritance & Polymorphism",
+          "Encapsulation & Abstraction",
+          "Exception Handling",
+          "Collections & Generics"
+        ]
+      },
+      {
+        "id": "fsai-java-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Module 5: Database Persistence & MySQL",
+        "topic": "Java",
+        "description": "MySQL setup, relational schema design, SQL CRUD queries, JDBC connectivity, PreparedStatements, transaction management, and mini project.",
+        "durationDays": 8,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "MySQL Installation & Setup",
+          "Database & Tables Creation",
+          "SQL CRUD Queries",
+          "JDBC PreparedStatement Persistence",
+          "Mini Project"
+        ]
+      },
+      {
+        "id": "fsai-java-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Module 6: Spring Boot & REST API Development",
+        "topic": "Java",
+        "description": "Spring Boot setup, REST concepts, HTTP methods, JSON, Postman API testing, Spring MVC Controllers, Spring Data JPA repositories, and exception handling.",
+        "durationDays": 14,
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25,
+        "subtopics": [
+          "Spring Boot Setup & Architecture",
+          "REST Concepts & HTTP Methods",
+          "Spring MVC Controllers",
+          "Spring Data JPA",
+          "Global Exception Handling"
+        ]
+      },
+      {
+        "id": "fsai-java-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Module 7: Spring AI & Generative AI Engineering",
+        "topic": "Java",
+        "description": "Introduction to Spring AI, LLM integration with Spring Boot, ChatClient, prompt templates, AI response generation, RAG fundamentals, AI Chatbot, and Resume Analyzer.",
+        "durationDays": 14,
+        "suggestedDuration": 45,
+        "suggestedQuestions": 25,
+        "subtopics": [
+          "Spring AI Framework",
+          "LLM Integration with Spring Boot",
+          "ChatClient & Prompt Templates",
+          "Embeddings & RAG Fundamentals",
+          "AI Chatbot & Resume Analyzer"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ai-java-full-stack",
+    "course_name": "AI Java Full Stack Program",
+    "category": "Full Stack & AI",
+    "duration_months": 6,
+    "course_fee": 45000,
+    "syllabus_file": "1782194437_AI_Java_Full_Stack_Program.docx",
+    "description": "Enterprise Java full-stack master program infused with Generative AI development, Spring Boot microservices, Angular/React, and Cloud DevOps.",
+    "modules": [
+      {
+        "id": "java-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Core Java Fundamentals & OOPs Architecture",
+        "topic": "Java Basics & OOP",
+        "description": "Comprehensive grounding in Java 17/21 syntax, memory model, JVM architecture, garbage collection, and robust object-oriented software engineering principles.",
+        "subtopics": [
+          "JVM Architecture, Bytecode & ClassLoader",
+          "Data Types, Type Casting & Operators",
+          "OOPs Principles: Encapsulation, Polymorphism, Abstraction, Inheritance",
+          "Static Members, Constructor Overloading & this/super keywords",
+          "Abstract Classes vs Interfaces & Default Methods (Java 8+)",
+          "String, StringBuilder & Memory Internals"
+        ],
+        "keyTakeaways": [
+          "Strong OOP fundamentals",
+          "Memory management mastery",
+          "Clean coding standards"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "java-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Advanced Java Collections, Generics & Functional Streams",
+        "topic": "Java Collections & Streams",
+        "description": "In-depth mastery of Java Collection Framework, Generics, Lambdas, Functional Interfaces, Stream API, and Modern Concurrency patterns.",
+        "subtopics": [
+          "List, Set, Queue & Deque Implementations",
+          "Map Architecture: HashMap, LinkedHashMap, ConcurrentHashMap & TreeMap",
+          "Comparable vs Comparator Implementations",
+          "Generics, Wildcards <? extends T> and Type Erasure",
+          "Lambda Expressions, Predicate, Function, Consumer & Supplier",
+          "Stream API: map, filter, flatMap, reduce, collect & groupingBy",
+          "Optional Class & Exception Handling Best Practices"
+        ],
+        "keyTakeaways": [
+          "High-performance data manipulation",
+          "Modern declarative programming",
+          "Null-safe architectures"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "java-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Multithreading, Concurrency & Modern Virtual Threads",
+        "topic": "Java Concurrency",
+        "description": "Thread lifecycles, synchronization mechanisms, Executor Framework, ForkJoinPool, and Java 21 Project Loom Virtual Threads.",
+        "subtopics": [
+          "Thread Lifecycle, Runnable vs Callable",
+          "Race Conditions, synchronized blocks & ReentrantLocks",
+          "ExecutorService, ThreadPoolExecutor & Futures",
+          "CompletableFuture Async Pipeline composition",
+          "Atomic Variables & Non-blocking algorithms",
+          "Java 21 Virtual Threads & Structured Concurrency"
+        ],
+        "keyTakeaways": [
+          "High-throughput concurrent systems",
+          "Non-blocking I/O programming",
+          "Deadlock prevention"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "java-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Relational Database Engineering, SQL & Hibernate JPA",
+        "topic": "SQL & JPA Hibernate",
+        "description": "Relational database modeling with PostgreSQL/MySQL, ACID properties, complex joins, and Object-Relational Mapping with Hibernate and Spring Data JPA.",
+        "subtopics": [
+          "Relational Schema Design & Normalization (1NF to 3NF)",
+          "Complex SQL Joins, Subqueries & Window Functions",
+          "Database Indexing, B-Trees & Query Optimization",
+          "JPA Entities, Relationships (@OneToMany, @ManyToMany)",
+          "Hibernate First & Second Level Caching",
+          "N+1 Query Problem & FetchType Optimization",
+          "Spring Data JPA Repositories & JPQL/Native Queries"
+        ],
+        "keyTakeaways": [
+          "Enterprise persistence architecture",
+          "Query optimization mastery",
+          "Zero N+1 performance bottlenecks"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "java-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Spring Boot 3 Enterprise Microservices & REST APIs",
+        "topic": "Spring Boot & Microservices",
+        "description": "Building cloud-native, scalable RESTful microservices with Spring Boot 3, Dependency Injection, Spring MVC, and Validation.",
+        "subtopics": [
+          "Spring IoC Container & Dependency Injection (@Component, @Service, @Autowired)",
+          "Building RESTful APIs with @RestController & HTTP Status Codes",
+          "Request Validation (@Valid, @NotNull, @Size) & Global Exception Handling (@ControllerAdvice)",
+          "Configuration Properties, Profiles & Application Lifecycle",
+          "Spring Data REST & HATEOAS Principles",
+          "Spring Boot Actuator, Health Checks & Micrometer Metrics"
+        ],
+        "keyTakeaways": [
+          "Production-ready REST microservices",
+          "Robust error handling contracts",
+          "Configuration management"
+        ],
+        "suggestedDuration": 45,
+        "suggestedQuestions": 30
+      },
+      {
+        "id": "java-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Spring Security 6, JWT Authentication & RBAC",
+        "topic": "Enterprise Security",
+        "description": "Implementing modern stateless authentication, authorization, role-based access control (RBAC), and OAuth2 with Spring Security 6.",
+        "subtopics": [
+          "SecurityFilterChain Architecture & AuthenticationProvider",
+          "Stateless JWT (JSON Web Token) Generation & Validation Filter",
+          "Role-Based Authorization (@PreAuthorize, hasRole)",
+          "Password Hashing with BCrypt & Salting",
+          "Cross-Origin Resource Sharing (CORS) & CSRF Defense",
+          "OAuth2 Social Sign-In Integration"
+        ],
+        "keyTakeaways": [
+          "Bank-grade web security",
+          "Token-based authentication",
+          "Fine-grained RBAC permissions"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "java-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Modern Web Frontend: React / TypeScript Integration",
+        "topic": "Frontend Integration",
+        "description": "Crafting dynamic, responsive Single Page Applications (SPA) with React, TypeScript, TailwindCSS, and Axios API client integration.",
+        "subtopics": [
+          "TypeScript Types, Interfaces & Generics for React",
+          "React Hooks: useState, useEffect, useMemo, useCallback & useRef",
+          "State Management with Context API & Zustand",
+          "Routing with React Router v6 & Protected Routes",
+          "Axios Interceptors, JWT Token Storage & Refresh Tokens",
+          "Form Management & Schema Validation with Zod/React Hook Form"
+        ],
+        "keyTakeaways": [
+          "Type-safe frontend development",
+          "Clean API communication",
+          "Polished user experience"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "java-mod-8",
+        "moduleNumber": 8,
+        "moduleName": "Generative AI Integration with Spring AI & LLMs",
+        "topic": "AI & LLM Integration",
+        "description": "Augmenting enterprise Java applications with Generative AI using Spring AI, OpenAI/Gemini APIs, Prompt Engineering, and RAG systems.",
+        "subtopics": [
+          "Introduction to Spring AI & AI Models Orchestration",
+          "Prompt Engineering & Structured JSON Output Parsing in Java",
+          "Retrieval-Augmented Generation (RAG) Architecture",
+          "Vector Databases (pgvector, Chroma) & Embeddings in Java",
+          "Building AI Agents & Function Calling with Spring AI",
+          "Streaming AI Responses with WebSockets & Server-Sent Events (SSE)"
+        ],
+        "keyTakeaways": [
+          "Enterprise GenAI capabilities",
+          "Vector search & RAG workflows",
+          "Streaming conversational UI"
+        ],
+        "suggestedDuration": 45,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "java-mod-9",
+        "moduleNumber": 9,
+        "moduleName": "Distributed Systems: Microservices, Kafka & Docker",
+        "topic": "Microservices & DevOps",
+        "description": "Architecting distributed enterprise ecosystems with API Gateway, Eureka/Consul Service Registry, Apache Kafka messaging, and Docker containers.",
+        "subtopics": [
+          "Spring Cloud Gateway & Service Discovery with Netflix Eureka",
+          "Asynchronous Event-Driven Architecture with Apache Kafka",
+          "Resilience Patterns: Circuit Breakers (Resilience4j), Retry & Rate Limiting",
+          "Containerization with Docker & Multi-stage Dockerfiles",
+          "Distributed Tracing with Zipkin/Micrometer & OpenTelemetry",
+          "Docker Compose multi-container orchestration"
+        ],
+        "keyTakeaways": [
+          "Distributed event-driven architecture",
+          "Fault-tolerant microservices",
+          "Containerized packaging"
+        ],
+        "suggestedDuration": 45,
+        "suggestedQuestions": 30
+      },
+      {
+        "id": "java-mod-10",
+        "moduleNumber": 10,
+        "moduleName": "CI/CD Pipelines, Cloud Deployment & Capstone Project",
+        "topic": "Cloud & Capstone",
+        "description": "End-to-end continuous integration and deployment with GitHub Actions, AWS/Cloud hosting, and delivery of a production-grade enterprise application.",
+        "subtopics": [
+          "Unit & Integration Testing with JUnit 5, Mockito & Testcontainers",
+          "GitHub Actions CI/CD Pipeline automation",
+          "Cloud Deployment on AWS (ECS, RDS, S3) / Render / Railway",
+          "Application Monitoring, Log Aggregation & Production Readiness",
+          "Capstone Project Presentation & Code Review"
+        ],
+        "keyTakeaways": [
+          "Automated delivery pipelines",
+          "Cloud production deployment",
+          "Portfolio-ready capstone project"
+        ],
+        "suggestedDuration": 50,
+        "suggestedQuestions": 30
+      }
+    ]
+  },
+  {
+    "id": "ai-python-full-stack",
+    "course_name": "AI Python Full Stack Program",
+    "category": "Full Stack & AI",
+    "duration_months": 6,
+    "course_fee": 45000,
+    "syllabus_file": "1781774690_Basic_Python_Course_Syllabus.docx",
+    "description": "Premier Python engineering program covering Python core, FastAPI, Django, PostgreSQL, React, Machine Learning integration, and Cloud deployment.",
+    "modules": [
+      {
+        "id": "py-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Python Foundations, Data Structures & Idiomatic Python",
+        "topic": "Python Core & Data Structures",
+        "description": "Core syntax, dynamic typing, comprehensions, iterators, generators, and standard library data structures.",
+        "subtopics": [
+          "Python 3 Runtime, Memory Model & Dynamic Typing",
+          "Lists, Tuples, Dictionaries, Sets & Comprehensions",
+          "Functions, *args, **kwargs, Scope & Closures",
+          "Iterators, Generators & yield Expressions",
+          "File I/O, Context Managers (with statement) & Serialization",
+          "Exception Handling & Custom Exceptions"
+        ],
+        "keyTakeaways": [
+          "Idiomatic Python syntax",
+          "Memory-efficient data pipelines",
+          "Generator patterns"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "py-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "OOP, Functional Programming & Decorators",
+        "topic": "OOP & Python Metaprogramming",
+        "description": "Object-oriented programming, magic/dunder methods, decorators, and functional programming tools in Python.",
+        "subtopics": [
+          "Classes, Instances, Class Methods vs Static Methods",
+          "Inheritance, MRO (Method Resolution Order) & Mixins",
+          "Magic / Dunder Methods (__repr__, __str__, __len__, __iter__)",
+          "Function & Class Decorators with Arguments",
+          "functools (lru_cache, partial, wraps)",
+          "Type Hints, Pydantic & Static Analysis with mypy"
+        ],
+        "keyTakeaways": [
+          "Clean modular architecture",
+          "Decorator design patterns",
+          "Type-checked Python code"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "py-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Database Engineering, SQL & SQLAlchemy ORM",
+        "topic": "PostgreSQL & SQLAlchemy",
+        "description": "Relational database schema design, transactions, indexing, and asynchronous ORM modeling with SQLAlchemy 2.0 and Alembic.",
+        "subtopics": [
+          "PostgreSQL Schema Design, Keys & Normalization",
+          "Complex SQL Queries, Window Functions & CTEs",
+          "SQLAlchemy 2.0 Declarative Mapping & Relationships",
+          "Session Management & Async Engine with asyncpg",
+          "Database Migrations with Alembic",
+          "Connection Pooling & Query Optimization"
+        ],
+        "keyTakeaways": [
+          "Robust relational schemas",
+          "Async database queries",
+          "Alembic migration workflows"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "py-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "High-Performance APIs with FastAPI & Pydantic",
+        "topic": "FastAPI & Async Web Services",
+        "description": "Building blazing-fast asynchronous REST APIs using FastAPI, Pydantic data validation, OpenAPI documentation, and dependency injection.",
+        "subtopics": [
+          "FastAPI Architecture & ASGI Event Loop (Uvicorn)",
+          "Path, Query, Body Parameters & Pydantic Request Validation",
+          "Dependency Injection System (Depends)",
+          "Background Tasks, WebSockets & Streaming Responses",
+          "Authentication with JWT, OAuth2 Password Bearer & Passlib",
+          "Testing APIs with pytest, pytest-asyncio & HTTPX"
+        ],
+        "keyTakeaways": [
+          "Blazing-fast async REST APIs",
+          "Auto-generated OpenAPI docs",
+          "Strict data validation"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "py-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Full-Stack React Frontend Integration",
+        "topic": "React & Frontend",
+        "description": "Building modern reactive client applications that consume Python backend APIs with state management and authentication.",
+        "subtopics": [
+          "React Component Tree, Hooks (useState, useEffect, useMemo)",
+          "Client Routing with React Router DOM v6",
+          "State Management with TanStack Query (React Query) & Zustand",
+          "Responsive UI with TailwindCSS",
+          "JWT Storage, Token Refresh Interceptors & Protected Routes"
+        ],
+        "keyTakeaways": [
+          "Smooth user interfaces",
+          "Optimized client cache",
+          "Seamless API integration"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "py-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Applied AI, LangChain, Vector DBs & Deployment",
+        "topic": "Applied AI & Cloud Delivery",
+        "description": "Integrating LLMs, LangChain agents, Vector Search (Chroma/pgvector), Docker containerization, and automated cloud deployment.",
+        "subtopics": [
+          "OpenAI / Anthropic / Gemini API Integration",
+          "LangChain Pipelines, Prompt Templates & Chains",
+          "Retrieval-Augmented Generation (RAG) with Vector Databases",
+          "Docker Containerization & Docker Compose Setup",
+          "Continuous Deployment with GitHub Actions to Cloud"
+        ],
+        "keyTakeaways": [
+          "Production GenAI applications",
+          "Docker container mastery",
+          "Live deployed portfolio apps"
+        ],
+        "suggestedDuration": 45,
+        "suggestedQuestions": 25
+      }
+    ]
+  },
+  {
+    "id": "full-stack-ai",
+    "course_name": "Full Stack  AI",
+    "category": "Full Stack & AI",
+    "duration_months": 9,
+    "course_fee": 60000,
+    "syllabus_file": "1782206838_AI_Full_Stack_Professional_Program.docx",
+    "description": "Comprehensive 9-month professional certification bridging modern full stack development (Node.js, Python, React) with Deep Learning, Computer Vision, and Generative AI.",
+    "modules": [
+      {
+        "id": "fsai-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Web & Programming Foundations (HTML5, Modern JS, Python)",
+        "topic": "Web Foundations",
+        "description": "Foundational programming in JavaScript ES6+ and Python, web structure, CSS Grid/Flexbox, and asynchronous execution.",
+        "subtopics": [
+          "Modern JavaScript ES6+",
+          "Python 3 Fundamentals",
+          "HTML5 Semantic Layouts",
+          "CSS3 Flexbox & Grid Systems",
+          "DOM APIs & Event Loop"
+        ],
+        "keyTakeaways": [
+          "Strong programming baseline",
+          "Modern JavaScript fluency",
+          "Responsive markup"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "fsai-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Front-End UI Engineering with React & Next.js",
+        "topic": "React & Next.js",
+        "description": "Building reactive, component-driven user interfaces with React, Next.js Server Components, Server-Side Rendering (SSR), and TailwindCSS.",
+        "subtopics": [
+          "React Hooks & Lifecycle",
+          "Next.js App Router & SSR",
+          "State Management & Server Actions",
+          "TailwindCSS System",
+          "TypeScript Integration"
+        ],
+        "keyTakeaways": [
+          "Modern SSR architectures",
+          "Component modularity",
+          "Type-safe frontend code"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "fsai-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Backend Engineering with FastAPI & Node.js Microservices",
+        "topic": "Microservices & REST",
+        "description": "Designing high-throughput asynchronous backends with FastAPI and Express/NestJS, API gateways, and JWT authentication.",
+        "subtopics": [
+          "FastAPI Async Endpoints",
+          "Node.js Express / NestJS Architecture",
+          "Microservice Communication",
+          "JWT & OAuth2 Security",
+          "Rate Limiting & CORS"
+        ],
+        "keyTakeaways": [
+          "Asynchronous web servers",
+          "Microservices design",
+          "Secure authentication"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "fsai-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Relational & NoSQL Database Architecture",
+        "topic": "Database Engineering",
+        "description": "Data persistence across PostgreSQL and MongoDB, indexing, query optimization, and transactions.",
+        "subtopics": [
+          "PostgreSQL Schema Design & Joins",
+          "MongoDB Aggregation Pipelines",
+          "ORMs & ODMs (Prisma, SQLAlchemy, Mongoose)",
+          "Transactions & ACID guarantees",
+          "Redis In-Memory Caching"
+        ],
+        "keyTakeaways": [
+          "Polyglot persistence",
+          "Sub-millisecond Redis caching",
+          "High-throughput database design"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "fsai-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Data Science Core: NumPy, Pandas & Data Visualization",
+        "topic": "Data Science Stack",
+        "description": "Data manipulation, exploratory data analysis (EDA), statistical modeling, and visualization with NumPy, Pandas, Matplotlib, and Seaborn.",
+        "subtopics": [
+          "NumPy Multidimensional Arrays & Vectorization",
+          "Pandas Series, DataFrames & Data Cleaning",
+          "Exploratory Data Analysis (EDA)",
+          "Statistical Distributions & Hypothesis Testing",
+          "Visual Storytelling with Seaborn & Plotly"
+        ],
+        "keyTakeaways": [
+          "Vectorized numerical computing",
+          "Production data transformation",
+          "Statistical reasoning"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "fsai-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Classical Machine Learning & Scikit-Learn",
+        "topic": "Machine Learning",
+        "description": "Supervised and unsupervised machine learning algorithms, model evaluation metrics, feature engineering, and hyperparameter tuning.",
+        "subtopics": [
+          "Linear & Logistic Regression",
+          "Decision Trees, Random Forests & XGBoost",
+          "Clustering: K-Means & DBSCAN",
+          "Model Evaluation: ROC-AUC, F1, Precision/Recall",
+          "Cross-Validation & Hyperparameter Tuning (GridSearchCV)"
+        ],
+        "keyTakeaways": [
+          "Predictive model building",
+          "Robust model validation",
+          "Ensemble modeling expertise"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "fsai-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Deep Learning with PyTorch & Computer Vision",
+        "topic": "Deep Learning & Vision",
+        "description": "Neural network architectures, backpropagation, Convolutional Neural Networks (CNNs), and transfer learning with PyTorch.",
+        "subtopics": [
+          "PyTorch Tensors, Autograd & GPU Acceleration",
+          "Feedforward Neural Networks & Activation Functions",
+          "Convolutional Neural Networks (CNNs) & ResNet",
+          "Transfer Learning & Fine-Tuning",
+          "Object Detection & Image Classification"
+        ],
+        "keyTakeaways": [
+          "Deep learning architecture design",
+          "PyTorch pipeline mastery",
+          "Computer vision models"
+        ],
+        "suggestedDuration": 45,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "fsai-mod-8",
+        "moduleNumber": 8,
+        "moduleName": "Generative AI, Transformers, LLMs & LangChain Agents",
+        "topic": "Generative AI & LLMs",
+        "description": "Transformer architecture, self-attention, Hugging Face ecosystem, RAG systems, Vector DBs, and autonomous agent orchestration with LangChain.",
+        "subtopics": [
+          "Transformer Architecture & Self-Attention",
+          "Hugging Face Transformers & Tokenizers",
+          "Retrieval-Augmented Generation (RAG) Architecture",
+          "Vector Databases: Pinecone, Chroma & pgvector",
+          "Autonomous LLM Agents & Tool Use with LangChain / LlamaIndex"
+        ],
+        "keyTakeaways": [
+          "Cutting-edge GenAI development",
+          "Vector retrieval pipelines",
+          "Autonomous AI agent engineering"
+        ],
+        "suggestedDuration": 50,
+        "suggestedQuestions": 30
+      },
+      {
+        "id": "fsai-mod-9",
+        "moduleNumber": 9,
+        "moduleName": "MLOps, Docker Containerization & Cloud Deployment",
+        "topic": "MLOps & Cloud",
+        "description": "Model deployment, API serving, Docker containers, Kubernetes basics, CI/CD pipelines, and cloud delivery on AWS/GCP.",
+        "subtopics": [
+          "FastAPI Model Serving & Serialization",
+          "Dockerizing AI Applications & Multi-stage Builds",
+          "CI/CD Pipelines with GitHub Actions",
+          "Monitoring Model Drift & Logging",
+          "Cloud Hosting on AWS / GCP / DigitalOcean"
+        ],
+        "keyTakeaways": [
+          "Production-grade MLOps pipelines",
+          "Automated deployment workflows",
+          "Resilient cloud infrastructure"
+        ],
+        "suggestedDuration": 45,
+        "suggestedQuestions": 25
+      }
+    ]
+  },
+  {
+    "id": "data-science",
+    "course_name": "Data Science & Machine Learning",
+    "category": "Data & AI",
+    "duration_months": 6,
+    "course_fee": 36000,
+    "syllabus_file": "1786009045_Data_Science_Syllabus.docx",
+    "description": "Practical data science program covering statistical analysis, machine learning algorithms, deep learning, NLP, and business intelligence dashboards.",
+    "modules": [
+      {
+        "id": "ds-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Applied Statistics, Probability & Python for Data Science",
+        "topic": "Statistics & Python",
+        "description": "Probability distributions, central tendency, variance, hypothesis testing, p-values, and Python scientific stack.",
+        "subtopics": [
+          "Descriptive & Inferential Statistics",
+          "Probability Theory & Normal Distribution",
+          "Hypothesis Testing: t-test, ANOVA & Chi-Square",
+          "NumPy & Vectorized Math",
+          "Pandas Data Wrangling"
+        ],
+        "keyTakeaways": [
+          "Statistical rigor",
+          "Data hypothesis validation",
+          "Efficient data cleaning"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "ds-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Exploratory Data Analysis & Business Intelligence (Power BI / Tableau)",
+        "topic": "EDA & BI Dashboards",
+        "description": "Advanced data storytelling, interactive dashboards, DAX queries, and visual analytics with Power BI and Tableau.",
+        "subtopics": [
+          "EDA Workflows & Missing Value Imputation",
+          "Outlier Detection & Feature Transformations",
+          "Power BI Data Modeling & Relationships",
+          "DAX Measures & Calculated Columns",
+          "Interactive Executive Dashboards"
+        ],
+        "keyTakeaways": [
+          "Executive dashboard design",
+          "Complex DAX calculations",
+          "Actionable business insights"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "ds-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Supervised Learning: Regression, Classification & Ensembles",
+        "topic": "Supervised Learning",
+        "description": "Comprehensive predictive modeling using Scikit-Learn, regularizations (Lasso/Ridge), decision trees, and gradient boosting.",
+        "subtopics": [
+          "Linear Regression & Multicollinearity (VIF)",
+          "Logistic Regression & Classification Thresholds",
+          "Decision Trees, Bagging & Random Forests",
+          "Gradient Boosting (XGBoost, LightGBM, CatBoost)",
+          "Hyperparameter Optimization (Optuna / GridSearchCV)"
+        ],
+        "keyTakeaways": [
+          "State-of-the-art tabular modeling",
+          "Bias-variance tradeoff control",
+          "High predictive accuracy"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "ds-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Unsupervised Learning, Clustering & Dimensionality Reduction",
+        "topic": "Unsupervised Learning",
+        "description": "Pattern discovery, customer segmentation, anomaly detection, PCA, and t-SNE dimensionality reduction.",
+        "subtopics": [
+          "K-Means Clustering & Elbow Method",
+          "Hierarchical Clustering & Dendrograms",
+          "DBSCAN Density-Based Clustering",
+          "Principal Component Analysis (PCA)",
+          "Anomaly & Fraud Detection Algorithms"
+        ],
+        "keyTakeaways": [
+          "Customer segmentation mastery",
+          "High-dimensional data reduction",
+          "Unsupervised anomaly detection"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "ds-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Natural Language Processing (NLP) & Text Analytics",
+        "topic": "NLP & Text Analytics",
+        "description": "Text preprocessing, TF-IDF, Word2Vec, sentiment analysis, and modern Transformer-based text classification.",
+        "subtopics": [
+          "Tokenization, Stemming, Lemmatization & Stopwords",
+          "TF-IDF Vectorization & N-grams",
+          "Word Embeddings (Word2Vec, GloVe)",
+          "Sentiment Analysis & Text Classification",
+          "Hugging Face Transformers for NLP"
+        ],
+        "keyTakeaways": [
+          "Unstructured text analytics",
+          "Embedding generation",
+          "Transformer-based NLP"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "ds-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Model Deployment with Streamlit, FastAPI & Cloud",
+        "topic": "Model Deployment",
+        "description": "Packaging data models into interactive web apps with Streamlit, creating prediction REST APIs with FastAPI, and cloud deployment.",
+        "subtopics": [
+          "Streamlit Interactive Data Applications",
+          "FastAPI Prediction Endpoints",
+          "Model Serialization (Pickle, Joblib, ONNX)",
+          "Docker Packaging for Data Science",
+          "Cloud Hosting on AWS / Render"
+        ],
+        "keyTakeaways": [
+          "Interactive portfolio applications",
+          "Production prediction endpoints",
+          "Cloud deployed models"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      }
+    ]
+  },
+  {
+    "id": "mern-stack",
+    "course_name": "MERN Stack Development",
+    "category": "Full Stack Web",
+    "duration_months": 3,
+    "course_fee": 24000,
+    "syllabus_file": "1781850679__MERN__Full_Stack_Development_Syllabus.docx",
+    "description": "Modern JavaScript full stack development covering MongoDB, Express.js, React 18, and Node.js with real-time WebSockets and Redux Toolkit.",
+    "modules": [
+      {
+        "id": "mern-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Advanced JavaScript (ES6+), Asynchronous Patterns & DOM",
+        "topic": "Modern JavaScript",
+        "description": "Deep dive into JavaScript execution context, closures, event loop, Promises, async/await, and modern DOM interactions.",
+        "subtopics": [
+          "ES6+ Features: Destructuring, Spread, Rest, Modules",
+          "Execution Context, Call Stack & Event Loop",
+          "Promises, Promise.all & async/await",
+          "Fetch API, Axios & Error Handling",
+          "DOM Manipulation & Modern Event Delegation"
+        ],
+        "keyTakeaways": [
+          "Deep JS runtime understanding",
+          "Rock-solid async programming",
+          "Clean modular code"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "mern-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "React 18 Architecture, Hooks & Redux Toolkit",
+        "topic": "React & State Management",
+        "description": "Component architecture, Virtual DOM, custom hooks, context, and global state management with Redux Toolkit.",
+        "subtopics": [
+          "Component Lifecycles & Virtual DOM",
+          "Essential Hooks: useState, useEffect, useRef, useMemo",
+          "Building Custom Hooks",
+          "Global State with Redux Toolkit (RTK) & createSlice",
+          "RTK Query for Server State & Caching"
+        ],
+        "keyTakeaways": [
+          "Scalable React architecture",
+          "Predictable global state",
+          "High-performance component rendering"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "mern-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Node.js Runtime & Express.js REST API Development",
+        "topic": "Node.js & Express",
+        "description": "Server-side JavaScript with Node.js, Express framework, middleware architecture, routing, and request validation.",
+        "subtopics": [
+          "Node.js Event Loop, Streams & Buffers",
+          "Express Application Structure & Routing",
+          "Custom Middleware & Error Handling Middleware",
+          "Input Validation with Joi / Zod",
+          "Environment Configuration & Logging (Winston, Morgan)"
+        ],
+        "keyTakeaways": [
+          "Robust Node.js web services",
+          "Middleware pattern mastery",
+          "Clean layered backend architecture"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "mern-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "MongoDB NoSQL Database & Mongoose ODM",
+        "topic": "MongoDB & Mongoose",
+        "description": "Document database schema design, embedding vs referencing, Mongoose models, validation, and aggregation pipelines.",
+        "subtopics": [
+          "MongoDB Collections, Documents & BSON",
+          "Mongoose Schema Design, Types & Validations",
+          "One-to-Many & Many-to-Many Relationships",
+          "Aggregation Pipeline: $match, $group, $lookup, $project",
+          "Database Indexing & Performance Tuning"
+        ],
+        "keyTakeaways": [
+          "NoSQL document modeling",
+          "Complex aggregation queries",
+          "Database index optimization"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "mern-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Authentication, Real-Time WebSockets & Deployment",
+        "topic": "Auth, WebSockets & Deployment",
+        "description": "Secure JWT authentication with HTTP-only cookies, real-time bidirectional communication with Socket.io, and production deployment.",
+        "subtopics": [
+          "JWT Authentication with Secure HTTP-Only Cookies",
+          "Role-Based Authorization Middleware",
+          "Real-Time Communication with Socket.io",
+          "Full-Stack Integration & CORS Configuration",
+          "Production Deployment on Vercel & Render / AWS"
+        ],
+        "keyTakeaways": [
+          "Full-stack security best practices",
+          "Real-time collaborative features",
+          "Live deployed web application"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      }
+    ]
+  },
+  {
+    "id": "digital-marketing-expert",
+    "course_name": "Digital Marketing Expert",
+    "category": "Marketing & Growth",
+    "duration_months": 6,
+    "course_fee": 36000,
+    "syllabus_file": "1783338277_WeGrow_DM_Syllabus.pdf",
+    "description": "Comprehensive digital growth program covering SEO, Google Ads (PPC), Meta Ads, Content Strategy, Email Automation, and Google Analytics 4 (GA4).",
+    "modules": [
+      {
+        "id": "dm-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Search Engine Optimization (SEO) & Technical Auditing",
+        "topic": "SEO & Search Architecture",
+        "description": "On-page SEO, keyword intent research, technical auditing, backlink acquisition strategies, and Google Search Console optimization.",
+        "subtopics": [
+          "Search Engine Ranking Algorithms & Crawling",
+          "Keyword Research & Competitor Gap Analysis",
+          "On-Page SEO: Title Tags, Meta Descriptions, Headings",
+          "Technical SEO: Core Web Vitals, XML Sitemaps, Robots.txt",
+          "Off-Page SEO & Ethical Link Building Strategies"
+        ],
+        "keyTakeaways": [
+          "Top organic search visibility",
+          "Technical website audit skills",
+          "Authority backlink acquisition"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "dm-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Google Ads (SEM / PPC) & Performance Max Campaigns",
+        "topic": "Paid Search (Google Ads)",
+        "description": "Search campaigns, bidding strategies (tCPA, tROAS), Quality Score optimization, display network, and Performance Max automation.",
+        "subtopics": [
+          "Google Ads Account Structure & Campaign Types",
+          "Keyword Match Types & Negative Keyword Sculpting",
+          "Bidding Strategies: Manual CPC vs Smart Bidding (tROAS/tCPA)",
+          "Quality Score Optimization (CTR, Ad Relevance, Landing Page)",
+          "Performance Max (PMax) & YouTube Video Ads"
+        ],
+        "keyTakeaways": [
+          "High-ROI paid search campaigns",
+          "Smart bidding mastery",
+          "Low customer acquisition cost (CAC)"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "dm-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Social Media Marketing (Meta Ads, Instagram & LinkedIn)",
+        "topic": "Paid Social & Organic",
+        "description": "Meta Ads Manager, custom and lookalike audiences, retargeting funnels, creative A/B testing, and B2B lead generation on LinkedIn.",
+        "subtopics": [
+          "Meta Business Suite & Ads Manager Setup",
+          "Audience Targeting: Custom, Lookalike & Saved Audiences",
+          "Meta Pixel Setup, Conversions API (CAPI) & Event Tracking",
+          "High-Converting Ad Creatives, Copywriting & Hook Strategy",
+          "LinkedIn Ads for B2B Lead Generation"
+        ],
+        "keyTakeaways": [
+          "Profitable Meta ad funnels",
+          "Accurate conversion tracking",
+          "B2B executive lead generation"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "dm-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Content Marketing, Email Marketing & Marketing Automation",
+        "topic": "Content & Retention",
+        "description": "Building inbound content engines, email nurturing sequences, lead magnets, and automated customer journeys with tools like Mailchimp and HubSpot.",
+        "subtopics": [
+          "Content Funnel Strategy: TOFU, MOFU, BOFU",
+          "Lead Magnet Creation & Landing Page Conversion Optimization",
+          "Email Drip Sequences & Abandoned Cart Recovery",
+          "Marketing Automation with HubSpot / Mailchimp",
+          "Influencer Marketing & Affiliate Programs"
+        ],
+        "keyTakeaways": [
+          "Scalable inbound lead generation",
+          "High-converting email copy",
+          "Automated customer retention workflows"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "dm-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Web Analytics (GA4), Tag Manager & CRO",
+        "topic": "Analytics & CRO",
+        "description": "Google Analytics 4 event-based tracking, Google Tag Manager container deployment, attribution modeling, and conversion rate optimization (CRO).",
+        "subtopics": [
+          "GA4 Data Streams & Event-Driven Measurement Model",
+          "Google Tag Manager (GTM): Tags, Triggers & Variables",
+          "Custom Conversion Events & E-commerce Purchase Tracking",
+          "Multi-Touch Attribution Modeling & Funnel Exploration",
+          "Conversion Rate Optimization (CRO) & Heatmap Analysis"
+        ],
+        "keyTakeaways": [
+          "Flawless data-driven measurement",
+          "Advanced GTM deployment",
+          "Revenue attribution clarity"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "dm-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "AI Tools for Marketing & Capstone Growth Strategy",
+        "topic": "AI Marketing & Capstone",
+        "description": "Supercharging digital marketing workflows with ChatGPT, Midjourney, AI copywriting, automated reporting, and comprehensive multi-channel growth capstone.",
+        "subtopics": [
+          "AI Prompt Engineering for Marketing & Ad Copy",
+          "AI-Generated Visuals & Creative Testing",
+          "Automated Reporting Dashboards with Looker Studio",
+          "Budget Allocation & Marketing ROI Modeling",
+          "Live Capstone Campaign Execution & Presentation"
+        ],
+        "keyTakeaways": [
+          "AI-accelerated marketing execution",
+          "Automated client reporting",
+          "Complete multi-channel portfolio"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      }
+    ]
+  },
+  {
+    "id": "video-creation",
+    "course_name": "Video Creation Course",
+    "category": "Creative Media",
+    "duration_months": 2,
+    "course_fee": 15000,
+    "syllabus_file": "1785497529_Video_Creation_Course_Syllabus.docx",
+    "description": "Hands-on video production and content creation masterclass covering scripting, camera handling, lighting, audio engineering, Adobe Premiere Pro, and DaVinci Resolve.",
+    "modules": [
+      {
+        "id": "vid-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Storyboarding, Scriptwriting & Pre-Production",
+        "topic": "Pre-Production & Scripting",
+        "description": "Ideation, visual storytelling hooks, narrative arc structure, scriptwriting techniques, and detailed shot lists.",
+        "subtopics": [
+          "Visual Storytelling & Narrative Pacing",
+          "Hook Strategy for YouTube & Short-Form Video",
+          "Scriptwriting Formats: Two-Column AV Scripts",
+          "Storyboarding & Shot Lists (Wide, Medium, Close-Up)",
+          "Production Planning & Budgeting"
+        ],
+        "keyTakeaways": [
+          "Compelling video concepts",
+          "Structured scripts",
+          "Efficient production planning"
+        ],
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15
+      },
+      {
+        "id": "vid-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Camera Techniques, Cinematography & Composition",
+        "topic": "Cinematography",
+        "description": "Mastering camera gear, exposure triangle (ISO, Shutter Speed, Aperture), frame rates, lens selection, and dynamic camera movements.",
+        "subtopics": [
+          "Exposure Triangle: Aperture, Shutter Speed & ISO",
+          "Frame Rates: 24fps vs 30fps vs 60fps / 120fps Slow-Motion",
+          "Composition Rules: Rule of Thirds, Leading Lines, Symmetry",
+          "Lens Selection: Wide, Standard, Telephoto & Prime",
+          "Gimbal & Handheld Dynamic Movement"
+        ],
+        "keyTakeaways": [
+          "Cinematic visual quality",
+          "Manual camera exposure mastery",
+          "Fluid camera motion"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "vid-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Professional Studio Lighting & Set Design",
+        "topic": "Lighting & Studio Setup",
+        "description": "Three-point lighting, color temperature, soft vs hard light, background separation, and practical studio setup on a budget.",
+        "subtopics": [
+          "Three-Point Lighting: Key, Fill & Backlight (Rim)",
+          "Color Temperature (Kelvin) & White Balance",
+          "Light Modifiers: Softboxes, Diffusers, Grids & Reflectors",
+          "Background Lighting & RGB Accent Lights",
+          "Budget DIY Studio Lighting Solutions"
+        ],
+        "keyTakeaways": [
+          "Flattering subject illumination",
+          "Cinematic depth and contrast",
+          "Professional studio setups"
+        ],
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15
+      },
+      {
+        "id": "vid-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Audio Engineering for Video: Microphones & Acoustics",
+        "topic": "Audio Production",
+        "description": "Clean dialogue capture, microphone types (Lavalier, Shotgun, Condenser), gain staging, noise reduction, and acoustic room treatment.",
+        "subtopics": [
+          "Microphone Polar Patterns: Cardioid, Supercardioid, Omnidirectional",
+          "Shotgun vs Wireless Lavalier vs Studio Dynamic Mics",
+          "Audio Gain Staging & Avoiding Clipping / Distortion",
+          "Room Acoustics & Sound Treatment Basics",
+          "Capturing Crisp Dialogue in Noisy Environments"
+        ],
+        "keyTakeaways": [
+          "Broadcast-quality audio",
+          "Proper mic placement",
+          "Zero audio distortion"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "vid-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Video Editing with Adobe Premiere Pro / DaVinci Resolve",
+        "topic": "Video Editing",
+        "description": "Timeline management, cutting on action, J & L cuts, speed ramping, transitions, title graphics, and keyboard shortcuts.",
+        "subtopics": [
+          "Project Organization & Media Ingest Workflows",
+          "Timeline Editing: Ripple, Rolling & Slip Edits",
+          "Cutting Techniques: Jump Cuts, J-Cuts, L-Cuts & Match Cuts",
+          "Speed Ramping & Keyframing Motion",
+          "Working with Titles, Lower Thirds & Essential Graphics"
+        ],
+        "keyTakeaways": [
+          "Rapid editing workflow",
+          "Seamless narrative flow",
+          "Polished motion graphics"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "vid-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Color Grading, Audio Mixing & Sound Design",
+        "topic": "Color & Sound Design",
+        "description": "Color correction, Lumetri Color / DaVinci scopes, LUTs, creative color grading, EQ, audio compression, and sound effects layering.",
+        "subtopics": [
+          "Color Correction: Balancing Exposure, Contrast & White Balance",
+          "Using Waveform, Vectorscope & Histogram",
+          "Creative Color Grading & Applying LUTs",
+          "Dialogue Clean-up: De-noise, De-reverb & Vocal EQ",
+          "Sound Design: Layering Foley, SFX & Ambient Music"
+        ],
+        "keyTakeaways": [
+          "Film-grade color palettes",
+          "Immersive soundscapes",
+          "Balanced broadcast audio mixes"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "vid-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Short-Form Reels, AI Editing Tools & Distribution",
+        "topic": "Short-Form & Distribution",
+        "description": "Optimizing for TikTok, Instagram Reels, and YouTube Shorts, automated AI captions, viral retention pacing, and platform export codecs.",
+        "subtopics": [
+          "Vertical Video (9:16) Pacing & Retention Architecture",
+          "AI Captions, Auto-Subtitles & Dynamic Text Animations",
+          "AI Video Tools (Runway, CapCut Pro, Descript)",
+          "Export Settings: Bitrates, Codecs (H.264 / H.265) & Color Profiles",
+          "Thumbnail Strategy & Upload Optimization"
+        ],
+        "keyTakeaways": [
+          "Viral short-form content",
+          "AI-assisted editing speed",
+          "Optimal multi-platform export"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      }
+    ]
+  },
+  {
+    "id": "flutter-expert",
+    "course_name": "Flutter Expert",
+    "category": "Mobile App Development",
+    "duration_months": 6,
+    "course_fee": 75000,
+    "description": "Master cross-platform iOS and Android mobile engineering using Flutter, Dart, Riverpod/Bloc state management, Firebase, and Clean Architecture.",
+    "modules": [
+      {
+        "id": "fl-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Dart 3 Language Mastery & Asynchronous Programming",
+        "topic": "Dart 3 Core",
+        "description": "Strong mode typing, sound null safety, pattern matching, records, streams, and futures in Dart 3.",
+        "subtopics": [
+          "Dart OOP & Mixins",
+          "Sound Null Safety & Records (Dart 3)",
+          "Pattern Matching & Sealed Classes",
+          "Futures, async/await & Streams",
+          "Dart Isolates & Concurrency"
+        ],
+        "keyTakeaways": [
+          "Modern Dart language mastery",
+          "Stream-based data pipelines",
+          "Null-safe architectures"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "fl-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Flutter Widget Architecture & Responsive UI",
+        "topic": "Flutter UI & Widgets",
+        "description": "Stateless vs Stateful widgets, widget tree, element tree, render tree, layout builders, and Material 3 / Cupertino styling.",
+        "subtopics": [
+          "Widget, Element & RenderObject Trees",
+          "Stateless vs Stateful Lifecycle",
+          "Layout Widgets: Column, Row, Stack, Flex",
+          "Custom Paint, Animations & Hero Transitions",
+          "Responsive UI with LayoutBuilder & MediaQuery"
+        ],
+        "keyTakeaways": [
+          "Deep Flutter rendering model",
+          "Pixel-perfect mobile UI",
+          "Silky 60fps animations"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "fl-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "State Management with Riverpod & BLoC",
+        "topic": "State Management",
+        "description": "Scalable state management patterns, separation of concerns, Provider/Riverpod 2.0, and BLoC / Cubit event-driven state.",
+        "subtopics": [
+          "State Management Architectural Comparison",
+          "Riverpod 2.0: Providers, StateNotifier, AsyncNotifier",
+          "BLoC Pattern: Events, States, Streams & BlocBuilder",
+          "Clean Architecture (Data, Domain, Presentation Layers)",
+          "Dependency Injection with get_it / injectable"
+        ],
+        "keyTakeaways": [
+          "Enterprise mobile architecture",
+          "Testable business logic",
+          "Predictable state transitions"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "fl-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Networking, REST APIs & Local Offline Storage",
+        "topic": "Networking & Offline Storage",
+        "description": "Http client with Dio, interceptors, JSON serialization, SQLite with Drift, and Hive/Isar fast NoSQL caching.",
+        "subtopics": [
+          "Dio HTTP Client, Interceptors & Error Handling",
+          "JSON Serialization with json_serializable / Freezed",
+          "Offline-First Architecture & Sync Strategies",
+          "SQLite with Drift (formerly Moor)",
+          "High-Speed NoSQL with Hive / Isar"
+        ],
+        "keyTakeaways": [
+          "Offline-capable mobile apps",
+          "Robust network error handling",
+          "Type-safe local databases"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "fl-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Firebase Integration & Push Notifications",
+        "topic": "Firebase & Cloud Services",
+        "description": "Firebase Authentication, Cloud Firestore real-time sync, Cloud Functions, and push notifications with FCM.",
+        "subtopics": [
+          "Firebase Auth: Email, Google & Phone OTP",
+          "Cloud Firestore Real-Time Querying & Rules",
+          "Firebase Storage for Media Uploads",
+          "Firebase Cloud Messaging (FCM) & Deep Linking",
+          "Crashlytics & Performance Monitoring"
+        ],
+        "keyTakeaways": [
+          "Serverless backend integration",
+          "Instant real-time synchronization",
+          "Targeted push notifications"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "fl-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Native Platform Channels, Testing & App Store Publishing",
+        "topic": "Native Channels & Publishing",
+        "description": "MethodChannels for iOS (Swift) and Android (Kotlin), unit/widget testing, CI/CD with Fastlane, and publishing to Google Play and Apple App Store.",
+        "subtopics": [
+          "Platform Channels (MethodChannel & EventChannel)",
+          "Native Android (Kotlin) & iOS (Swift) Interop",
+          "Unit Testing, Widget Testing & Integration Tests",
+          "Automated Build Pipelines with Fastlane",
+          "App Store & Google Play Store Submission Guidelines"
+        ],
+        "keyTakeaways": [
+          "Full native capabilities",
+          "Rigorous automated testing",
+          "Live production app deployment"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      }
+    ]
+  },
+  {
+    "id": "cybersecurity-expert",
+    "course_name": "Cybersecurity Ethical Hacking  Expert",
+    "category": "Security & Infrastructure",
+    "duration_months": 6,
+    "course_fee": 65000,
+    "description": "Offensive and defensive cybersecurity program covering network security, penetration testing, Kali Linux, Metasploit, web vulnerability auditing, and SOC operations.",
+    "modules": [
+      {
+        "id": "sec-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Computer Networks, TCP/IP & Wireshark Packet Analysis",
+        "topic": "Networking & Packet Analysis",
+        "description": "OSI model, TCP/IP stack, routing protocols, subnetting, DNS, and deep packet inspection with Wireshark.",
+        "subtopics": [
+          "OSI 7-Layer & TCP/IP Protocol Suite",
+          "TCP 3-Way Handshake, Flags & Teardown",
+          "IP Subnetting, CIDR & Routing Tables",
+          "DNS, DHCP, ARP & Common Protocol Attacks",
+          "Wireshark Packet Capture & Protocol Decryption"
+        ],
+        "keyTakeaways": [
+          "Deep network protocol expertise",
+          "Packet-level troubleshooting",
+          "Detection of network anomalies"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "sec-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Linux Operating System Internals & Bash Scripting for Hackers",
+        "topic": "Linux & Scripting",
+        "description": "Linux file system permissions, user administration, process management, shell scripting, and security auditing.",
+        "subtopics": [
+          "Linux Filesystem Hierarchy (FHS) & Inodes",
+          "User, Group & File Permissions (chmod, chown, SUID/SGID)",
+          "Process Management & Systemd Services",
+          "Bash Automation & Regex Scripting",
+          "Kali Linux Environment & Essential Security Tooling"
+        ],
+        "keyTakeaways": [
+          "Linux administration fluency",
+          "Automated security scripts",
+          "Kali Linux mastery"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "sec-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Reconnaissance, Port Scanning & Vulnerability Assessment",
+        "topic": "Recon & Vulnerability Scanning",
+        "description": "Passive and active OSINT reconnaissance, Nmap scanning techniques, vulnerability assessment with Nessus and OpenVAS.",
+        "subtopics": [
+          "Open Source Intelligence (OSINT) & Footprinting",
+          "Nmap Port Scanning Strategies & NSE Scripts",
+          "Vulnerability Assessment with Nessus & OpenVAS",
+          "Enumeration: SMB, SNMP, SMTP & RPC",
+          "CVSS Scoring & Vulnerability Prioritization"
+        ],
+        "keyTakeaways": [
+          "Thorough attack surface discovery",
+          "Stealth scanning techniques",
+          "Enterprise vulnerability assessment"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "sec-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Web Application Penetration Testing (OWASP Top 10)",
+        "topic": "Web App Security & OWASP",
+        "description": "Auditing web applications for SQL Injection, XSS, CSRF, SSRF, Broken Access Control, and Burp Suite Pro workflows.",
+        "subtopics": [
+          "Burp Suite Proxy, Repeater, Intruder & Extensions",
+          "SQL Injection (SQLi): In-band, Blind & Time-based",
+          "Cross-Site Scripting (XSS): Stored, Reflected & DOM",
+          "Cross-Site Request Forgery (CSRF) & SSRF",
+          "Broken Object Level Authorization (BOLA / IDOR)"
+        ],
+        "keyTakeaways": [
+          "OWASP Top 10 vulnerability remediation",
+          "Hands-on Burp Suite proficiency",
+          "Web application penetration testing reports"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "sec-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "System Hacking, Exploitation & Metasploit Framework",
+        "topic": "System Exploitation",
+        "description": "Exploit development basics, buffer overflows, Metasploit Framework, payload crafting, and privilege escalation on Windows/Linux.",
+        "subtopics": [
+          "Metasploit Architecture: Exploit, Payload, Auxiliary & Post",
+          "Payload Generation with Msfvenom",
+          "Linux Privilege Escalation (SUID, Sudo rights, Cron jobs)",
+          "Windows Privilege Escalation (Token impersonation, Unquoted service paths)",
+          "Antivirus Evasion & Obfuscation Techniques"
+        ],
+        "keyTakeaways": [
+          "Exploitation methodology",
+          "System privilege escalation",
+          "Post-exploitation control"
+        ],
+        "suggestedDuration": 40,
+        "suggestedQuestions": 25
+      },
+      {
+        "id": "sec-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Defensive Security, SIEM (Splunk) & Incident Response",
+        "topic": "Defensive SOC Operations",
+        "description": "Security Operations Center (SOC) fundamentals, log analysis, SIEM deployment with Splunk, firewall configuration, and incident handling.",
+        "subtopics": [
+          "SOC Tier 1/2 Roles & Incident Response Life Cycle",
+          "SIEM Operations: Log Ingestion & Splunk SPL Queries",
+          "Firewalls, IDS/IPS (Snort / Suricata) Configuration",
+          "Malware Analysis Basics & Sandboxing",
+          "Reporting, Ethics & Industry Compliance (ISO 27001 / GDPR)"
+        ],
+        "keyTakeaways": [
+          "Blue team defensive mindset",
+          "SIEM alert investigation",
+          "Professional incident response documentation"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      }
+    ]
+  },
+  {
+    "id": "tally-prime",
+    "course_name": "Accounting Software Tally PRIME",
+    "category": "Finance & Accounting",
+    "duration_months": 2,
+    "course_fee": 12500,
+    "description": "Complete hands-on accounting with Tally PRIME, covering double-entry bookkeeping, GST returns, inventory management, TDS/TCS, and financial statement audits.",
+    "modules": [
+      {
+        "id": "tally-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Accounting Principles & Tally PRIME Company Setup",
+        "topic": "Bookkeeping & Tally Setup",
+        "description": "Golden rules of accounting, double-entry system, company creation, chart of accounts, and ledger configuration.",
+        "subtopics": [
+          "Accounting Principles & Golden Rules of Accounts",
+          "Company Creation, Security & Vault Password in Tally PRIME",
+          "Chart of Accounts, Groups & Ledger Hierarchies",
+          "Voucher Types: Contra, Payment, Receipt & Journal",
+          "Trial Balance Verification & Correction of Errors"
+        ],
+        "keyTakeaways": [
+          "Rock-solid bookkeeping",
+          "Accurate ledger configuration",
+          "Zero-error Trial Balance"
+        ],
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15
+      },
+      {
+        "id": "tally-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Inventory Management, Purchase & Sales Orders",
+        "topic": "Inventory & Supply Chain",
+        "description": "Stock groups, units of measurement, godowns/warehouses, purchase/sales orders, and delivery notes.",
+        "subtopics": [
+          "Stock Groups, Categories & Units of Measure (UoM)",
+          "Multiple Godown / Warehouse Management",
+          "Purchase Order Processing (PO, GRN, Purchase Invoice)",
+          "Sales Order Processing (Quotation, Delivery Note, Sales Invoice)",
+          "Reorder Levels & Stock Aging Analysis"
+        ],
+        "keyTakeaways": [
+          "Multi-godown inventory tracking",
+          "Complete order processing lifecycle",
+          "Stock valuation accuracy"
+        ],
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "tally-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Goods and Services Tax (GST) & Invoicing",
+        "topic": "GST Compliance",
+        "description": "GST taxation structure, CGST, SGST, IGST calculations, e-Invoicing, e-Way bill generation, and GST returns (GSTR-1, GSTR-3B).",
+        "subtopics": [
+          "GST Architecture: CGST, SGST & IGST Rules",
+          "HSN / SAC Code Setup & Tax Rate Configuration",
+          "Tax Invoicing, Debit Notes & Credit Notes",
+          "e-Invoice & e-Way Bill Integration in Tally PRIME",
+          "GSTR-1, GSTR-2B Reconciliation & GSTR-3B Filing Preparation"
+        ],
+        "keyTakeaways": [
+          "100% compliant GST invoicing",
+          "Flawless GSTR reconciliation",
+          "Audit-ready tax records"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      },
+      {
+        "id": "tally-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "TDS, TCS, Payroll & Financial Statements Auditing",
+        "topic": "TDS, Payroll & Audit",
+        "description": "Tax Deducted at Source (TDS), TCS, employee payroll processing, balance sheets, profit & loss statements, and bank reconciliation (BRS).",
+        "subtopics": [
+          "TDS Nature of Payments & Deductions under Sec 194",
+          "Tax Collected at Source (TCS) Processing",
+          "Payroll Management: Attendance, Pay Heads & Salary Slips",
+          "Auto Bank Reconciliation Statement (BRS)",
+          "Balance Sheet, Profit & Loss & Cash Flow Auditing"
+        ],
+        "keyTakeaways": [
+          "Accurate payroll computation",
+          "Timely statutory tax compliance",
+          "Comprehensive financial reporting"
+        ],
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20
+      }
+    ]
+  },
+  {
+    "id": "html-course-syllabus",
+    "course_name": "HTML Course Syllabus",
+    "category": "Full-Stack Web & Software Engineering",
+    "duration_months": 1,
+    "course_fee": 10000,
+    "syllabus_file": "1783595095_HTML_Course_Syllabus.pdf",
+    "description": "Comprehensive HTML and Web Design foundations from scratch to modern HTML5 semantic architectures.",
+    "modules": [
+      {
+        "id": "html-mod-1",
+        "moduleNumber": 1,
+        "moduleName": "Module 1: Introduction to HTML",
+        "topic": "HTML",
+        "description": "Foundations of web development, HTML structure, first HTML program, comments, tags and attributes.",
+        "durationDays": 1,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "What is HTML?",
+          "Why HTML?",
+          "Features and Applications of HTML",
+          "Structure of an HTML Document",
+          "First HTML Program",
+          "HTML Comments",
+          "HTML Tags and Attributes"
+        ],
+        "practicalActivity": "Create a basic HTML webpage."
+      },
+      {
+        "id": "html-mod-2",
+        "moduleNumber": 2,
+        "moduleName": "Module 2: Text Formatting Elements",
+        "topic": "HTML",
+        "description": "Headings, paragraph structure, preformatted blocks, horizontal dividing lines, and line breaks.",
+        "durationDays": 1,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Heading Tags (<h1> to <h6>)",
+          "Paragraph Tag (<p>)",
+          "Preformatted Text (<pre>)",
+          "Horizontal Rule (<hr>)",
+          "Line Break (<br>)"
+        ],
+        "practicalActivity": "Design a personal profile page using text formatting tags."
+      },
+      {
+        "id": "html-mod-3",
+        "moduleNumber": 3,
+        "moduleName": "Module 3: Text Styling and Semantic Formatting",
+        "topic": "HTML",
+        "description": "Bold, strong importance, italics, emphasis, small text, highlighted text, deleted/inserted text, super/subscripts, quotes & abbreviations.",
+        "durationDays": 1,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Bold Text (<b>)",
+          "Strong Importance (<strong>)",
+          "Italic Text (<i>)",
+          "Emphasized Text (<em>)",
+          "Small Text (<small>)",
+          "Highlighted Text (<mark>)",
+          "Deleted Text (<del>)",
+          "Inserted Text (<ins>)",
+          "Superscript (<sup>)",
+          "Subscript (<sub>)",
+          "Quotations (<q>)",
+          "Abbreviations (<abbr>)"
+        ],
+        "practicalActivity": "Create a webpage demonstrating all text formatting elements."
+      },
+      {
+        "id": "html-mod-4",
+        "moduleNumber": 4,
+        "moduleName": "Module 4: Lists & Structural Nesting",
+        "topic": "HTML",
+        "description": "Numbered ordered lists, bulleted unordered lists, and multi-level nested navigation lists.",
+        "durationDays": 1,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Ordered Lists (<ol>)",
+          "Unordered Lists (<ul>)",
+          "Nested Lists",
+          "List Type Attributes"
+        ],
+        "practicalActivity": "Create a Bucket List using HTML lists, and design a Course Structure using nested lists."
+      },
+      {
+        "id": "html-mod-5",
+        "moduleNumber": 5,
+        "moduleName": "Module 5: Hyperlinks and Images",
+        "topic": "HTML",
+        "description": "Anchor navigation, internal/external links, target windows, mailto protocol, image rendering, attributes, and clickable image buttons.",
+        "durationDays": 1,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Anchor Tag (<a>)",
+          "Internal Links",
+          "External Links",
+          "Target Attributes",
+          "Mailto Links",
+          "Image Tag (<img>)",
+          "Image Attributes",
+          "Using Images as Hyperlinks"
+        ],
+        "practicalActivity": "Create a College/Institute Information Page with Logo, Images, and Navigation Links."
+      },
+      {
+        "id": "html-mod-6",
+        "moduleNumber": 6,
+        "moduleName": "Module 6: Tables & Tabular Data Layout",
+        "topic": "HTML",
+        "description": "Table architecture, headers, rows, data cells, complex merged layouts using rowspan and colspan.",
+        "durationDays": 1,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Introduction to Tables",
+          "Table Structure",
+          "Table Row (<tr>)",
+          "Table Header (<th>)",
+          "Table Data (<td>)",
+          "Rowspan",
+          "Colspan"
+        ],
+        "practicalActivity": "Create a Student Marksheet Table, and design a Weekly Timetable."
+      },
+      {
+        "id": "html-mod-7",
+        "moduleNumber": 7,
+        "moduleName": "Module 7: Basic Styling with Inline CSS",
+        "topic": "HTML",
+        "description": "Inline style attributes, foreground & background colors, borders, typography fonts, sizing, and text alignment.",
+        "durationDays": 1,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Introduction to Inline CSS",
+          "Text Color",
+          "Background Color",
+          "Border Properties",
+          "Font Family",
+          "Font Size",
+          "Text Alignment"
+        ],
+        "practicalActivity": "Style a webpage using inline CSS properties."
+      },
+      {
+        "id": "html-mod-8",
+        "moduleNumber": 8,
+        "moduleName": "Module 8: Container Elements & Layout Division",
+        "topic": "HTML",
+        "description": "Block-level division elements (div), inline span elements, CSS targeting using IDs and class selectors.",
+        "durationDays": 1,
+        "suggestedDuration": 25,
+        "suggestedQuestions": 15,
+        "subtopics": [
+          "Division Element (<div>)",
+          "Span Element (<span>)",
+          "ID Attribute",
+          "Class Attribute",
+          "Block vs Inline"
+        ],
+        "practicalActivity": "Create webpage sections using div and span elements."
+      },
+      {
+        "id": "html-mod-9",
+        "moduleNumber": 9,
+        "moduleName": "Module 9: Forms, Controls & User Input",
+        "topic": "HTML",
+        "description": "Form submission, textboxes, passwords, email, numeric inputs, radio buttons, checkboxes, dropdown select menus, textareas, and submit/reset actions.",
+        "durationDays": 1,
+        "suggestedDuration": 35,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Form Tag (<form>)",
+          "Textbox",
+          "Password Field",
+          "Email Field",
+          "Radio Button & Checkbox",
+          "Dropdown List (<select>)",
+          "Text Area (<textarea>)",
+          "Submit & Reset"
+        ],
+        "practicalActivity": "Design a comprehensive Student Registration Form."
+      },
+      {
+        "id": "html-mod-10",
+        "moduleNumber": 10,
+        "moduleName": "Module 10: Semantic HTML5 Architecture & Page Layouts",
+        "topic": "HTML",
+        "description": "Modern SEO-friendly semantic tags: header, nav, section, article, aside, and footer.",
+        "durationDays": 1,
+        "suggestedDuration": 30,
+        "suggestedQuestions": 20,
+        "subtopics": [
+          "Introduction to Semantic HTML",
+          "Header (<header>)",
+          "Navigation (<nav>)",
+          "Section (<section>)",
+          "Article (<article>)",
+          "Footer (<footer>)"
+        ],
+        "practicalActivity": "Build a full website layout using semantic elements and complete Mini Projects."
+      }
+    ]
+  }
+]
