@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { cors } from 'hono/cors';
+import fs from 'fs';
+import path from 'path';
 
 const app = new Hono();
 
@@ -50,8 +52,11 @@ app.all('/api/*', async (c) => {
 });
 
 // Serve frontend static assets in production
-app.use('/*', serveStatic({ root: './dist' }));
-app.get('*', serveStatic({ path: './dist/index.html' }));
+const staticRoot = fs.existsSync('./dist') ? './dist' : fs.existsSync('./frontend/dist') ? './frontend/dist' : './dist';
+const indexPath = `${staticRoot}/index.html`;
+
+app.use('/*', serveStatic({ root: staticRoot }));
+app.get('*', serveStatic({ path: indexPath }));
 
 const port = Number(process.env.PORT) || 3000;
 console.log(`🌐 Hono Web Server running at http://localhost:${port}`);

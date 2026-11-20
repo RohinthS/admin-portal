@@ -44,14 +44,13 @@ export const ExamResultsViewModal: React.FC<ExamResultsViewModalProps> = ({
   const isHiddenAnswersMode = currentTest.result_visibility === 'scheduled';
   const isAnswerKeyReleased = Boolean(currentTest.is_answer_key_released);
 
-  // Exact rule requested by user:
-  // "when i use this only for the test post means you give the 2nd image button otherwise after the test completed they can see the answers"
-  // - If the test was NOT posted with Hidden Answers (result_visibility !== 'scheduled'),
-  //   after the test is completed students can immediately see the answers!
-  // - If it WAS posted with Hidden Answers (result_visibility === 'scheduled'),
-  //   students can ONLY see answers if an Admin/Mentor released the answer key.
+  // Requirement 4:
+  // - Never reveal correct answers or explanations before the student passes.
+  // - After failure, display obtained marks and pass/fail status, but hide correct answers.
+  // - After passing, allow students to view correct answers and explanations.
   // - Admins/Mentors can always inspect answers for auditing.
-  const canViewAnswers = isAdminOrMentor || !isHiddenAnswersMode || isAnswerKeyReleased;
+  const isPassed = Boolean(attempt.is_passed);
+  const canViewAnswers = isAdminOrMentor || (isPassed && (!isHiddenAnswersMode || isAnswerKeyReleased));
   const questions = currentTest.questions || test.questions || [];
 
   const handleToggleRelease = () => {
@@ -212,15 +211,16 @@ export const ExamResultsViewModal: React.FC<ExamResultsViewModalProps> = ({
               <div className="p-8 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-center space-y-3">
                 <ShieldAlert className="w-10 h-10 text-amber-600 dark:text-amber-400 mx-auto" />
                 <h5 className="text-sm font-bold text-slate-900 dark:text-white">
-                  Official Exam Answers are Sealed
+                  {!isPassed ? 'Answers & Explanations Sealed (Failed Attempt)' : 'Official Exam Answers Sealed'}
                 </h5>
                 <p className="text-xs text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
-                  As configured by the examination board, question-level answers and detailed solution walkthroughs are protected.
-                  Access will only be visible once your Admin or Mentor grants release permission.
+                  {!isPassed
+                    ? `In accordance with Rule 4, correct answers and detailed explanations remain sealed because this attempt did not achieve the required pass mark (${currentTest.passing_percentage}%). You may retake the test to pass and unlock complete solutions.`
+                    : 'Question-level answers and detailed solution walkthroughs are protected until your Admin or Mentor releases the answer key.'}
                 </p>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 text-[11px] font-bold border border-amber-300 dark:border-amber-700">
                   <Lock className="w-3 h-3" />
-                  <span>Awaiting Admin / Mentor Release Permission</span>
+                  <span>{!isPassed ? 'Pass Test to Unlock Solutions & Explanations' : 'Awaiting Admin / Mentor Release Permission'}</span>
                 </div>
               </div>
             ) : (

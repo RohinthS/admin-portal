@@ -179,7 +179,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setPermissions({});
         return;
       }
-
       throw backendError;
     }
   };
@@ -220,8 +219,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const checkPermission = (page: string, action: 'V' | 'A' | 'E' | 'D'): boolean => {
-    // Admin & Mentor have full unrestricted access to learning and exams
-    if (user?.user_type === 'admin' || user?.user_type === 'mentor') return true;
+    // Admin has full unrestricted access
+    if (user?.user_type === 'admin') return true;
 
     // Dashboard view is globally permitted to all authenticated users
     if (page === 'dashboard' && action === 'V') return true;

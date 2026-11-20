@@ -219,7 +219,7 @@ export const LoginPage: React.FC = () => {
             <p className="text-[11px] font-bold uppercase text-slate-400 dark:text-slate-500 mb-2.5 tracking-wider">
               1-Click Quick Fill Credentials:
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
               <button
                 type="button"
                 onClick={() => handleQuickFill('admin', 'admin123')}
@@ -230,19 +230,27 @@ export const LoginPage: React.FC = () => {
               </button>
               <button
                 type="button"
+                onClick={() => handleQuickFill('ENT036/26-27', 'Student@123')}
+                className="p-2 rounded-xl text-left bg-pink-50 dark:bg-pink-950/60 hover:bg-pink-100 dark:hover:bg-pink-900/60 border border-pink-200 dark:border-pink-800 transition"
+              >
+                <span className="block font-bold text-pink-900 dark:text-pink-200">Meena</span>
+                <span className="text-[10px] text-pink-600 dark:text-pink-400 font-mono">ENT036/26-27</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickFill('ENT011/26-27', 'Student@123')}
+                className="p-2 rounded-xl text-left bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition"
+              >
+                <span className="block font-bold text-emerald-900 dark:text-emerald-200">Naresh</span>
+                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">ENT011/26-27</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => handleQuickFill('WG-2026-001', 'Student@123')}
                 className="p-2 rounded-xl text-left bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800 transition"
               >
                 <span className="block font-bold text-indigo-900 dark:text-indigo-200">Student 1</span>
                 <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-mono">WG-2026-001</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickFill('WG-2026-002', 'Student@123')}
-                className="p-2 rounded-xl text-left bg-violet-50 dark:bg-violet-950/60 hover:bg-violet-100 dark:hover:bg-violet-900/60 border border-violet-200 dark:border-violet-800 transition"
-              >
-                <span className="block font-bold text-violet-900 dark:text-violet-200">Student 2</span>
-                <span className="text-[10px] text-violet-600 dark:text-violet-400 font-mono">WG-2026-002</span>
               </button>
             </div>
           </div>

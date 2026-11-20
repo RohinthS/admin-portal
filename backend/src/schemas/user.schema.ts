@@ -20,7 +20,7 @@ export class User {
   @Prop({ trim: true })
   phone: string;
 
-  @Prop({ type: String, default: 'staff', enum: ['admin', 'director', 'manager', 'staff', 'student'] })
+  @Prop({ type: String, default: 'staff', enum: ['admin', 'director', 'manager', 'staff', 'student', 'mentor'] })
   user_type: string;
 
   @Prop({ type: Types.ObjectId, ref: 'Role' })

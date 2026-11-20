@@ -26,4 +26,13 @@ export class ReportsController {
   ) {
     return this.reportsService.getCollectionReport(companyId, startDate, endDate);
   }
+
+  @Get('fee-analytics')
+  getFeeAnalytics(
+    @Query('company_id') companyId?: string,
+    @Query('financial_year') financialYear?: string,
+    @Query('month') month?: string,
+  ) {
+    return this.reportsService.getFeeAnalytics(companyId, financialYear, month);
+  }
 }

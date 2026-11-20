@@ -133213,5 +133213,10 @@ export function getEngineRandomQuestions(options: {
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
 
+  if (copy.length === 0) {
+    const fallbackAll = [...QUESTION_BANK_DATA, ...DIVERSE_MULTI_TYPE_QUESTIONS];
+    return fallbackAll.slice(0, Math.min(options.count, fallbackAll.length)).map(cleanEngineQuestion);
+  }
+
   return copy.slice(0, Math.min(options.count, copy.length)).map(cleanEngineQuestion);
 }

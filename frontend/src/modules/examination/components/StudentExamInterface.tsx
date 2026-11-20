@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { AssessmentConfig, ExamQuestion, PaletteStatus, StudentAttempt } from '../types';
 import { examService } from '../services/examService';
 import { getEngineRandomQuestions } from '../services/questionBankEngine';
+import { DIVERSE_MULTI_TYPE_QUESTIONS } from '../services/diverseQuestionBank';
 import {
   Clock,
   ShieldAlert,
@@ -51,7 +52,15 @@ export const StudentExamInterface: React.FC<StudentExamInterfaceProps> = ({
       ? 'JavaScript'
       : 'Python';
 
-    return getEngineRandomQuestions({ topic: fallbackTopic, count: test.total_questions || 15 });
+    const count = (test.total_questions && test.total_questions > 0) ? test.total_questions : 15;
+    let pool = getEngineRandomQuestions({ topic: fallbackTopic, count });
+    if (!pool || pool.length === 0) {
+      pool = getEngineRandomQuestions({ count });
+    }
+    if (!pool || pool.length === 0) {
+      pool = DIVERSE_MULTI_TYPE_QUESTIONS.slice(0, 15);
+    }
+    return pool;
   }, [test]);
   const maxViolations = test.max_violations || 3;
 

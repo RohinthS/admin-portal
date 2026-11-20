@@ -96,8 +96,8 @@ export class AuthService implements OnModuleInit {
       });
     }
 
-    // Ensure mentor accounts (kavitha, rajesh) are removed
-    await this.userModel.deleteMany({ username: { $in: ['kavitha', 'rajesh'] } });
+    // Ensure mentor accounts remain removed
+    await this.userModel.deleteMany({ username: { $in: ['kavitha', 'rajesh', 'mentor'] } });
   }
 
   private verifyPassword(inputPassword: string, storedHash: string): boolean {

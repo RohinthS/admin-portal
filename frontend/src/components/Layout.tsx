@@ -31,6 +31,7 @@ import {
   CreditCard,
   Sun,
   Moon,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface SubMenuItem {
@@ -98,6 +99,7 @@ const ADMIN_MENU_STRUCTURE: MenuGroup[] = [
     isDropdown: true,
     children: [
       { name: 'Exam Portal & Tests', path: '/tests', page: 'tests' },
+      { name: 'Module Progression (Offline)', path: '/module-progression', page: 'tests' },
       { name: 'Central Question Bank', path: '/tests?tab=bank', page: 'tests' },
       { name: 'Live Exam Proctoring', path: '/tests?tab=proctoring', page: 'tests' },
       { name: 'Credit & Badge Management', path: '/credit-management', page: 'credit_management' },
@@ -217,6 +219,7 @@ const STUDENT_NAV_ITEMS: { name: string; path: string; icon: React.ElementType }
   { name: 'My Progress', path: '/student/progress', icon: TrendingUp },
   { name: 'My Credits & Badges', path: '/student/credits', icon: Award },
   { name: 'My Tests', path: '/student/tests', icon: HelpCircle },
+  { name: 'Module Tests', path: '/student/module-tests', icon: CheckCircle2 },
   { name: 'My Test Results', path: '/student/test-results', icon: CheckSquare },
   { name: 'Feedback', path: '/student/feedback', icon: MessageSquare },
   { name: 'Profile', path: '/student/settings', icon: User },

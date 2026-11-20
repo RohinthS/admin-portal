@@ -237,3 +237,71 @@ export class TestAttempt {
 }
 
 export const TestAttemptSchema = SchemaFactory.createForClass(TestAttempt);
+
+export type BatchModuleProgressionDocument = BatchModuleProgression & Document;
+
+@Schema({ timestamps: true, collection: 'batch_module_progressions' })
+export class BatchModuleProgression {
+  @Prop({ required: true, trim: true })
+  course_name: string;
+
+  @Prop({ required: true, trim: true })
+  batch_name: string; // 'Morning Batch' | 'Afternoon Batch' | 'Evening Batch'
+
+  @Prop({ required: true, trim: true })
+  module_id: string;
+
+  @Prop({ required: true, trim: true })
+  module_name: string;
+
+  @Prop({ required: true, default: 'pending', enum: ['pending', 'completed'] })
+  status: string; // 'pending' | 'completed'
+
+  @Prop({ type: Date })
+  completed_at?: Date;
+
+  @Prop({ trim: true })
+  completed_by?: string;
+
+  @Prop({ type: Types.ObjectId, ref: 'QuestionSet' })
+  test_id?: Types.ObjectId;
+
+  @Prop({ default: false })
+  is_test_published: boolean;
+}
+
+export const BatchModuleProgressionSchema = SchemaFactory.createForClass(BatchModuleProgression);
+
+export type AdminAuditLogDocument = AdminAuditLog & Document;
+
+@Schema({ timestamps: true, collection: 'admin_audit_logs' })
+export class AdminAuditLog {
+  @Prop({ required: true })
+  action: string; // 'manual_unlock' | 'reset_attempt' | 'override_pass'
+
+  @Prop({ required: true })
+  performed_by: string;
+
+  @Prop()
+  student_id?: string;
+
+  @Prop()
+  student_name?: string;
+
+  @Prop()
+  course_name?: string;
+
+  @Prop()
+  batch_name?: string;
+
+  @Prop()
+  module_id?: string;
+
+  @Prop()
+  reason?: string;
+
+  @Prop({ type: Date, default: Date.now })
+  timestamp: Date;
+}
+
+export const AdminAuditLogSchema = SchemaFactory.createForClass(AdminAuditLog);

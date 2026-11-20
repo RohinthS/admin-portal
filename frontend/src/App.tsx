@@ -33,6 +33,8 @@ import { StudentTestsPage } from './pages/student/StudentTestsPage';
 import { StudentTestResultsPage } from './pages/student/StudentTestResultsPage';
 import { StudentFeedbackPage } from './pages/student/StudentFeedbackPage';
 import { StudentSettingsPage } from './pages/student/StudentSettingsPage';
+import { ModuleProgressionPage } from './pages/ModuleProgressionPage';
+import { StudentModuleTestsPage } from './pages/student/StudentModuleTestsPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -158,6 +160,14 @@ export const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <TestsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/module-progression"
+            element={
+              <ProtectedRoute>
+                <ModuleProgressionPage />
               </ProtectedRoute>
             }
           />
@@ -288,6 +298,14 @@ export const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <StudentTestsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/student/module-tests"
+            element={
+              <ProtectedRoute>
+                <StudentModuleTestsPage />
               </ProtectedRoute>
             }
           />

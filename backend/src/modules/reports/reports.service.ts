@@ -288,5 +288,221 @@ export class ReportsService {
       receipts: receipts,
     };
   }
+
+  async getFeeAnalytics(companyId?: string, financialYear?: string, month?: string) {
+    const filter: any = {};
+    if (companyId) filter.company_id = new Types.ObjectId(companyId);
+
+    const [enrollments, receipts, installments] = await Promise.all([
+      this.enrollmentModel
+        .find(filter)
+        .populate('course_id', 'course_name fees duration_days')
+        .populate('company_id', 'company_name branch')
+        .sort({ createdAt: -1 }),
+      this.receiptModel
+        .find({ ...filter, status: 1 })
+        .populate('enrollment_id')
+        .sort({ receipt_date: -1, createdAt: -1 }),
+      this.installmentModel
+        .find(filter)
+        .populate('followup_assigned_to', 'name username')
+        .sort({ due_date: 1 }),
+    ]);
+
+    // 1. Overall Calculations
+    const totalEnrolled = enrollments.length;
+    const totalCourseFees = enrollments.reduce((sum, e) => sum + (e.total_fees || 0), 0);
+    const totalFeesCollected = receipts.reduce((sum, r) => sum + (r.total_amount || 0), 0);
+    const totalPendingFees = Math.max(0, totalCourseFees - totalFeesCollected);
+
+    // Current month collection (YYYY-MM)
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const currentMonthCollection = receipts
+      .filter((r) => {
+        const d = r.receipt_date ? new Date(r.receipt_date) : new Date((r as any).createdAt || Date.now());
+        const yMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        return yMonth === currentMonthKey;
+      })
+      .reduce((sum, r) => sum + (r.total_amount || 0), 0);
+
+    // 2. Monthly Collection & Pending Graph Data
+    const monthlyCollectedMap: Record<string, number> = {};
+    for (const r of receipts) {
+      const d = r.receipt_date ? new Date(r.receipt_date) : new Date((r as any).createdAt || Date.now());
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      monthlyCollectedMap[k] = (monthlyCollectedMap[k] || 0) + (r.total_amount || 0);
+    }
+
+    const monthlyPendingMap: Record<string, number> = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (const inst of installments) {
+      if (!inst.due_date) continue;
+      const d = new Date(inst.due_date);
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      const dueAmt = Number(inst.due_amount || 0);
+      const paidAmt = Number(inst.paid_amount || 0);
+      const pendingAmt = Math.max(0, dueAmt - paidAmt);
+      monthlyPendingMap[k] = (monthlyPendingMap[k] || 0) + pendingAmt;
+    }
+
+    const allMonthsSet = new Set<string>([
+      ...Object.keys(monthlyCollectedMap),
+      ...Object.keys(monthlyPendingMap),
+      currentMonthKey,
+      '2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10', '2026-11', '2026-12',
+    ]);
+
+    const sortedMonths = Array.from(allMonthsSet).sort();
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthlyData = sortedMonths.map((mStr) => {
+      const [y, m] = mStr.split('-');
+      const mIdx = parseInt(m, 10) - 1;
+      const label = `${monthNames[mIdx]} ${y}`;
+      return {
+        month: mStr,
+        label,
+        year: parseInt(y, 10),
+        monthNumber: parseInt(m, 10),
+        collected: monthlyCollectedMap[mStr] || 0,
+        pending: monthlyPendingMap[mStr] || 0,
+      };
+    });
+
+    // 3. Mentor Map & Batch Determination
+    const MENTOR_MAP: Record<string, string> = {
+      'advanced java': 'Vignesh A',
+      'core java': 'Vignesh A',
+      'basic java': 'Vignesh A',
+      'ai java program': 'Vignesh A',
+      'intern java': 'Vignesh A',
+      'basic python': 'Muthumeena',
+      'advanced python': 'Dr. Suresh K (Mentor)',
+      'ai python full stack program': 'Dr. Suresh K (Mentor)',
+      'intern ai python': 'Dr. Suresh K (Mentor)',
+      'data analytics': 'Ganesh S',
+      'data science': 'Ganesh S',
+      'digital marketing': 'Priya Dharshini',
+      'digital marketing expert': 'Priya Dharshini',
+      'video creation': 'Ramesh K',
+      'photoshop': 'Ramesh K',
+      'tally': 'Saravanan',
+      'accounting': 'Saravanan',
+      'web tech': 'Ramesh K',
+      'c programming': 'Faculty Mentor',
+      'core php': 'Faculty Mentor',
+    };
+
+    const getMentorForCourse = (courseTitle: string): string => {
+      const c = (courseTitle || '').toLowerCase();
+      for (const [key, mentor] of Object.entries(MENTOR_MAP)) {
+        if (c.includes(key)) return mentor;
+      }
+      return 'Dr. Suresh K (Mentor)';
+    };
+
+    const BATCHES = [
+      'Morning Batch (9:30 AM - 12:30 PM)',
+      'Afternoon Batch (2:00 PM - 5:00 PM)',
+      'Evening Batch (5:00 PM - 7:00 PM)',
+    ];
+
+    // Map receipts by enrollment_id
+    const receiptsByEnrollment: Record<string, any[]> = {};
+    for (const r of receipts) {
+      const eId = (r.enrollment_id as any)?._id?.toString() || r.enrollment_id?.toString();
+      if (eId) {
+        if (!receiptsByEnrollment[eId]) receiptsByEnrollment[eId] = [];
+        receiptsByEnrollment[eId].push({
+          _id: r._id,
+          receipt_no: r.receipt_no,
+          date: r.receipt_date || (r as any).createdAt,
+          amount: r.total_amount || 0,
+          payment_splits: r.payment_splits || [],
+          remarks: r.remarks || 'Fee payment',
+        });
+      }
+    }
+
+    // Map earliest pending installment due date by enrollment_id
+    const installmentDueByEnrollment: Record<string, Date> = {};
+    for (const inst of installments) {
+      const eId = (inst.enrollment_id as any)?._id?.toString() || inst.enrollment_id?.toString();
+      if (eId && inst.due_date) {
+        const d = new Date(inst.due_date);
+        if (!installmentDueByEnrollment[eId] || d < installmentDueByEnrollment[eId]) {
+          installmentDueByEnrollment[eId] = d;
+        }
+      }
+    }
+
+    const pendingStudents = enrollments
+      .map((e, idx) => {
+        const totalFees = e.total_fees || (e.course_id as any)?.fees || 0;
+        const paidAmount = e.paid_amount || 0;
+        const pendingAmount = Math.max(0, totalFees - paidAmount);
+        const courseName = (e.course_id as any)?.course_name || 'Professional Certification';
+        const eId = e._id.toString();
+
+        const batch = BATCHES[idx % 3];
+        const mentor = getMentorForCourse(courseName);
+
+        const dueDate = installmentDueByEnrollment[eId] ||
+          (e.joining_date ? new Date(new Date(e.joining_date).getTime() + 30 * 24 * 60 * 60 * 1000) : new Date());
+
+        const isOverdue = dueDate < today && pendingAmount > 0;
+        let paymentStatus: 'overdue' | 'partially_paid' | 'pending' | 'paid' = 'pending';
+        if (pendingAmount === 0) {
+          paymentStatus = 'paid';
+        } else if (isOverdue) {
+          paymentStatus = 'overdue';
+        } else if (paidAmount > 0) {
+          paymentStatus = 'partially_paid';
+        } else {
+          paymentStatus = 'pending';
+        }
+
+        return {
+          _id: eId,
+          student_id: e.enrollment_no,
+          student_name: e.student_name,
+          email: e.email || '',
+          phone: e.phone || '',
+          course_name: courseName,
+          batch,
+          mentor_name: mentor,
+          total_fees: totalFees,
+          paid_amount: paidAmount,
+          pending_amount: pendingAmount,
+          due_date: dueDate.toISOString(),
+          payment_status: paymentStatus,
+          joining_date: e.joining_date || (e as any).createdAt,
+          receipts: receiptsByEnrollment[eId] || [],
+        };
+      })
+      .filter((s) => s.pending_amount > 0);
+
+    const uniqueCourses = Array.from(new Set(pendingStudents.map((s) => s.course_name))).sort();
+    const uniqueMentors = Array.from(new Set(pendingStudents.map((s) => s.mentor_name))).sort();
+
+    return {
+      summaryCards: {
+        totalEnrolled,
+        totalFeesCollected,
+        totalPendingFees,
+        currentMonthCollection,
+      },
+      monthlyData,
+      pendingStudents,
+      filters: {
+        courses: uniqueCourses,
+        mentors: uniqueMentors,
+        batches: BATCHES,
+        financialYears: ['FY 2026-2027', 'FY 2025-2026', 'All Financial Years'],
+      },
+    };
+  }
 }
 

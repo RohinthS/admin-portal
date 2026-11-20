@@ -14,6 +14,10 @@ import {
   QuestionSetDocument,
   TestAttempt,
   TestAttemptDocument,
+  BatchModuleProgression,
+  BatchModuleProgressionDocument,
+  AdminAuditLog,
+  AdminAuditLogDocument,
 } from '../../schemas/test.schema';
 import { CreditTransaction, CreditTransactionDocument } from '../../schemas/credit-transaction.schema';
 import { Course, CourseDocument } from '../../schemas/course.schema';
@@ -25,6 +29,8 @@ export class TestsService {
     @InjectModel(Question.name) private readonly questionModel: Model<QuestionDocument>,
     @InjectModel(QuestionSet.name) private readonly setModel: Model<QuestionSetDocument>,
     @InjectModel(TestAttempt.name) private readonly attemptModel: Model<TestAttemptDocument>,
+    @InjectModel(BatchModuleProgression.name) private readonly batchProgressionModel: Model<BatchModuleProgressionDocument>,
+    @InjectModel(AdminAuditLog.name) private readonly adminAuditLogModel: Model<AdminAuditLogDocument>,
     @InjectModel(CreditTransaction.name) private readonly creditTxModel: Model<CreditTransactionDocument>,
     @InjectModel(Course.name) private readonly courseModel: Model<CourseDocument>,
     @InjectModel(Enrollment.name) private readonly enrollmentModel: Model<EnrollmentDocument>,
@@ -600,14 +606,14 @@ export class TestsService {
     if (!attempt) throw new NotFoundException('Exam attempt not found');
 
     const set = attempt.set_id as any;
-    const isStaff = currentUser && ['admin', 'mentor', 'director'].includes(currentUser.role);
+    const isStaff = currentUser && ['admin', 'mentor', 'director', 'staff'].includes(currentUser.role || currentUser.user_type);
 
-    // Business Rule:
-    // - Immediate mode: answers are visible immediately upon completion
-    // - Scheduled (Hidden Mode): answers are sealed until Admin/Mentor releases them
-    // - Staff (Admin/Mentor) can ALWAYS inspect solutions
-    const isHiddenAnswersMode = set?.result_visibility === 'scheduled';
-    const canSeeSolutions = isStaff || !isHiddenAnswersMode || Boolean(set?.is_answer_key_released);
+    // Rule 4: Answer Visibility
+    // - Never reveal correct answers or explanations before the student passes.
+    // - After failure, display obtained marks and pass/fail status, but hide correct answers.
+    // - After passing, allow students to view correct answers and explanations.
+    // - Staff/Admin can always view answers for auditing.
+    const canSeeSolutions = isStaff || Boolean(attempt.is_passed);
 
     if (!canSeeSolutions) {
       return {
@@ -622,7 +628,7 @@ export class TestsService {
         violations_count: attempt.violations_count,
         status: attempt.status,
         solutions_sealed: true,
-        message: 'Official exam answers are sealed until Admin or Mentor grants release permission.',
+        message: 'Exam answers and explanations are hidden. Pass the assessment to unlock full solutions and explanations.',
       };
     }
 
@@ -731,5 +737,195 @@ export class TestsService {
       .populate('set_id', 'title set_name category duration_minutes max_violations')
       .sort({ createdAt: -1 })
       .lean();
+  }
+
+  // ==========================================
+  // 5. BATCH-WISE SYLLABUS PROGRESSION & MENTOR COMPLETION
+  // ==========================================
+
+  async getBatchProgress(courseName: string, batchName: string) {
+    if (!courseName) return [];
+    return this.batchProgressionModel
+      .find({
+        course_name: { $regex: new RegExp(`^${courseName.trim()}$`, 'i') },
+        batch_name: { $regex: new RegExp(`^${batchName.trim()}$`, 'i') },
+      })
+      .sort({ createdAt: 1 })
+      .lean();
+  }
+
+  async toggleBatchModule(dto: {
+    courseName: string;
+    batchName: string;
+    moduleId: string;
+    moduleName: string;
+    completed: boolean;
+    completedBy?: string;
+  }) {
+    const { courseName, batchName, moduleId, moduleName, completed, completedBy } = dto;
+    if (!courseName || !batchName || !moduleId) {
+      throw new BadRequestException('courseName, batchName, and moduleId are required');
+    }
+
+    const filter = {
+      course_name: courseName.trim(),
+      batch_name: batchName.trim(),
+      module_id: moduleId.trim(),
+    };
+
+    if (completed) {
+      // Find or create question set for this module & batch
+      let testSet = await this.setModel.findOne({
+        course_id: { $exists: true },
+        batch: { $regex: new RegExp(batchName.trim(), 'i') },
+        title: { $regex: new RegExp(moduleName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') },
+      });
+
+      if (!testSet) {
+        // Find any default course
+        const defaultCourse = await this.courseModel.findOne();
+        testSet = await this.setModel.create({
+          set_name: `${courseName} - ${moduleName}`,
+          title: `${moduleName} Assessment`,
+          description: `Classroom assessment for ${moduleName} conducted for ${batchName}.`,
+          course_id: defaultCourse ? defaultCourse._id : new Types.ObjectId(),
+          batch: batchName.trim(),
+          category: 'internal',
+          duration_minutes: 30,
+          pass_percentage: 60,
+          publishing_mode: 'instant',
+          shuffle_questions: true,
+          shuffle_options: true,
+          max_attempts: 999, // Unlimited retakes until passed!
+          is_retake_allowed: true,
+          created_by: completedBy || 'Faculty Mentor',
+          creator_role: 'mentor',
+          status: 1,
+        });
+      }
+
+      const updated = await this.batchProgressionModel.findOneAndUpdate(
+        filter,
+        {
+          $set: {
+            module_name: moduleName.trim(),
+            status: 'completed',
+            completed_at: new Date(),
+            completed_by: completedBy || 'Faculty Mentor',
+            test_id: testSet._id,
+            is_test_published: true,
+          },
+        },
+        { upsert: true, new: true },
+      );
+
+      return {
+        success: true,
+        progression: updated,
+        test_id: testSet._id,
+        message: `Module "${moduleName}" marked completed. Assessment is now LIVE for ${batchName}!`,
+      };
+    } else {
+      const updated = await this.batchProgressionModel.findOneAndUpdate(
+        filter,
+        {
+          $set: {
+            status: 'pending',
+            completed_at: null,
+            completed_by: null,
+            is_test_published: false,
+          },
+        },
+        { upsert: true, new: true },
+      );
+
+      return {
+        success: true,
+        progression: updated,
+        message: `Module "${moduleName}" reverted to pending for ${batchName}.`,
+      };
+    }
+  }
+
+  async getBatchStats(courseName: string, batchName: string) {
+    const progressions = await this.getBatchProgress(courseName, batchName);
+    const progressionMap = new Map(progressions.map((p) => [p.module_id, p]));
+
+    // Fetch attempts for this course & batch
+    const attempts = await this.attemptModel
+      .find({
+        status: { $in: ['submitted', 'disqualified', 'timeout'] },
+      })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Query enrollments for this course and batch
+    const enrollments = await this.enrollmentModel
+      .find({
+        status: 'active',
+      })
+      .lean();
+
+    return {
+      courseName,
+      batchName,
+      progressions,
+      total_progressions: progressions.length,
+      completed_count: progressions.filter((p) => p.status === 'completed').length,
+    };
+  }
+
+  async adminManualUnlock(dto: {
+    studentId: string;
+    studentName?: string;
+    courseName: string;
+    batchName: string;
+    moduleId: string;
+    performedBy: string;
+    reason: string;
+  }) {
+    const log = await this.adminAuditLogModel.create({
+      action: 'manual_unlock',
+      performed_by: dto.performedBy || 'Admin',
+      student_id: dto.studentId,
+      student_name: dto.studentName || 'Student',
+      course_name: dto.courseName,
+      batch_name: dto.batchName,
+      module_id: dto.moduleId,
+      reason: dto.reason || 'Manual Administrative Override',
+      timestamp: new Date(),
+    });
+
+    return { success: true, log, message: `Module successfully unlocked for student ${dto.studentName || dto.studentId}` };
+  }
+
+  async adminResetAttempt(dto: {
+    studentId: string;
+    studentName?: string;
+    testId: string;
+    performedBy: string;
+    reason: string;
+  }) {
+    if (dto.testId && Types.ObjectId.isValid(dto.testId)) {
+      await this.attemptModel.deleteMany({
+        set_id: new Types.ObjectId(dto.testId),
+        student_id: Types.ObjectId.isValid(dto.studentId) ? new Types.ObjectId(dto.studentId) : undefined,
+      });
+    }
+
+    const log = await this.adminAuditLogModel.create({
+      action: 'reset_attempt',
+      performed_by: dto.performedBy || 'Admin',
+      student_id: dto.studentId,
+      student_name: dto.studentName || 'Student',
+      reason: dto.reason || 'Admin reset attempt',
+      timestamp: new Date(),
+    });
+
+    return { success: true, log, message: `Test attempt reset for student ${dto.studentName || dto.studentId}` };
+  }
+
+  async getAdminAuditLogs() {
+    return this.adminAuditLogModel.find().sort({ timestamp: -1 }).limit(100).lean();
   }
 }

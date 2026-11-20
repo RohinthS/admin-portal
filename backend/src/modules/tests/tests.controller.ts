@@ -171,4 +171,84 @@ export class TestsController {
   getLiveProctoring() {
     return this.testsService.getLiveProctoring();
   }
+
+  // ==========================================
+  // 5. BATCH-WISE SYLLABUS & MENTOR COMPLETION
+  // ==========================================
+
+  @Get('syllabus/batch-progress')
+  getBatchProgress(
+    @Query('courseName') courseName: string,
+    @Query('batch') batchName: string,
+  ) {
+    return this.testsService.getBatchProgress(courseName, batchName);
+  }
+
+  @Post('syllabus/toggle-module')
+  toggleBatchModule(
+    @Body()
+    dto: {
+      courseName: string;
+      batchName: string;
+      moduleId: string;
+      moduleName: string;
+      completed: boolean;
+      completedBy?: string;
+    },
+    @CurrentUser() user: any,
+  ) {
+    return this.testsService.toggleBatchModule({
+      ...dto,
+      completedBy: user?.name || dto.completedBy || 'Faculty Mentor',
+    });
+  }
+
+  @Get('syllabus/batch-stats')
+  getBatchStats(
+    @Query('courseName') courseName: string,
+    @Query('batch') batchName: string,
+  ) {
+    return this.testsService.getBatchStats(courseName, batchName);
+  }
+
+  @Post('syllabus/admin-unlock')
+  adminManualUnlock(
+    @Body()
+    dto: {
+      studentId: string;
+      studentName?: string;
+      courseName: string;
+      batchName: string;
+      moduleId: string;
+      reason: string;
+    },
+    @CurrentUser() user: any,
+  ) {
+    return this.testsService.adminManualUnlock({
+      ...dto,
+      performedBy: user?.name || 'Super Administrator',
+    });
+  }
+
+  @Post('syllabus/admin-reset')
+  adminResetAttempt(
+    @Body()
+    dto: {
+      studentId: string;
+      studentName?: string;
+      testId: string;
+      reason: string;
+    },
+    @CurrentUser() user: any,
+  ) {
+    return this.testsService.adminResetAttempt({
+      ...dto,
+      performedBy: user?.name || 'Super Administrator',
+    });
+  }
+
+  @Get('syllabus/admin-logs')
+  getAdminAuditLogs() {
+    return this.testsService.getAdminAuditLogs();
+  }
 }

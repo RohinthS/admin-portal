@@ -1,10 +1,28 @@
-import { ExamQuestion, AssessmentConfig } from '../types';
+import { ExamQuestion, AssessmentConfig, StudentAttempt } from '../types';
 import {
   CATEGORIZED_COURSES,
   COURSE_TO_TOPICS_MAP,
   getEngineRandomQuestions,
 } from './questionBankEngine';
 import { OFFICIAL_6_COURSES_REGISTRY } from './officialSyllabusCatalog';
+import { examService } from './examService';
+import { studentAccountService, StudentAccount } from '../../../services/studentAccountService';
+import api from '../../../api/client';
+
+export const STANDARD_BATCHES = [
+  'Morning Batch',
+  'Afternoon Batch',
+  'Evening Batch',
+];
+
+export const SYLLABUS_ZIP_COURSES = [
+  'Full Stack AI Java',
+  'Full Stack AI Python Course',
+  'Basic Python Course',
+  'Advanced Python Course',
+  'Basic Java Course',
+  'Advanced Java Syllabus',
+];
 
 export interface CourseModuleDef {
   id: string;
@@ -1220,21 +1238,92 @@ export const syllabusProgressService = {
   },
 
   /**
-   * Mentor marks a module as completed
+   * Mentor marks a module as completed (Ticks Checkbox)
+   * Immediately updates module status to 'completed', and automatically publishes & enables
+   * the corresponding module test in the Student Portal for students belonging to that mentor's assigned batch.
    */
   markModuleCompleted(courseName: string, batchName: string, moduleId: string, mentorName = 'Faculty Mentor'): Record<string, ModuleProgressStatus> {
     const current = this.getBatchProgress(courseName, batchName);
     const updated = { ...current };
+
+    const allModules = this.getModulesForCourse(courseName);
+    const mod = allModules.find((m) => m.id === moduleId);
+    const moduleName = mod?.moduleName || moduleId;
+
+    // 1. Auto-generate or publish the test in examService for this specific batch!
+    let publishedTestId: string | undefined = updated[moduleId]?.testId;
+    try {
+      const allTests = examService.getAssessments();
+      const matchedTest = allTests.find((t) =>
+        (publishedTestId && t.id === publishedTestId) ||
+        (t.course_name?.toLowerCase() === courseName.toLowerCase() &&
+         t.batch?.toLowerCase() === batchName.toLowerCase() &&
+         t.title?.toLowerCase().includes(moduleName.toLowerCase()))
+      );
+
+      if (!matchedTest && mod) {
+        // Auto-generate test questions from Central Question Bank
+        const questions = this.generateQuestionsForModule({ moduleDef: mod, questionCount: 15 });
+        const newTest: AssessmentConfig = {
+          id: `test-batch-${batchName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${moduleId}-${Date.now()}`,
+          title: `${mod.moduleName} Assessment`,
+          description: `Classroom syllabus assessment for ${mod.moduleName}. Auto-unlocked upon classroom module completion.`,
+          course_id: `course-${courseName.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+          course_name: courseName,
+          batch: batchName,
+          category: 'internal',
+          month_number: mod.moduleNumber,
+          credit_category_id: 'monthly_test',
+          duration_minutes: mod.suggestedDuration || 30,
+          passing_percentage: 60,
+          negative_marking_per_question: 0,
+          total_marks: questions.length || 15,
+          total_questions: questions.length || 15,
+          credit_tiers: [
+            { min_percentage: 90, max_percentage: 100, credits: 25 },
+            { min_percentage: 80, max_percentage: 89, credits: 20 },
+            { min_percentage: 70, max_percentage: 79, credits: 15 },
+            { min_percentage: 60, max_percentage: 69, credits: 10 },
+          ],
+          publishing_mode: 'instant',
+          shuffle_questions: true,
+          shuffle_options: true,
+          auto_submit_on_timeout: true,
+          max_attempts: 999, // Unlimited retakes until passed!
+          max_violations: 3,
+          result_visibility: 'immediate',
+          is_retake_allowed: true,
+          is_secret_key_required: false,
+          created_by: mentorName,
+          creator_role: 'mentor',
+          created_at: new Date().toISOString(),
+          status: 'published',
+          questions: questions,
+        };
+        examService.saveAssessment(newTest);
+        publishedTestId = newTest.id;
+      } else if (matchedTest && matchedTest.status !== 'published') {
+        matchedTest.status = 'published';
+        examService.saveAssessment(matchedTest);
+        publishedTestId = matchedTest.id;
+      } else if (matchedTest) {
+        publishedTestId = matchedTest.id;
+      }
+    } catch (e) {
+      console.warn('Could not auto-create assessment for module:', e);
+    }
 
     updated[moduleId] = {
       ...(updated[moduleId] || { moduleId }),
       status: 'completed',
       completedAt: new Date().toISOString(),
       completedBy: mentorName,
+      testConducted: true,
+      testId: publishedTestId,
+      testConductedAt: new Date().toISOString(),
     };
 
     // Automatically set the next module to 'in_progress' if it was 'upcoming'
-    const allModules = this.getModulesForCourse(courseName);
     const currentIdx = allModules.findIndex((m) => m.id === moduleId);
     if (currentIdx >= 0 && currentIdx + 1 < allModules.length) {
       const nextMod = allModules[currentIdx + 1];
@@ -1247,25 +1336,293 @@ export const syllabusProgressService = {
     }
 
     this.saveBatchProgress(courseName, batchName, updated);
+
+    // Sync with backend API in background
+    api.post('/tests/syllabus/toggle-module', {
+      courseName,
+      batchName,
+      moduleId,
+      moduleName,
+      completed: true,
+      completedBy: mentorName,
+    }).catch(() => {});
+
+    // Dispatch global events
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wegrow_assessments_updated'));
+      window.dispatchEvent(new CustomEvent('wegrow_syllabus_progress_updated', {
+        detail: { courseName, batchName, moduleId, status: 'completed' }
+      }));
+    }
+
     return updated;
   },
 
   /**
-   * Reset / Undo a module back to in_progress
+   * Reset / Untick a module back to in_progress
    */
   markModuleInProgress(courseName: string, batchName: string, moduleId: string): Record<string, ModuleProgressStatus> {
     const current = this.getBatchProgress(courseName, batchName);
     const updated = { ...current };
+
+    const allModules = this.getModulesForCourse(courseName);
+    const mod = allModules.find((m) => m.id === moduleId);
+    const moduleName = mod?.moduleName || moduleId;
 
     updated[moduleId] = {
       ...(updated[moduleId] || { moduleId }),
       status: 'in_progress',
       completedAt: undefined,
       completedBy: undefined,
+      testConducted: false,
     };
 
     this.saveBatchProgress(courseName, batchName, updated);
+
+    // Sync with backend API
+    api.post('/tests/syllabus/toggle-module', {
+      courseName,
+      batchName,
+      moduleId,
+      moduleName,
+      completed: false,
+    }).catch(() => {});
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wegrow_assessments_updated'));
+      window.dispatchEvent(new CustomEvent('wegrow_syllabus_progress_updated', {
+        detail: { courseName, batchName, moduleId, status: 'in_progress' }
+      }));
+    }
+
     return updated;
+  },
+
+  /**
+   * Get real-time student breakdown (Passed, Failed, Not Attempted) for a specific module in a batch
+   */
+  getBatchModuleStudentStats(courseName: string, batchName: string, moduleId: string, testId?: string) {
+    const allStudents = studentAccountService.getStudents();
+    const allAttempts = examService.getAllAttempts();
+
+    // Students matching this course and batch
+    const batchStudents = allStudents.filter((s) => {
+      const courseMatch = !s.course_name || s.course_name.toLowerCase().includes(courseName.toLowerCase()) ||
+        courseName.toLowerCase().includes(s.course_name.toLowerCase());
+      const batchMatch = !s.batch || s.batch.toLowerCase().includes(batchName.toLowerCase()) ||
+        batchName.toLowerCase().includes(s.batch.toLowerCase());
+      return courseMatch && batchMatch;
+    });
+
+    const studentsDetail = batchStudents.map((s) => {
+      // Find all attempts of this student for this test or module
+      const studentAttempts = allAttempts.filter((a) => {
+        const idMatch = a.student_id === s.id || a.student_id === s.student_id;
+        const testMatch = testId ? a.test_id === testId : a.test_title?.toLowerCase().includes(moduleId.toLowerCase());
+        return idMatch && (testMatch || (testId && a.test_id === testId));
+      });
+
+      const passedAttempt = studentAttempts.find((a) => a.is_passed);
+      const latestAttempt = studentAttempts[studentAttempts.length - 1];
+
+      let status: 'passed' | 'failed' | 'not_attempted' = 'not_attempted';
+      if (passedAttempt) {
+        status = 'passed';
+      } else if (studentAttempts.length > 0) {
+        status = 'failed';
+      }
+
+      return {
+        id: s.id,
+        student_id: s.student_id,
+        student_name: s.student_name,
+        email: s.email,
+        phone: s.phone,
+        status,
+        latestScore: latestAttempt?.marks_obtained,
+        totalMarks: latestAttempt?.total_marks,
+        scorePercentage: latestAttempt?.score_percentage,
+        isPassed: Boolean(passedAttempt),
+        attemptCount: studentAttempts.length,
+        lastAttemptAt: latestAttempt?.submitted_at || latestAttempt?.start_time,
+      };
+    });
+
+    const passedCount = studentsDetail.filter((s) => s.status === 'passed').length;
+    const failedCount = studentsDetail.filter((s) => s.status === 'failed').length;
+    const notAttemptedCount = studentsDetail.filter((s) => s.status === 'not_attempted').length;
+
+    return {
+      totalStudents: batchStudents.length,
+      passedCount,
+      failedCount,
+      notAttemptedCount,
+      students: studentsDetail,
+    };
+  },
+
+  /**
+   * Get student's sequential module progression status across the course
+   */
+  getStudentModuleProgression(
+    student: { id: string; student_id?: string; course_name?: string; batch?: string },
+    courseName?: string,
+    batchName?: string,
+  ) {
+    const course = courseName || student.course_name || 'Full Stack AI Java';
+    const batch = batchName || student.batch || 'Morning Batch';
+    const modules = this.getModulesForCourse(course);
+    const batchProgress = this.getBatchProgress(course, batch);
+    const allAssessments = examService.getAssessments();
+    const allAttempts = examService.getAllAttempts();
+
+    const studentAttempts = allAttempts.filter(
+      (a) => a.student_id === student.id || a.student_id === student.student_id,
+    );
+
+    let previousModulePassed = true; // Module 1 has no prerequisite
+
+    return modules.map((mod, idx) => {
+      const progress = batchProgress[mod.id];
+      const isMentorCompleted = progress?.status === 'completed';
+
+      // Find assessment for this module
+      const matchingTest = allAssessments.find((t) =>
+        t.id === progress?.testId ||
+        (t.course_name?.toLowerCase() === course.toLowerCase() &&
+         t.batch?.toLowerCase().includes(batch.toLowerCase()) &&
+         t.title?.toLowerCase().includes(mod.moduleName.toLowerCase())) ||
+        (t.course_name?.toLowerCase() === course.toLowerCase() &&
+         t.title?.toLowerCase().includes(mod.moduleName.toLowerCase()))
+      );
+
+      // Attempts for this test
+      const attemptsForMod = matchingTest
+        ? studentAttempts.filter((a) => a.test_id === matchingTest.id)
+        : [];
+
+      const passedAttempt = attemptsForMod.find((a) => a.is_passed);
+      const isPassed = Boolean(passedAttempt);
+      const latestAttempt = attemptsForMod[attemptsForMod.length - 1];
+      const isFailed = attemptsForMod.length > 0 && !isPassed;
+
+      // Determine Student Module Status:
+      let studentStatus: 'locked' | 'available' | 'failed' | 'passed' = 'locked';
+      let lockReason = '';
+
+      if (isPassed) {
+        studentStatus = 'passed';
+      } else if (isFailed) {
+        studentStatus = 'failed';
+      } else {
+        if (!isMentorCompleted) {
+          studentStatus = 'locked';
+          lockReason = 'Classroom offline session in progress. Mentor has not yet marked module as completed.';
+        } else if (!previousModulePassed) {
+          studentStatus = 'locked';
+          const prevModName = modules[idx - 1]?.moduleName || `Module ${idx}`;
+          lockReason = `Locked: You must pass "${prevModName}" assessment first before taking this test.`;
+        } else {
+          studentStatus = 'available';
+        }
+      }
+
+      // Check if Admin manually unlocked this test for this student
+      if (matchingTest?.unlocked_student_ids?.includes(student.id) ||
+          matchingTest?.unlocked_student_ids?.includes(student.student_id || '')) {
+        if (studentStatus === 'locked') {
+          studentStatus = 'available';
+          lockReason = '';
+        }
+      }
+
+      // Update sequential gate for NEXT module
+      previousModulePassed = isPassed;
+
+      return {
+        moduleDef: mod,
+        moduleIndex: idx,
+        isMentorCompleted,
+        mentorCompletedAt: progress?.completedAt,
+        mentorCompletedBy: progress?.completedBy || 'Faculty Mentor',
+        studentStatus,
+        isEligibleToStart: studentStatus === 'available' || studentStatus === 'failed',
+        lockReason,
+        test: matchingTest,
+        testId: matchingTest?.id,
+        testTitle: matchingTest?.title || `${mod.moduleName} Assessment`,
+        durationMinutes: matchingTest?.duration_minutes || mod.suggestedDuration || 30,
+        totalMarks: matchingTest?.total_marks || 15,
+        passPercentage: matchingTest?.passing_percentage || 60,
+        passingMarks: Math.ceil(((matchingTest?.total_marks || 15) * (matchingTest?.passing_percentage || 60)) / 100),
+        attemptsCount: attemptsForMod.length,
+        latestAttempt,
+        passedAttempt,
+        canViewSolutions: isPassed,
+      };
+    });
+  },
+
+  /**
+   * Admin manual unlock with audit logging
+   */
+  async adminUnlockModuleForStudent(
+    studentId: string,
+    studentName: string,
+    courseName: string,
+    batchName: string,
+    moduleId: string,
+    performedBy: string,
+    reason: string,
+  ) {
+    try {
+      await api.post('/tests/syllabus/admin-unlock', {
+        studentId,
+        studentName,
+        courseName,
+        batchName,
+        moduleId,
+        reason,
+      });
+    } catch {}
+
+    const allAssessments = examService.getAssessments();
+    const modTest = allAssessments.find((t) =>
+      t.course_name?.toLowerCase() === courseName.toLowerCase() &&
+      t.title?.includes(moduleId),
+    );
+    if (modTest) {
+      examService.unlockExamForStudent(modTest.id, studentId);
+    }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wegrow_assessments_updated'));
+    }
+  },
+
+  /**
+   * Admin reset attempt with audit logging
+   */
+  async adminResetAttemptForStudent(
+    studentId: string,
+    studentName: string,
+    testId: string,
+    performedBy: string,
+    reason: string,
+  ) {
+    try {
+      await api.post('/tests/syllabus/admin-reset', {
+        studentId,
+        studentName,
+        testId,
+        reason,
+      });
+    } catch {}
+
+    examService.grantRetake(testId, studentId, performedBy);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wegrow_assessments_updated'));
+      window.dispatchEvent(new CustomEvent('wegrow_attempt_submitted'));
+    }
   },
 
   /**

@@ -916,12 +916,18 @@ export const FULL_STACK_AI_JAVA_MODULES: CourseModuleDef[] = [
   },
 ];
 
-// Master 6-Course Registry Mapping
+// Master 6-Course Registry Mapping (Directly from uploaded Syllabus.zip)
 export const OFFICIAL_6_COURSES_REGISTRY: Record<string, CourseModuleDef[]> = {
   'Basic Python Course': BASIC_PYTHON_MODULES,
   'Advanced Python Course': ADVANCED_PYTHON_MODULES,
   'Basic Java Course': BASIC_JAVA_MODULES,
   'Advanced Java Syllabus': ADVANCED_JAVA_MODULES,
+  'Advanced Java Course': ADVANCED_JAVA_MODULES,
   'Full Stack AI Python': FULL_STACK_AI_PYTHON_MODULES,
+  'Full Stack AI Python Course': FULL_STACK_AI_PYTHON_MODULES,
+  'AI Python Full Stack Program': FULL_STACK_AI_PYTHON_MODULES,
   'Full Stack AI Java': FULL_STACK_AI_JAVA_MODULES,
+  'Fullstack AI Java': FULL_STACK_AI_JAVA_MODULES,
+  'AI Java Program': FULL_STACK_AI_JAVA_MODULES,
+  'AI Java Full Stack Program': FULL_STACK_AI_JAVA_MODULES,
 };

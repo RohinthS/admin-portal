@@ -1,0 +1,14 @@
+{
+  "name": "wegrow-admin-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WeGrow Skill Campus & B School Administration Portal",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "start": "npm --prefix frontend start",
+    "build:frontend": "npm --prefix frontend install && npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend install && npm --prefix backend run build",
+    "start:backend": "cd backend && node dist/main.js",
+    "start:frontend": "npm --prefix frontend start"
+  }
+}

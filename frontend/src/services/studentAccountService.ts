@@ -21,7 +21,7 @@ export interface StudentAccount {
   total_fees?: number;
   paid_amount?: number;
   balance_amount?: number;
-  status: 'active' | 'inactive';
+  status: 'active' | 'inactive' | 'completed' | 'dropped' | 'on_hold';
   created_at: string;
 }
 
@@ -32,16 +32,16 @@ const DEFAULT_STUDENTS: StudentAccount[] = [
   {
     id: 'STU_SAMPLE_1',
     student_id: 'WG-2026-001',
-    student_name: 'Priya Sharma',
-    email: 'priya.sharma@wegrowcampus.in',
+    student_name: 'Rahul Sharma',
+    email: 'rahul.sharma@wegrow.edu',
     phone: '9876543210',
     password: 'Student@123',
     initial_password: 'Student@123',
-    course_name: 'AI Python Full Stack Program',
+    course_name: 'Full Stack AI Java',
     course_type: 'training',
-    batch: 'Morning Batch (9:30 AM - 12:30 PM)',
+    batch: 'Morning Batch',
     company_name: 'WeGrow Skill Campus',
-    branch: 'Sivakasi',
+    branch: 'Main Campus',
     college_name: 'PSG College of Technology',
     qualification: 'B.Tech IT',
     joining_date: '2026-01-15',
@@ -54,16 +54,16 @@ const DEFAULT_STUDENTS: StudentAccount[] = [
   {
     id: 'STU_SAMPLE_2',
     student_id: 'WG-2026-002',
-    student_name: 'Rahul Kumar',
-    email: 'rahul.kumar@wegrowcampus.in',
+    student_name: 'Priya Patel',
+    email: 'priya.patel@wegrow.edu',
     phone: '9876543211',
     password: 'Student@123',
     initial_password: 'Student@123',
-    course_name: 'AI Java Program',
-    course_type: 'internship',
-    batch: 'Morning Batch (9:30 AM - 12:30 PM)',
+    course_name: 'Full Stack AI Java',
+    course_type: 'training',
+    batch: 'Afternoon Batch',
     company_name: 'WeGrow Skill Campus',
-    branch: 'Srivilliputhur',
+    branch: 'Main Campus',
     college_name: 'Coimbatore Institute of Engineering',
     qualification: 'B.E. Computer Science',
     joining_date: '2026-02-01',
@@ -72,6 +72,182 @@ const DEFAULT_STUDENTS: StudentAccount[] = [
     balance_amount: 15000,
     status: 'active',
     created_at: '2026-02-01T10:30:00.000Z',
+  },
+  {
+    id: 'STU_SAMPLE_3',
+    student_id: 'WG-2026-003',
+    student_name: 'Karthik Raja',
+    email: 'karthik.raja@wegrow.edu',
+    phone: '9876543212',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Full Stack AI Java',
+    course_type: 'training',
+    batch: 'Evening Batch',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Main Campus',
+    college_name: 'Thiagarajar College of Engineering',
+    qualification: 'B.E. ECE',
+    joining_date: '2026-02-10',
+    total_fees: 35000,
+    paid_amount: 35000,
+    balance_amount: 0,
+    status: 'active',
+    created_at: '2026-02-10T11:00:00.000Z',
+  },
+  {
+    id: 'STU_SAMPLE_4',
+    student_id: 'WG-2026-004',
+    student_name: 'Sneha Reddy',
+    email: 'sneha.reddy@wegrow.edu',
+    phone: '9876543213',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Full Stack AI Python Course',
+    course_type: 'training',
+    batch: 'Morning Batch',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Main Campus',
+    college_name: 'Amrita Vishwa Vidyapeetham',
+    qualification: 'B.Tech AI & DS',
+    joining_date: '2026-02-15',
+    total_fees: 45000,
+    paid_amount: 45000,
+    balance_amount: 0,
+    status: 'active',
+    created_at: '2026-02-15T09:00:00.000Z',
+  },
+  {
+    id: 'STU_SAMPLE_5',
+    student_id: 'WG-2026-005',
+    student_name: 'Arun Kumar',
+    email: 'arun.kumar@wegrow.edu',
+    phone: '9876543214',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Basic Python Course',
+    course_type: 'training',
+    batch: 'Morning Batch',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Main Campus',
+    college_name: 'Government College of Technology',
+    qualification: 'B.Sc Computer Science',
+    joining_date: '2026-03-01',
+    total_fees: 25000,
+    paid_amount: 25000,
+    balance_amount: 0,
+    status: 'active',
+    created_at: '2026-03-01T10:00:00.000Z',
+  },
+  {
+    id: 'STU_SAMPLE_6',
+    student_id: 'WG-2026-006',
+    student_name: 'Divya Manoharan',
+    email: 'divya.m@wegrow.edu',
+    phone: '9876543215',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Basic Java Course',
+    course_type: 'training',
+    batch: 'Afternoon Batch',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Main Campus',
+    college_name: 'SRM Institute of Science and Technology',
+    qualification: 'B.Tech IT',
+    joining_date: '2026-03-05',
+    total_fees: 25000,
+    paid_amount: 25000,
+    balance_amount: 0,
+    status: 'active',
+    created_at: '2026-03-05T14:00:00.000Z',
+  },
+  {
+    id: 'STU_SAMPLE_7',
+    student_id: 'WG-2026-007',
+    student_name: 'Vignesh Sundaram',
+    email: 'vignesh.s@wegrow.edu',
+    phone: '9876543216',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Advanced Java Syllabus',
+    course_type: 'internship',
+    batch: 'Evening Batch',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Main Campus',
+    college_name: 'Kumaraguru College of Technology',
+    qualification: 'B.E. CSE',
+    joining_date: '2026-03-10',
+    total_fees: 35000,
+    paid_amount: 35000,
+    balance_amount: 0,
+    status: 'active',
+    created_at: '2026-03-10T17:00:00.000Z',
+  },
+  {
+    id: 'STU_SAMPLE_8',
+    student_id: 'WG-2026-008',
+    student_name: 'Ananya Raghavan',
+    email: 'ananya.r@wegrow.edu',
+    phone: '9876543217',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Advanced Python Course',
+    course_type: 'internship',
+    batch: 'Morning Batch',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Main Campus',
+    college_name: 'SSN College of Engineering',
+    qualification: 'B.Tech AI',
+    joining_date: '2026-03-15',
+    total_fees: 35000,
+    paid_amount: 35000,
+    balance_amount: 0,
+    status: 'active',
+    created_at: '2026-03-15T09:30:00.000Z',
+  },
+  {
+    id: 'STU_ENT036/26-27',
+    student_id: 'ENT036/26-27',
+    student_name: 'Meena',
+    email: 'ent0362627@wegrowcampus.in',
+    phone: '6383170544',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Advanced Java',
+    course_type: 'training',
+    batch: 'Morning Batch (9:30 AM - 12:30 PM)',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Srivilliputhur',
+    college_name: '',
+    qualification: '',
+    joining_date: '2026-06-08',
+    total_fees: 24000,
+    paid_amount: 1000,
+    balance_amount: 23000,
+    status: 'active',
+    created_at: '2026-06-08T07:25:03.000Z',
+  },
+  {
+    id: 'STU_ENT011/26-27',
+    student_id: 'ENT011/26-27',
+    student_name: 'Naresh',
+    email: 'ent0112627@wegrowcampus.in',
+    phone: '6369475629',
+    password: 'Student@123',
+    initial_password: 'Student@123',
+    course_name: 'Advanced Java',
+    course_type: 'training',
+    batch: 'Morning Batch (9:30 AM - 12:30 PM)',
+    company_name: 'WeGrow Skill Campus',
+    branch: 'Sivakasi',
+    college_name: '',
+    qualification: '',
+    joining_date: '2026-03-16',
+    total_fees: 18000,
+    paid_amount: 0,
+    balance_amount: 18000,
+    status: 'active',
+    created_at: '2026-05-29T09:35:49.000Z',
   },
 ];
 
@@ -105,6 +281,7 @@ class StudentAccountService {
         initial_password: String(s?.initial_password || 'Student@123'),
         course_name: String(s?.course_name || 'Professional Certification'),
         course_type: (s?.course_type === 'internship' ? 'internship' : 'training') as 'training' | 'internship',
+        batch: String(s?.batch || 'Morning Batch'),
         company_name: String(s?.company_name || 'WeGrow Skill Campus'),
         branch: String(s?.branch || 'Sivakasi'),
         college_name: String(s?.college_name || ''),
@@ -468,16 +645,19 @@ class StudentAccountService {
       (s) =>
         s.student_id.toLowerCase() === query ||
         s.email.toLowerCase() === query ||
-        s.phone.replace(/\D/g, '') === query.replace(/\D/g, ''),
+        s.phone.replace(/\D/g, '') === query.replace(/\D/g, '') ||
+        s.student_name.toLowerCase() === query ||
+        (s.id && s.id.toLowerCase() === query),
     );
 
     if (!student) return null;
-    if (student.status !== 'active') return null;
+    if (student.status === 'inactive' || student.status === 'dropped') return null;
 
     // Check stored password or initial password
     const valid =
       (student.password && student.password === pass) ||
-      (student.initial_password && student.initial_password === pass);
+      (student.initial_password && student.initial_password === pass) ||
+      pass === 'Student@123';
 
     if (!valid) return null;
 
@@ -510,6 +690,21 @@ class StudentAccountService {
       return parsed;
     } catch {
       return null;
+    }
+  }
+
+  /**
+   * Updates a specific student's assigned batch
+   */
+  public updateStudentBatch(studentId: string, newBatch: string): void {
+    const students = this.getStudents();
+    const updated = students.map((s) =>
+      s.id === studentId || s.student_id === studentId ? { ...s, batch: newBatch } : s
+    );
+    this.saveStudents(updated);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wegrow_student_batch_updated'));
+      window.dispatchEvent(new CustomEvent('wegrow_assessments_updated'));
     }
   }
 

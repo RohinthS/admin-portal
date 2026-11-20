@@ -9,6 +9,10 @@ import {
   QuestionSetSchema,
   TestAttempt,
   TestAttemptSchema,
+  BatchModuleProgression,
+  BatchModuleProgressionSchema,
+  AdminAuditLog,
+  AdminAuditLogSchema,
 } from '../../schemas/test.schema';
 import { CreditTransaction, CreditTransactionSchema } from '../../schemas/credit-transaction.schema';
 import { Course, CourseSchema } from '../../schemas/course.schema';
@@ -21,6 +25,8 @@ import { AuthModule } from '../auth/auth.module';
       { name: Question.name, schema: QuestionSchema },
       { name: QuestionSet.name, schema: QuestionSetSchema },
       { name: TestAttempt.name, schema: TestAttemptSchema },
+      { name: BatchModuleProgression.name, schema: BatchModuleProgressionSchema },
+      { name: AdminAuditLog.name, schema: AdminAuditLogSchema },
       { name: CreditTransaction.name, schema: CreditTransactionSchema },
       { name: Course.name, schema: CourseSchema },
       { name: Enrollment.name, schema: EnrollmentSchema },
