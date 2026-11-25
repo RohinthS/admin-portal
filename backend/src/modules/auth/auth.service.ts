@@ -6,7 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { User, UserDocument } from '../../schemas/user.schema';
 import { Company, CompanyDocument } from '../../schemas/company.schema';
-import { RolePermission, RolePermissionDocument } from '../../schemas/role.schema';
+import { Role, RoleDocument, RolePermission, RolePermissionDocument } from '../../schemas/role.schema';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -16,6 +16,7 @@ export class AuthService implements OnModuleInit {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     @InjectModel(Company.name) private readonly companyModel: Model<CompanyDocument>,
+    @InjectModel(Role.name) private readonly roleModel: Model<RoleDocument>,
     @InjectModel(RolePermission.name) private readonly rolePermissionModel: Model<RolePermissionDocument>,
     private readonly jwtService: JwtService,
   ) {}
@@ -39,21 +40,77 @@ export class AuthService implements OnModuleInit {
       this.logger.log('Created default company: WeGrow Skill Campus');
     }
 
-    const adminUser = await this.userModel.findOne({ username: 'admin' });
-    if (!adminUser) {
-      const passwordHash = await bcrypt.hash('admin123', 10);
-      await this.userModel.create({
-        username: 'admin',
-        password_hash: passwordHash,
-        name: 'Super Administrator',
-        email: 'admin@wegrow.edu',
-        user_type: 'admin',
-        company_id: defaultCompany._id,
-        status: 1,
+    // 1. Seed all 7 standard Roles (Admin, Manager, GM, MD, Staff, HR, Student)
+    const ROLES_TO_SEED = [
+      { key: 'admin', name: 'Admin', desc: 'Full unconstrained administrative privileges' },
+      { key: 'manager', name: 'Manager', desc: 'Branch and operational management privileges' },
+      { key: 'gm', name: 'GM', desc: 'General Manager executive administration privileges' },
+      { key: 'md', name: 'MD', desc: 'Managing Director top-level institutional authority' },
+      { key: 'staff', name: 'Staff', desc: 'Staff and faculty operations privileges' },
+      { key: 'hr', name: 'HR', desc: 'Human Resources, Payroll, Leaves & Staff management' },
+      { key: 'student', name: 'Student', desc: 'Student learner portal access' },
+    ];
+
+    const roleMap: Record<string, Types.ObjectId> = {};
+    for (const r of ROLES_TO_SEED) {
+      let roleDoc = await this.roleModel.findOne({
+        role_name: { $regex: new RegExp(`^${r.name}$`, 'i') },
       });
-      this.logger.log('Default admin seeded: admin / admin123');
+      if (!roleDoc) {
+        roleDoc = await this.roleModel.create({
+          role_name: r.name,
+          description: r.desc,
+          status: 1,
+        });
+        this.logger.log(`Seeded Role: ${r.name}`);
+      }
+      roleMap[r.key] = roleDoc._id as Types.ObjectId;
     }
 
+    // 2. Seed default users for all 7 Roles
+    const USERS_TO_SEED = [
+      { username: 'admin', name: 'System Administrator', pass: 'admin123', type: 'admin', email: 'admin@wegrow.edu' },
+      { username: 'manager', name: 'Branch Manager', pass: 'Manager@123', type: 'manager', email: 'manager@wegrow.edu' },
+      { username: 'gm', name: 'General Manager (GM)', pass: 'GM@123', type: 'gm', email: 'gm@wegrow.edu' },
+      { username: 'md', name: 'Managing Director (MD)', pass: 'MD@123', type: 'md', email: 'md@wegrow.edu' },
+      { username: 'staff', name: 'Faculty & Operations Staff', pass: 'Staff@123', type: 'staff', email: 'staff@wegrow.edu' },
+      { username: 'hr', name: 'HR Executive', pass: 'HR@123', type: 'hr', email: 'hr@wegrow.edu' },
+      { username: 'student', name: 'Demo Student', pass: 'Student@123', type: 'student', email: 'student@wegrow.edu' },
+    ];
+
+    for (const u of USERS_TO_SEED) {
+      const existingUser = await this.userModel.findOne({ username: u.username });
+      if (!existingUser) {
+        const passwordHash = await bcrypt.hash(u.pass, 10);
+        await this.userModel.create({
+          username: u.username,
+          password_hash: passwordHash,
+          name: u.name,
+          email: u.email,
+          user_type: u.type,
+          role_id: roleMap[u.type],
+          company_id: defaultCompany._id,
+          status: 1,
+        });
+        this.logger.log(`Seeded default user: ${u.username} (${u.type})`);
+      } else {
+        // Ensure role_id and user_type are aligned
+        let updated = false;
+        if (!existingUser.role_id && roleMap[u.type]) {
+          existingUser.role_id = roleMap[u.type];
+          updated = true;
+        }
+        if (existingUser.user_type !== u.type) {
+          existingUser.user_type = u.type;
+          updated = true;
+        }
+        if (updated) {
+          await existingUser.save();
+        }
+      }
+    }
+
+    // Also support legacy WeGrow admin
     const legacyAdmin = await this.userModel.findOne({ username: 'WeGrow' });
     if (!legacyAdmin) {
       const passwordHash = await bcrypt.hash('WeGrow@2025', 10);
@@ -62,11 +119,13 @@ export class AuthService implements OnModuleInit {
         password_hash: passwordHash,
         name: 'WeGrow Master Admin',
         user_type: 'admin',
+        role_id: roleMap['admin'],
         company_id: defaultCompany._id,
         status: 1,
       });
     }
 
+    // Default students WG-2026-001 & WG-2026-002
     const student1 = await this.userModel.findOne({ username: 'WG-2026-001' });
     if (!student1) {
       const passwordHash = await bcrypt.hash('Student@123', 10);
@@ -76,10 +135,10 @@ export class AuthService implements OnModuleInit {
         name: 'Rahul Sharma (Student 1)',
         email: 'student1@wegrow.edu',
         user_type: 'student',
+        role_id: roleMap['student'],
         company_id: defaultCompany._id,
         status: 1,
       });
-      this.logger.log('Default student seeded: WG-2026-001 / Student@123');
     }
 
     const student2 = await this.userModel.findOne({ username: 'WG-2026-002' });
@@ -91,9 +150,107 @@ export class AuthService implements OnModuleInit {
         name: 'Priya Patel (Student 2)',
         email: 'student2@wegrow.edu',
         user_type: 'student',
+        role_id: roleMap['student'],
         company_id: defaultCompany._id,
         status: 1,
       });
+    }
+
+    // 3. Seed default permissions for roles
+    const ALL_MODULES = [
+      'dashboard', 'company', 'roles', 'users', 'staff',
+      'course', 'tasks', 'event', 'offer', 'students',
+      'course_enquiry', 'enquiry_followup', 'enrollment',
+      'enrollment_internship', 'course_closure', 'tests',
+      'attendance', 'payroll', 'receipt', 'payment_mode',
+      'bank', 'installment_followup', 'installment_followup_report',
+      'staff_collection_report', 'expense_category', 'expense_entry',
+      'leave_approval', 'leave_report', 'report_daily_work',
+      'report_enrollment', 'report_enrollment_tracker', 'report_payments',
+      'report_expense', 'report_attendance', 'report_student_attendance',
+      'report_installments', 'profile_update', 'apply_leave',
+      'leave_history', 'my_payslips',
+    ];
+
+    // Seed permissions for executive roles (admin, gm, md)
+    for (const roleKey of ['admin', 'gm', 'md']) {
+      const rId = roleMap[roleKey];
+      if (!rId) continue;
+      const count = await this.rolePermissionModel.countDocuments({ role_id: rId, company_id: defaultCompany._id });
+      if (count === 0) {
+        const docs = ALL_MODULES.map((mod) => ({
+          role_id: rId,
+          company_id: defaultCompany._id,
+          permission_page: mod,
+          permission_action: 'V$$A$$E$$D',
+          actions: ['V', 'A', 'E', 'D'],
+        }));
+        await this.rolePermissionModel.insertMany(docs);
+      }
+    }
+
+    // Seed permissions for Manager
+    if (roleMap['manager']) {
+      const count = await this.rolePermissionModel.countDocuments({ role_id: roleMap['manager'], company_id: defaultCompany._id });
+      if (count === 0) {
+        const mgrModules = [
+          'dashboard', 'company', 'staff', 'course', 'tasks', 'students',
+          'course_enquiry', 'enquiry_followup', 'enrollment', 'enrollment_internship',
+          'attendance', 'payroll', 'receipt', 'payment_mode', 'bank',
+          'installment_followup', 'installment_followup_report', 'staff_collection_report',
+          'expense_category', 'expense_entry', 'leave_approval', 'leave_report',
+          'report_daily_work', 'report_enrollment', 'report_payments', 'report_expense',
+          'report_attendance', 'report_student_attendance', 'profile_update', 'apply_leave',
+          'leave_history', 'my_payslips',
+        ];
+        const docs = mgrModules.map((mod) => ({
+          role_id: roleMap['manager'],
+          company_id: defaultCompany._id,
+          permission_page: mod,
+          permission_action: 'V$$A$$E$$D',
+          actions: ['V', 'A', 'E', 'D'],
+        }));
+        await this.rolePermissionModel.insertMany(docs);
+      }
+    }
+
+    // Seed permissions for HR
+    if (roleMap['hr']) {
+      const count = await this.rolePermissionModel.countDocuments({ role_id: roleMap['hr'], company_id: defaultCompany._id });
+      if (count === 0) {
+        const hrModules = [
+          'dashboard', 'staff', 'users', 'attendance', 'payroll',
+          'leave_approval', 'leave_report', 'apply_leave', 'leave_history', 'my_payslips',
+          'expense_category', 'expense_entry', 'report_attendance', 'report_expense', 'profile_update',
+        ];
+        const docs = hrModules.map((mod) => ({
+          role_id: roleMap['hr'],
+          company_id: defaultCompany._id,
+          permission_page: mod,
+          permission_action: 'V$$A$$E$$D',
+          actions: ['V', 'A', 'E', 'D'],
+        }));
+        await this.rolePermissionModel.insertMany(docs);
+      }
+    }
+
+    // Seed permissions for Staff
+    if (roleMap['staff']) {
+      const count = await this.rolePermissionModel.countDocuments({ role_id: roleMap['staff'], company_id: defaultCompany._id });
+      if (count === 0) {
+        const staffModules = [
+          'dashboard', 'tasks', 'attendance', 'student_attendance', 'report_daily_work',
+          'tests', 'apply_leave', 'leave_history', 'my_payslips', 'profile_update',
+        ];
+        const docs = staffModules.map((mod) => ({
+          role_id: roleMap['staff'],
+          company_id: defaultCompany._id,
+          permission_page: mod,
+          permission_action: 'V$$A$$E',
+          actions: ['V', 'A', 'E'],
+        }));
+        await this.rolePermissionModel.insertMany(docs);
+      }
     }
 
     // Ensure mentor accounts remain removed

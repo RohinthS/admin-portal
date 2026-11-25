@@ -11,6 +11,12 @@ export class Staff {
   @Prop({ type: Types.ObjectId, ref: 'Company', required: true })
   company_id: Types.ObjectId;
 
+  @Prop({ type: Types.ObjectId, ref: 'Role' })
+  role_id: Types.ObjectId;
+
+  @Prop({ trim: true })
+  role_name: string;
+
   @Prop({ required: true, trim: true })
   staff_name: string;
 

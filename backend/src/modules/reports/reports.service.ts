@@ -11,6 +11,8 @@ import { DailyReport, DailyReportDocument } from '../../schemas/daily-report.sch
 import { Installment, InstallmentDocument } from '../../schemas/installment.schema';
 import { LeaveRequest, LeaveRequestDocument } from '../../schemas/leave.schema';
 import { Course, CourseDocument } from '../../schemas/course.schema';
+import { Staff, StaffDocument } from '../../schemas/staff.schema';
+import { User, UserDocument } from '../../schemas/user.schema';
 
 @Injectable()
 export class ReportsService {
@@ -25,23 +27,62 @@ export class ReportsService {
     @InjectModel(Installment.name) private readonly installmentModel: Model<InstallmentDocument>,
     @InjectModel(LeaveRequest.name) private readonly leaveModel: Model<LeaveRequestDocument>,
     @InjectModel(Course.name) private readonly courseModel: Model<CourseDocument>,
+    @InjectModel(Staff.name) private readonly staffModel: Model<StaffDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
 
-  async getDashboardStats(companyId?: string) {
+  async getDashboardStats(companyId?: string, startDate?: string, endDate?: string) {
     const filter: any = {};
     if (companyId) filter.company_id = new Types.ObjectId(companyId);
 
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+    const receiptFilter: any = { ...filter };
+    const expenseFilter: any = { ...filter };
+    const enrollmentFilter: any = { ...filter };
+
+    if (startDate && endDate) {
+      expenseFilter.expense_date = { $gte: startDate, $lte: endDate };
+      const startD = new Date(startDate);
+      startD.setHours(0, 0, 0, 0);
+      const endD = new Date(endDate);
+      endD.setHours(23, 59, 59, 999);
+      receiptFilter.$or = [
+        { receipt_date: { $gte: startD, $lte: endD } },
+        { createdAt: { $gte: startD, $lte: endD } },
+      ];
+      enrollmentFilter.$or = [
+        { joining_date: { $gte: startDate, $lte: endDate } },
+        { createdAt: { $gte: startD, $lte: endD } },
+      ];
+    }
+
     const [totalEnrollments, totalEnquiries, receipts, expenses, pendingTasks] = await Promise.all([
-      this.enrollmentModel.countDocuments(filter),
+      this.enrollmentModel.countDocuments(enrollmentFilter),
       this.enquiryModel.countDocuments(filter),
-      this.receiptModel.find(filter).select('total_amount payment_splits'),
-      this.expenseModel.find(filter).select('amount'),
+      this.receiptModel.find(receiptFilter).select('total_amount payment_splits receipt_date createdAt'),
+      this.expenseModel.find(expenseFilter).populate('category_id', 'category_name').sort({ expense_date: -1 }),
       this.taskModel.countDocuments({ ...filter, status: { $ne: 'completed' } }),
     ]);
 
     const totalCollection = receipts.reduce((acc, curr) => acc + (curr.total_amount || 0), 0);
     const totalExpenses = expenses.reduce((acc, curr) => acc + (curr.amount || 0), 0);
     const netProfit = totalCollection - totalExpenses;
+
+    // Current month expenses
+    const currentMonthExpenses = expenses
+      .filter((e) => e.expense_date && e.expense_date.startsWith(currentMonthKey))
+      .reduce((acc, curr) => acc + (curr.amount || 0), 0);
+
+    // Current month collections
+    const currentMonthCollection = receipts
+      .filter((r) => {
+        const d = r.receipt_date ? new Date(r.receipt_date) : new Date((r as any).createdAt || Date.now());
+        const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        return k === currentMonthKey;
+      })
+      .reduce((acc, curr) => acc + (curr.total_amount || 0), 0);
 
     // Payment mode breakdown
     const modeBreakdown: Record<string, number> = { cash: 0, upi: 0, card: 0, bank_transfer: 0 };
@@ -61,20 +102,51 @@ export class ReportsService {
       .limit(5);
 
     // ==========================================
-    // MANAGER & ADMIN DASHBOARD: REMINDERS & KPIS
+    // MANAGER, GM, MD & ADMIN DASHBOARD: REMINDERS, MOM ANALYTICS & STAFF PULSE
     // ==========================================
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const alertThreshold = new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000);
     const todayStr = new Date().toISOString().slice(0, 10);
 
-    const [installments, enrollments, pendingLeavesCount, tasksCompletedToday, reportsSubmittedToday, rawTasks] = await Promise.all([
+    const [
+      installments,
+      enrollments,
+      pendingLeavesCount,
+      tasksCompletedToday,
+      reportsSubmittedToday,
+      rawTasks,
+      allEnquiries,
+      totalStaffCount,
+      todayStaffAttendance,
+      todayLeavesOnDuty,
+      approvedLeavesThisMonth,
+    ] = await Promise.all([
       this.installmentModel.find(filter).sort({ enrollment_id: 1, installment_no: 1 }),
       this.enrollmentModel.find(filter).populate('course_id', 'course_name'),
       this.leaveModel.countDocuments({ ...filter, status: { $regex: /^pending$/i } }),
       this.taskModel.countDocuments({ ...filter, status: 'completed' }),
       this.dailyReportModel.countDocuments({ ...filter, report_date: todayStr }),
       this.taskModel.find(filter).populate('assigned_to', 'name username').sort({ due_date: -1 }).limit(10),
+      this.enquiryModel.find(filter).select('status enquiry_date createdAt source'),
+      this.staffModel.countDocuments(filter).then(async (cnt) => {
+        if (cnt > 0) return cnt;
+        return this.userModel.countDocuments({ ...filter, user_type: { $in: ['staff', 'manager', 'mentor', 'hr', 'gm', 'md'] } });
+      }),
+      this.attendanceModel.find({ ...filter, user_type: 'staff', attendance_date: todayStr }),
+      this.leaveModel
+        .find({
+          ...filter,
+          status: { $regex: /^approved$/i },
+          from_date: { $lte: todayStr },
+          to_date: { $gte: todayStr },
+        })
+        .populate('staff_id', 'staff_name name emp_code designation department'),
+      this.leaveModel.countDocuments({
+        ...filter,
+        status: { $regex: /^approved$/i },
+        from_date: { $gte: `${currentMonthKey}-01` },
+      }),
     ]);
 
     const enrollMap: Record<string, any> = {};
@@ -124,6 +196,9 @@ export class ReportsService {
     // Sort reminders so overdue comes first, then by due date
     pending_reminders.sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime());
 
+    const totalCourseFees = enrollments.reduce((sum, e) => sum + (e.total_fees || 0), 0);
+    const totalPendingFees = Math.max(0, totalCourseFees - totalCollection);
+
     const today_tasks = rawTasks.map((t: any) => ({
       _id: t._id,
       title: t.title,
@@ -133,17 +208,246 @@ export class ReportsService {
       priority: t.priority,
     }));
 
+    // ----------------------------------------------------
+    // 1. Month-on-Month New Student Admissions Calculation
+    // ----------------------------------------------------
+    const last6MonthsKeys: string[] = [];
+    for (let i = 5; i >= 0; i--) {
+      const targetDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      last6MonthsKeys.push(`${targetDate.getFullYear()}-${String(targetDate.getMonth() + 1).padStart(2, '0')}`);
+    }
+
+    const monthlyStudentsMap: Record<string, number> = {};
+    for (const enr of enrollments) {
+      const d = enr.joining_date ? new Date(enr.joining_date) : new Date((enr as any).createdAt || Date.now());
+      if (isNaN(d.getTime())) continue;
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      monthlyStudentsMap[k] = (monthlyStudentsMap[k] || 0) + 1;
+    }
+
+    const allStudentMonthKeys = Array.from(new Set([...Object.keys(monthlyStudentsMap), ...last6MonthsKeys])).sort();
+
+    const momNewStudents = allStudentMonthKeys.map((mKey, idx) => {
+      const count = monthlyStudentsMap[mKey] || 0;
+      const prevKey = idx > 0 ? allStudentMonthKeys[idx - 1] : null;
+      const prevCount = prevKey ? (monthlyStudentsMap[prevKey] || 0) : 0;
+      let growthRate = 0;
+      if (prevCount > 0) {
+        growthRate = Math.round(((count - prevCount) / prevCount) * 100);
+      } else if (count > 0 && idx > 0) {
+        growthRate = 100;
+      }
+
+      const [yr, mo] = mKey.split('-');
+      const dateObj = new Date(Number(yr), Number(mo) - 1, 1);
+      const monthLabel = dateObj.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+
+      return {
+        month: mKey,
+        monthLabel,
+        count,
+        prevCount,
+        growthRate,
+      };
+    });
+
+    const currentMonthNewStudents = monthlyStudentsMap[currentMonthKey] || 0;
+    const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastMonthKey = `${lastMonthDate.getFullYear()}-${String(lastMonthDate.getMonth() + 1).padStart(2, '0')}`;
+    const lastMonthNewStudents = monthlyStudentsMap[lastMonthKey] || 0;
+    const studentGrowthRate = lastMonthNewStudents > 0
+      ? Math.round(((currentMonthNewStudents - lastMonthNewStudents) / lastMonthNewStudents) * 100)
+      : (currentMonthNewStudents > 0 ? 100 : 0);
+
+    // ----------------------------------------------------
+    // 2. Month-on-Month Student Fee Collections
+    // ----------------------------------------------------
+    const monthlyFeeMap: Record<string, { amount: number; receiptsCount: number }> = {};
+    for (const r of receipts) {
+      const d = r.receipt_date ? new Date(r.receipt_date) : new Date((r as any).createdAt || Date.now());
+      if (isNaN(d.getTime())) continue;
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      if (!monthlyFeeMap[k]) monthlyFeeMap[k] = { amount: 0, receiptsCount: 0 };
+      monthlyFeeMap[k].amount += (r.total_amount || 0);
+      monthlyFeeMap[k].receiptsCount += 1;
+    }
+
+    const allFeeMonthKeys = Array.from(new Set([...Object.keys(monthlyFeeMap), ...last6MonthsKeys])).sort();
+
+    const momFeeCollections = allFeeMonthKeys.map((mKey, idx) => {
+      const item = monthlyFeeMap[mKey] || { amount: 0, receiptsCount: 0 };
+      const prevKey = idx > 0 ? allFeeMonthKeys[idx - 1] : null;
+      const prevItem = prevKey ? (monthlyFeeMap[prevKey] || { amount: 0, receiptsCount: 0 }) : { amount: 0, receiptsCount: 0 };
+      let growthRate = 0;
+      if (prevItem.amount > 0) {
+        growthRate = Math.round(((item.amount - prevItem.amount) / prevItem.amount) * 100);
+      } else if (item.amount > 0 && idx > 0) {
+        growthRate = 100;
+      }
+
+      const [yr, mo] = mKey.split('-');
+      const dateObj = new Date(Number(yr), Number(mo) - 1, 1);
+      const monthLabel = dateObj.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+
+      return {
+        month: mKey,
+        monthLabel,
+        amount: item.amount,
+        receiptsCount: item.receiptsCount,
+        prevAmount: prevItem.amount,
+        growthRate,
+      };
+    });
+
+    const lastMonthFeeItem = monthlyFeeMap[lastMonthKey] || { amount: 0, receiptsCount: 0 };
+    const currentMonthFeeItem = monthlyFeeMap[currentMonthKey] || { amount: 0, receiptsCount: 0 };
+    const feeGrowthRate = lastMonthFeeItem.amount > 0
+      ? Math.round(((currentMonthFeeItem.amount - lastMonthFeeItem.amount) / lastMonthFeeItem.amount) * 100)
+      : (currentMonthFeeItem.amount > 0 ? 100 : 0);
+
+    // ----------------------------------------------------
+    // 3. Month-on-Month Enquiries & Conversion Calculation
+    // ----------------------------------------------------
+    const monthlyEnquiriesMap: Record<string, { total: number; converted: number }> = {};
+    for (const enq of allEnquiries) {
+      const d = enq.enquiry_date ? new Date(enq.enquiry_date) : new Date((enq as any).createdAt || Date.now());
+      if (isNaN(d.getTime())) continue;
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      if (!monthlyEnquiriesMap[k]) monthlyEnquiriesMap[k] = { total: 0, converted: 0 };
+      monthlyEnquiriesMap[k].total += 1;
+      if (enq.status === 'converted') {
+        monthlyEnquiriesMap[k].converted += 1;
+      }
+    }
+
+    const allEnquiryMonthKeys = Array.from(new Set([...Object.keys(monthlyEnquiriesMap), ...last6MonthsKeys])).sort();
+
+    const momEnquiries = allEnquiryMonthKeys.map((mKey, idx) => {
+      const item = monthlyEnquiriesMap[mKey] || { total: 0, converted: 0 };
+      const prevKey = idx > 0 ? allEnquiryMonthKeys[idx - 1] : null;
+      const prevItem = prevKey ? (monthlyEnquiriesMap[prevKey] || { total: 0, converted: 0 }) : { total: 0, converted: 0 };
+      let growthRate = 0;
+      if (prevItem.total > 0) {
+        growthRate = Math.round(((item.total - prevItem.total) / prevItem.total) * 100);
+      } else if (item.total > 0 && idx > 0) {
+        growthRate = 100;
+      }
+      const conversionRate = item.total > 0 ? Math.round((item.converted / item.total) * 100) : 0;
+
+      const [yr, mo] = mKey.split('-');
+      const dateObj = new Date(Number(yr), Number(mo) - 1, 1);
+      const monthLabel = dateObj.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+
+      return {
+        month: mKey,
+        monthLabel,
+        total: item.total,
+        converted: item.converted,
+        conversionRate,
+        prevTotal: prevItem.total,
+        growthRate,
+      };
+    });
+
+    const currentMonthEnqItem = monthlyEnquiriesMap[currentMonthKey] || { total: 0, converted: 0 };
+    const lastMonthEnqItem = monthlyEnquiriesMap[lastMonthKey] || { total: 0, converted: 0 };
+    const enquiryGrowthRate = lastMonthEnqItem.total > 0
+      ? Math.round(((currentMonthEnqItem.total - lastMonthEnqItem.total) / lastMonthEnqItem.total) * 100)
+      : (currentMonthEnqItem.total > 0 ? 100 : 0);
+    const totalEnquiriesCount = allEnquiries.length || totalEnquiries;
+    const totalConvertedCount = allEnquiries.filter((e) => e.status === 'converted').length;
+    const overallConversionRate = totalEnquiriesCount > 0 ? Math.round((totalConvertedCount / totalEnquiriesCount) * 100) : 0;
+
+    // ----------------------------------------------------
+    // 4. Staff Attendance & Leave Staff Analytics
+    // ----------------------------------------------------
+    const staffPresentCount = todayStaffAttendance.filter((a) => a.status === 'present').length;
+    const staffAbsentCount = todayStaffAttendance.filter((a) => a.status === 'absent').length;
+    const staffHalfDayCount = todayStaffAttendance.filter((a) => a.status === 'half_day').length;
+    const staffOnLeaveAttendance = todayStaffAttendance.filter((a) => a.status === 'leave').length;
+    const staffOnLeaveCount = Math.max(todayLeavesOnDuty.length, staffOnLeaveAttendance);
+
+    const effectiveTotalStaff = Math.max(totalStaffCount, staffPresentCount + staffAbsentCount + staffOnLeaveCount, 1);
+    const staffAttendanceRate = effectiveTotalStaff > 0
+      ? Math.min(100, Math.round(((staffPresentCount + (staffHalfDayCount * 0.5)) / effectiveTotalStaff) * 100))
+      : 0;
+
+    const staffOnLeaveList = todayLeavesOnDuty.map((l: any) => ({
+      _id: l._id,
+      staff_name: l.staff_id?.staff_name || l.staff_id?.name || 'Staff Member',
+      emp_code: l.staff_id?.emp_code || 'EMP',
+      designation: l.staff_id?.designation || l.staff_id?.department || 'Staff',
+      leave_type: l.leave_type,
+      from_date: l.from_date,
+      to_date: l.to_date,
+      total_days: l.total_days || 1,
+      reason: l.reason || 'Leave Approved',
+    }));
+
     return {
       totalEnrollments,
-      totalEnquiries,
+      totalStudents: enrollments.length || totalEnrollments,
+      totalEnquiries: totalEnquiriesCount,
       totalCollection,
       totalExpenses,
+      currentMonthExpenses,
+      currentMonthCollection,
+      totalCourseFees,
+      totalPendingFees,
       netProfit,
       pendingTasks,
       modeBreakdown,
       recentEnrollments,
+      recentExpenses: expenses.slice(0, 10).map((e) => ({
+        _id: e._id,
+        expense_date: e.expense_date,
+        amount: e.amount,
+        payment_mode: e.payment_mode,
+        description: e.description,
+        category_name: (e.category_id as any)?.category_name || 'General Expense',
+      })),
       pending_reminders,
       action_required_count: pending_reminders.length,
+
+      // Enhanced MoM & Executive Pulse Metrics
+      studentAnalytics: {
+        totalStudents: enrollments.length || totalEnrollments,
+        currentMonthNewStudents,
+        lastMonthNewStudents,
+        studentGrowthRate,
+        momNewStudents,
+      },
+
+      feeCollectionMoM: {
+        totalCollected: totalCollection,
+        currentMonthCollection,
+        lastMonthCollection: lastMonthFeeItem.amount,
+        feeGrowthRate,
+        momFeeCollections,
+      },
+
+      enquiryAnalytics: {
+        totalEnquiries: totalEnquiriesCount,
+        currentMonthEnquiries: currentMonthEnqItem.total,
+        lastMonthEnquiries: lastMonthEnqItem.total,
+        enquiryGrowthRate,
+        totalConvertedCount,
+        overallConversionRate,
+        momEnquiries,
+      },
+
+      staffPulse: {
+        totalStaff: effectiveTotalStaff,
+        presentToday: staffPresentCount,
+        absentToday: staffAbsentCount,
+        halfDayToday: staffHalfDayCount,
+        onLeaveToday: staffOnLeaveCount,
+        staffAttendanceRate,
+        pendingLeavesCount,
+        approvedLeavesThisMonth,
+        staffOnLeaveList,
+      },
+
       manager_stats: {
         pending_tasks: pendingTasks,
         tasks_completed: tasksCompletedToday,
@@ -289,24 +593,56 @@ export class ReportsService {
     };
   }
 
-  async getFeeAnalytics(companyId?: string, financialYear?: string, month?: string) {
+  async getFeeAnalytics(
+    companyId?: string,
+    financialYear?: string,
+    month?: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
     const filter: any = {};
     if (companyId) filter.company_id = new Types.ObjectId(companyId);
 
-    const [enrollments, receipts, installments] = await Promise.all([
+    const receiptFilter: any = { ...filter, status: 1 };
+    const expenseFilter: any = { ...filter };
+    const enrollmentFilter: any = { ...filter };
+    const installmentFilter: any = { ...filter };
+
+    if (startDate && endDate) {
+      expenseFilter.expense_date = { $gte: startDate, $lte: endDate };
+      const startD = new Date(startDate);
+      startD.setHours(0, 0, 0, 0);
+      const endD = new Date(endDate);
+      endD.setHours(23, 59, 59, 999);
+      receiptFilter.$or = [
+        { receipt_date: { $gte: startD, $lte: endD } },
+        { createdAt: { $gte: startD, $lte: endD } },
+      ];
+      enrollmentFilter.$or = [
+        { joining_date: { $gte: startDate, $lte: endDate } },
+        { createdAt: { $gte: startD, $lte: endD } },
+      ];
+      installmentFilter.due_date = { $gte: startD, $lte: endD };
+    }
+
+    const [enrollments, receipts, installments, expenses] = await Promise.all([
       this.enrollmentModel
-        .find(filter)
+        .find(enrollmentFilter)
         .populate('course_id', 'course_name fees duration_days')
         .populate('company_id', 'company_name branch')
         .sort({ createdAt: -1 }),
       this.receiptModel
-        .find({ ...filter, status: 1 })
+        .find(receiptFilter)
         .populate('enrollment_id')
         .sort({ receipt_date: -1, createdAt: -1 }),
       this.installmentModel
-        .find(filter)
+        .find(installmentFilter)
         .populate('followup_assigned_to', 'name username')
         .sort({ due_date: 1 }),
+      this.expenseModel
+        .find(expenseFilter)
+        .populate('category_id', 'category_name')
+        .sort({ expense_date: -1 }),
     ]);
 
     // 1. Overall Calculations
@@ -315,7 +651,9 @@ export class ReportsService {
     const totalFeesCollected = receipts.reduce((sum, r) => sum + (r.total_amount || 0), 0);
     const totalPendingFees = Math.max(0, totalCourseFees - totalFeesCollected);
 
-    // Current month collection (YYYY-MM)
+    const totalExpenses = expenses.reduce((sum, exp) => sum + (exp.amount || 0), 0);
+
+    // Current month collection & expense (YYYY-MM)
     const now = new Date();
     const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     const currentMonthCollection = receipts
@@ -326,7 +664,11 @@ export class ReportsService {
       })
       .reduce((sum, r) => sum + (r.total_amount || 0), 0);
 
-    // 2. Monthly Collection & Pending Graph Data
+    const currentMonthExpenses = expenses
+      .filter((exp) => exp.expense_date && exp.expense_date.startsWith(currentMonthKey))
+      .reduce((sum, exp) => sum + (exp.amount || 0), 0);
+
+    // 2. Monthly Collection, Pending, & Expense Graph Data
     const monthlyCollectedMap: Record<string, number> = {};
     for (const r of receipts) {
       const d = r.receipt_date ? new Date(r.receipt_date) : new Date((r as any).createdAt || Date.now());
@@ -348,9 +690,17 @@ export class ReportsService {
       monthlyPendingMap[k] = (monthlyPendingMap[k] || 0) + pendingAmt;
     }
 
+    const monthlyExpenseMap: Record<string, number> = {};
+    for (const exp of expenses) {
+      if (!exp.expense_date) continue;
+      const k = exp.expense_date.slice(0, 7);
+      monthlyExpenseMap[k] = (monthlyExpenseMap[k] || 0) + (exp.amount || 0);
+    }
+
     const allMonthsSet = new Set<string>([
       ...Object.keys(monthlyCollectedMap),
       ...Object.keys(monthlyPendingMap),
+      ...Object.keys(monthlyExpenseMap),
       currentMonthKey,
       '2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10', '2026-11', '2026-12',
     ]);
@@ -368,6 +718,7 @@ export class ReportsService {
         monthNumber: parseInt(m, 10),
         collected: monthlyCollectedMap[mStr] || 0,
         pending: monthlyPendingMap[mStr] || 0,
+        expense: monthlyExpenseMap[mStr] || 0,
       };
     });
 
@@ -493,8 +844,19 @@ export class ReportsService {
         totalFeesCollected,
         totalPendingFees,
         currentMonthCollection,
+        totalExpenses,
+        currentMonthExpenses,
+        netBalance: totalFeesCollected - totalExpenses,
       },
       monthlyData,
+      recentExpenses: expenses.slice(0, 15).map((e) => ({
+        _id: e._id,
+        expense_date: e.expense_date,
+        amount: e.amount,
+        payment_mode: e.payment_mode,
+        description: e.description,
+        category_name: (e.category_id as any)?.category_name || 'General Expense',
+      })),
       pendingStudents,
       filters: {
         courses: uniqueCourses,

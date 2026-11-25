@@ -19,7 +19,11 @@ export class PayrollService {
 
     return this.payrollModel
       .find(query)
-      .populate('staff_id', 'staff_name emp_code designation department')
+      .populate({
+        path: 'staff_id',
+        select: 'staff_name emp_code designation department email phone salary role_id role_name doj status',
+        populate: { path: 'role_id', select: 'role_name' },
+      })
       .sort({ createdAt: -1 });
   }
 

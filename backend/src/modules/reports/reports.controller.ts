@@ -9,8 +9,12 @@ export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 
   @Get('dashboard')
-  getDashboardStats(@Query('company_id') companyId?: string) {
-    return this.reportsService.getDashboardStats(companyId);
+  getDashboardStats(
+    @Query('company_id') companyId?: string,
+    @Query('start_date') startDate?: string,
+    @Query('end_date') endDate?: string,
+  ) {
+    return this.reportsService.getDashboardStats(companyId, startDate, endDate);
   }
 
   @Get('student-dashboard')
@@ -32,7 +36,9 @@ export class ReportsController {
     @Query('company_id') companyId?: string,
     @Query('financial_year') financialYear?: string,
     @Query('month') month?: string,
+    @Query('start_date') startDate?: string,
+    @Query('end_date') endDate?: string,
   ) {
-    return this.reportsService.getFeeAnalytics(companyId, financialYear, month);
+    return this.reportsService.getFeeAnalytics(companyId, financialYear, month, startDate, endDate);
   }
 }

@@ -6,16 +6,12 @@ import {
   LayoutDashboard,
   Building2,
   CheckSquare,
-  GraduationCap,
   Wallet,
   Receipt,
   DollarSign,
   Users,
   TrendingUp,
   UserCheck,
-  ClipboardList,
-  FileSpreadsheet,
-  CalendarCheck,
   User,
   LogOut,
   ChevronRight,
@@ -27,11 +23,12 @@ import {
   HelpCircle,
   Award,
   MessageSquare,
-  Clock,
   CreditCard,
   Sun,
   Moon,
   CheckCircle2,
+  Palette,
+  Check,
 } from 'lucide-react';
 
 interface SubMenuItem {
@@ -65,44 +62,6 @@ const ADMIN_MENU_STRUCTURE: MenuGroup[] = [
     children: [
       { name: 'Company Details', path: '/companies', page: 'company' },
       { name: 'Role Management', path: '/roles', page: 'roles' },
-      { name: 'User Management', path: '/roles', page: 'users' },
-      { name: 'Staff Management', path: '/roles', page: 'staff' },
-    ],
-  },
-  {
-    title: 'Management',
-    icon: CheckSquare,
-    isDropdown: true,
-    children: [
-      { name: 'Courses', path: '/courses', page: 'course' },
-      { name: 'Tasks', path: '/tasks', page: 'tasks' },
-      { name: 'Events', path: '/courses', page: 'event' },
-      { name: 'Offer', path: '/courses', page: 'offer' },
-    ],
-  },
-  {
-    title: 'Students',
-    icon: GraduationCap,
-    isDropdown: true,
-    children: [
-      { name: 'Student Directory & Accounts', path: '/students', page: 'students' },
-      { name: 'Course Enquiry', path: '/enquiries', page: 'course_enquiry' },
-      { name: 'Enquiry Follow-up', path: '/enquiries', page: 'enquiry_followup' },
-      { name: 'Training Enrollment', path: '/enrollment/training', page: 'enrollment' },
-      { name: 'Internship Enrollment', path: '/enrollment/internship', page: 'enrollment_internship' },
-      { name: 'Enrollment Closure', path: '/enrollment/training', page: 'course_closure' },
-    ],
-  },
-  {
-    title: 'Exam & Credits',
-    icon: Award,
-    isDropdown: true,
-    children: [
-      { name: 'Exam Portal & Tests', path: '/tests', page: 'tests' },
-      { name: 'Module Progression (Offline)', path: '/module-progression', page: 'tests' },
-      { name: 'Central Question Bank', path: '/tests?tab=bank', page: 'tests' },
-      { name: 'Live Exam Proctoring', path: '/tests?tab=proctoring', page: 'tests' },
-      { name: 'Credit & Badge Management', path: '/credit-management', page: 'credit_management' },
     ],
   },
   {
@@ -168,34 +127,6 @@ const ADMIN_MENU_STRUCTURE: MenuGroup[] = [
     ],
   },
   {
-    title: 'Student Attendance',
-    icon: UserCheck,
-    isDropdown: false,
-    path: '/attendance',
-    page: 'student_attendance',
-  },
-  {
-    title: 'Student Tasks',
-    icon: CheckSquare,
-    isDropdown: false,
-    path: '/tasks',
-    page: 'student_tasks',
-  },
-  {
-    title: 'Student Daily Report',
-    icon: FileSpreadsheet,
-    isDropdown: false,
-    path: '/daily-reports',
-    page: 'student_reports',
-  },
-  {
-    title: 'Daily Report',
-    icon: CalendarCheck,
-    isDropdown: false,
-    path: '/daily-reports',
-    page: 'daily_report',
-  },
-  {
     title: 'My Account',
     icon: User,
     isDropdown: true,
@@ -211,10 +142,7 @@ const ADMIN_MENU_STRUCTURE: MenuGroup[] = [
 const STUDENT_NAV_ITEMS: { name: string; path: string; icon: React.ElementType }[] = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
   { name: 'My Profile', path: '/student/profile', icon: UserCheck },
-  { name: 'Tasks', path: '/student/tasks', icon: CheckSquare },
-  { name: 'Task Update', path: '/student/task-update', icon: ClipboardList },
   { name: 'Syllabus', path: '/student/syllabus', icon: BookOpen },
-  { name: 'Daily Process', path: '/student/daily-process', icon: Clock },
   { name: 'Tutorials', path: '/student/tutorials', icon: PlayCircle },
   { name: 'My Progress', path: '/student/progress', icon: TrendingUp },
   { name: 'My Credits & Badges', path: '/student/credits', icon: Award },
@@ -224,6 +152,153 @@ const STUDENT_NAV_ITEMS: { name: string; path: string; icon: React.ElementType }
   { name: 'Feedback', path: '/student/feedback', icon: MessageSquare },
   { name: 'Profile', path: '/student/settings', icon: User },
 ];
+
+export type SidebarTheme = 'light' | 'midnight' | 'indigo' | 'emerald' | 'charcoal';
+
+interface SidebarThemeConfig {
+  id: SidebarTheme;
+  name: string;
+  dotBg: string;
+  wrapper: string;
+  logoWrapper: string;
+  logoBadge: string;
+  erpBadge: string;
+  itemActive: string;
+  itemInactive: string;
+  itemActiveIcon: string;
+  itemInactiveIcon: string;
+  groupHeaderOpen: string;
+  submenuContainer: string;
+  submenuActive: string;
+  submenuInactive: string;
+  footerWrapper: string;
+  footerUserName: string;
+  footerUserRole: string;
+  footerLogoutBtn: string;
+}
+
+const SIDEBAR_THEMES: Record<SidebarTheme, SidebarThemeConfig> = {
+  light: {
+    id: 'light',
+    name: 'Clean Light / Auto',
+    dotBg: 'bg-white border-2 border-slate-300 dark:bg-slate-800',
+    wrapper: 'bg-white dark:bg-[#0b101d] text-slate-800 dark:text-slate-100 border-r border-slate-200/90 dark:border-slate-800 shadow-sm',
+    logoWrapper: 'bg-slate-50/90 dark:bg-slate-800/90 rounded-2xl p-2.5 shadow-xs border border-slate-200/80 dark:border-slate-700 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition',
+    logoBadge: 'text-sky-600 dark:text-sky-400',
+    erpBadge: 'bg-sky-50 dark:bg-sky-950/70 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800',
+    itemActive: 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold shadow-sm shadow-sky-500/25',
+    itemInactive: 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/60',
+    itemActiveIcon: 'text-white',
+    itemInactiveIcon: 'text-slate-500 dark:text-slate-400',
+    groupHeaderOpen: 'bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-white font-bold',
+    submenuContainer: 'bg-slate-50/80 dark:bg-slate-800/50 rounded-xl my-1 border border-slate-200/80 dark:border-slate-800 pl-3 pr-1.5 py-1 space-y-0.5',
+    submenuActive: 'bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 font-bold border-l-2 border-sky-600 dark:border-sky-400',
+    submenuInactive: 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800/60',
+    footerWrapper: 'p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#070a13]',
+    footerUserName: 'text-slate-900 dark:text-white',
+    footerUserRole: 'text-sky-600 dark:text-sky-400',
+    footerLogoutBtn: 'border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:text-rose-700',
+  },
+  midnight: {
+    id: 'midnight',
+    name: 'Midnight Navy',
+    dotBg: 'bg-[#0a0f1d] border-2 border-sky-500',
+    wrapper: 'bg-gradient-to-b from-[#0a0f1d] via-[#0d1527] to-[#060913] text-white border-r border-slate-800/80',
+    logoWrapper: 'bg-white/95 rounded-2xl p-2.5 shadow-md border border-white/20 flex items-center justify-center hover:opacity-100 transition',
+    logoBadge: 'text-sky-400',
+    erpBadge: 'bg-sky-950/70 text-sky-300 border-sky-800/40',
+    itemActive: 'bg-gradient-to-r from-sky-500/25 via-sky-500/15 to-transparent text-sky-400 font-extrabold border-l-2 border-sky-400 shadow-xs',
+    itemInactive: 'text-slate-300 hover:text-white hover:bg-white/[0.06]',
+    itemActiveIcon: 'text-sky-400',
+    itemInactiveIcon: 'text-slate-400',
+    groupHeaderOpen: 'bg-white/[0.08] text-white',
+    submenuContainer: 'pl-4 pr-1.5 py-1 space-y-0.5 bg-black/35 rounded-xl my-0.5 border border-white/[0.05]',
+    submenuActive: 'bg-sky-500/20 text-sky-300 font-black border-l-2 border-sky-400 shadow-xs',
+    submenuInactive: 'text-slate-400 hover:text-white hover:bg-white/[0.06]',
+    footerWrapper: 'p-3 border-t border-white/[0.08] bg-[#060913]',
+    footerUserName: 'text-white',
+    footerUserRole: 'text-sky-400',
+    footerLogoutBtn: 'border-rose-500/20 text-rose-300 hover:text-white hover:bg-rose-500/20',
+  },
+  indigo: {
+    id: 'indigo',
+    name: 'Royal Indigo',
+    dotBg: 'bg-[#1e1b4b] border-2 border-indigo-400',
+    wrapper: 'bg-gradient-to-b from-[#111827] via-[#1e1b4b] to-[#0f172a] text-white border-r border-indigo-950',
+    logoWrapper: 'bg-white/95 rounded-2xl p-2.5 shadow-md border border-white/20 flex items-center justify-center hover:opacity-100 transition',
+    logoBadge: 'text-indigo-400',
+    erpBadge: 'bg-indigo-950/70 text-indigo-300 border-indigo-800/40',
+    itemActive: 'bg-gradient-to-r from-indigo-500/30 via-indigo-500/15 to-transparent text-indigo-300 font-extrabold border-l-2 border-indigo-400 shadow-xs',
+    itemInactive: 'text-slate-300 hover:text-white hover:bg-white/[0.06]',
+    itemActiveIcon: 'text-indigo-300',
+    itemInactiveIcon: 'text-indigo-400/60',
+    groupHeaderOpen: 'bg-white/[0.08] text-white',
+    submenuContainer: 'pl-4 pr-1.5 py-1 space-y-0.5 bg-indigo-950/40 rounded-xl my-0.5 border border-indigo-800/20',
+    submenuActive: 'bg-indigo-500/25 text-indigo-200 font-black border-l-2 border-indigo-400 shadow-xs',
+    submenuInactive: 'text-indigo-200/70 hover:text-white hover:bg-white/[0.06]',
+    footerWrapper: 'p-3 border-t border-indigo-900/40 bg-[#0f172a]',
+    footerUserName: 'text-white',
+    footerUserRole: 'text-indigo-300',
+    footerLogoutBtn: 'border-rose-500/20 text-rose-300 hover:text-white hover:bg-rose-500/20',
+  },
+  emerald: {
+    id: 'emerald',
+    name: 'Emerald Forest',
+    dotBg: 'bg-[#064e3b] border-2 border-emerald-400',
+    wrapper: 'bg-gradient-to-b from-[#064e3b] via-[#022c22] to-[#021d17] text-white border-r border-emerald-950',
+    logoWrapper: 'bg-white/95 rounded-2xl p-2.5 shadow-md border border-white/20 flex items-center justify-center hover:opacity-100 transition',
+    logoBadge: 'text-emerald-400',
+    erpBadge: 'bg-emerald-950/70 text-emerald-300 border-emerald-800/40',
+    itemActive: 'bg-gradient-to-r from-emerald-500/30 via-emerald-500/15 to-transparent text-emerald-300 font-extrabold border-l-2 border-emerald-400 shadow-xs',
+    itemInactive: 'text-emerald-100/80 hover:text-white hover:bg-white/[0.06]',
+    itemActiveIcon: 'text-emerald-300',
+    itemInactiveIcon: 'text-emerald-400/60',
+    groupHeaderOpen: 'bg-white/[0.08] text-white',
+    submenuContainer: 'pl-4 pr-1.5 py-1 space-y-0.5 bg-emerald-950/40 rounded-xl my-0.5 border border-emerald-800/20',
+    submenuActive: 'bg-emerald-500/25 text-emerald-200 font-black border-l-2 border-emerald-400 shadow-xs',
+    submenuInactive: 'text-emerald-200/70 hover:text-white hover:bg-white/[0.06]',
+    footerWrapper: 'p-3 border-t border-emerald-900/40 bg-[#021d17]',
+    footerUserName: 'text-white',
+    footerUserRole: 'text-emerald-300',
+    footerLogoutBtn: 'border-rose-500/20 text-rose-300 hover:text-white hover:bg-rose-500/20',
+  },
+  charcoal: {
+    id: 'charcoal',
+    name: 'Modern Charcoal',
+    dotBg: 'bg-[#18181b] border-2 border-zinc-400',
+    wrapper: 'bg-gradient-to-b from-[#18181b] via-[#27272a] to-[#09090b] text-white border-r border-zinc-800',
+    logoWrapper: 'bg-white/95 rounded-2xl p-2.5 shadow-md border border-white/20 flex items-center justify-center hover:opacity-100 transition',
+    logoBadge: 'text-zinc-400',
+    erpBadge: 'bg-zinc-800 text-zinc-300 border-zinc-700',
+    itemActive: 'bg-gradient-to-r from-zinc-700/60 via-zinc-700/30 to-transparent text-white font-extrabold border-l-2 border-white shadow-xs',
+    itemInactive: 'text-zinc-300 hover:text-white hover:bg-white/[0.06]',
+    itemActiveIcon: 'text-white',
+    itemInactiveIcon: 'text-zinc-500',
+    groupHeaderOpen: 'bg-white/[0.08] text-white',
+    submenuContainer: 'pl-4 pr-1.5 py-1 space-y-0.5 bg-black/40 rounded-xl my-0.5 border border-white/[0.05]',
+    submenuActive: 'bg-white/10 text-white font-black border-l-2 border-white shadow-xs',
+    submenuInactive: 'text-zinc-400 hover:text-white hover:bg-white/[0.06]',
+    footerWrapper: 'p-3 border-t border-zinc-800 bg-[#09090b]',
+    footerUserName: 'text-white',
+    footerUserRole: 'text-zinc-400',
+    footerLogoutBtn: 'border-rose-500/20 text-rose-300 hover:text-white hover:bg-rose-500/20',
+  },
+};
+
+const formatRoleLabel = (role?: string) => {
+  if (!role) return 'USER';
+  const r = role.toLowerCase();
+  switch (r) {
+    case 'admin': return 'ADMIN';
+    case 'manager': return 'MANAGER';
+    case 'gm': return 'GM';
+    case 'md': return 'MD';
+    case 'staff': return 'STAFF';
+    case 'hr': return 'HR';
+    case 'student': return 'STUDENT';
+    default: return role.toUpperCase();
+  }
+};
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, companies, activeCompanyId, switchCompany, logout, checkPermission } = useAuth();
@@ -240,6 +315,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     if (saved === 'dark' || saved === 'light') return saved;
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
+
+  // Admin Sidebar Theme State with LocalStorage persistence
+  const [sidebarTheme, setSidebarTheme] = useState<SidebarTheme>(() => {
+    const saved = localStorage.getItem('wegrow_admin_sidebar_theme') as SidebarTheme;
+    if (saved && SIDEBAR_THEMES[saved]) return saved;
+    return 'light'; // Default to clean modern light
+  });
+  const [showPalettePopover, setShowPalettePopover] = useState(false);
+
+  const changeSidebarTheme = (themeId: SidebarTheme) => {
+    setSidebarTheme(themeId);
+    localStorage.setItem('wegrow_admin_sidebar_theme', themeId);
+  };
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -260,6 +348,50 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
+  // Active individual submenu item tracking (prevents sibling items sharing a route from all highlighting together)
+  const [activeSubItem, setActiveSubItem] = useState<string>(() => {
+    const fullPath = location.pathname + location.search;
+    for (const group of ADMIN_MENU_STRUCTURE) {
+      for (const child of group.children || []) {
+        if (child.path === fullPath) return child.name;
+      }
+    }
+    for (const group of ADMIN_MENU_STRUCTURE) {
+      for (const child of group.children || []) {
+        if (child.path.split('?')[0] === location.pathname) return child.name;
+      }
+    }
+    return '';
+  });
+
+  // Synchronize activeSubItem when location changes if not already set to a matching child
+  useEffect(() => {
+    if (isStudent) return;
+    const fullPath = location.pathname + location.search;
+    let currentMatched = false;
+    for (const group of ADMIN_MENU_STRUCTURE) {
+      for (const child of group.children || []) {
+        if (child.name === activeSubItem && child.path.split('?')[0] === location.pathname) {
+          currentMatched = true;
+          break;
+        }
+      }
+      if (currentMatched) break;
+    }
+    if (!currentMatched) {
+      for (const group of ADMIN_MENU_STRUCTURE) {
+        for (const child of group.children || []) {
+          if (child.path === fullPath || child.path.split('?')[0] === location.pathname) {
+            setActiveSubItem(child.name);
+            currentMatched = true;
+            break;
+          }
+        }
+        if (currentMatched) break;
+      }
+    }
+  }, [location.pathname, location.search, isStudent]);
+
   // Auto-expand menu group that contains current route
   useEffect(() => {
     if (isStudent) return;
@@ -267,6 +399,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     ADMIN_MENU_STRUCTURE.forEach((group) => {
       if (group.isDropdown && group.children) {
         const matchesChild = group.children.some((c) => {
+          if (activeSubItem) return c.name === activeSubItem;
           if (c.path === '/') return currentPath === '/';
           return currentPath.startsWith(c.path.split('?')[0]);
         });
@@ -275,7 +408,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         }
       }
     });
-  }, [location.pathname, isStudent]);
+  }, [location.pathname, activeSubItem, isStudent]);
 
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) => ({
@@ -385,13 +518,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       );
     }
 
-    // Admin / Staff / Manager Sidebar (Ultra-Premium Midnight Obsidian & Royal Navy)
+    // Admin / Staff / Manager Sidebar with Dynamic Color Theme
+    const currentTheme = SIDEBAR_THEMES[sidebarTheme] || SIDEBAR_THEMES.light;
+
     return (
-      <div className="flex flex-col h-full bg-gradient-to-b from-[#0a0f1d] via-[#0d1527] to-[#060913] text-white border-r border-slate-800/80">
+      <div className={`flex flex-col h-full ${currentTheme.wrapper}`}>
         {/* Brand Logo Header */}
-        <div className="px-4 py-4 border-b border-white/[0.08]">
+        <div className="px-4 py-4 border-b border-white/10 dark:border-white/[0.08] border-slate-200/80">
           <Link to="/" className="block">
-            <div className="bg-white/95 rounded-2xl p-2.5 shadow-md border border-white/20 flex items-center justify-center hover:opacity-100 transition">
+            <div className={currentTheme.logoWrapper}>
               <img
                 src={logoImg}
                 alt="WeGrow Skill Campus & B School"
@@ -399,11 +534,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               />
             </div>
           </Link>
-          <div className="flex items-center justify-between mt-2 px-1">
-            <span className="text-[10px] font-bold text-sky-400 uppercase tracking-widest font-mono">
-              Admin Portal
+          <div className="flex items-center justify-between mt-2.5 px-1">
+            <span className={`text-[10px] font-bold uppercase tracking-widest font-mono ${currentTheme.logoBadge}`}>
+              {formatRoleLabel(user?.user_type)} Portal
             </span>
-            <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-950/70 text-sky-300 border border-sky-800/40">
+            <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${currentTheme.erpBadge}`}>
               ERP v2.6
             </span>
           </div>
@@ -423,20 +558,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   to={group.path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold transition-all duration-150 ${
-                    isActive
-                      ? 'bg-gradient-to-r from-sky-500/25 via-sky-500/15 to-transparent text-sky-400 font-extrabold border-l-2 border-sky-400 shadow-xs'
-                      : 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
+                    isActive ? currentTheme.itemActive : currentTheme.itemInactive
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-sky-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? currentTheme.itemActiveIcon : currentTheme.itemInactiveIcon}`} />
                   <span className="truncate flex-1">{group.title}</span>
                 </Link>
               );
             }
 
-            // Dropdown Group with Children (like Management, Students, Expense, etc.)
+            // Dropdown Group with Children (like Creation, Payroll, Expense, etc.)
             const isOpen = !!openGroups[group.title];
             const hasActiveChild = (group.children || []).some((child) => {
+              if (activeSubItem) return child.name === activeSubItem;
               if (child.path === '/') return location.pathname === '/';
               return location.pathname === child.path.split('?')[0];
             });
@@ -448,42 +582,39 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   onClick={() => toggleGroup(group.title)}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all duration-150 cursor-pointer ${
                     hasActiveChild || isOpen
-                      ? 'bg-white/[0.08] text-white'
-                      : 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
+                      ? currentTheme.groupHeaderOpen
+                      : currentTheme.itemInactive
                   }`}
                 >
                   <div className="flex items-center gap-3 truncate">
-                    <Icon className={`w-4 h-4 shrink-0 ${hasActiveChild ? 'text-sky-400' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 ${hasActiveChild ? currentTheme.itemActiveIcon : currentTheme.itemInactiveIcon}`} />
                     <span className="truncate">{group.title}</span>
                   </div>
                   <ChevronRight
-                    className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${
-                      isOpen ? 'rotate-90 text-sky-400' : ''
+                    className={`w-3.5 h-3.5 transition-transform duration-200 shrink-0 ${
+                      isOpen ? 'rotate-90 ' + currentTheme.itemActiveIcon : currentTheme.itemInactiveIcon
                     }`}
                   />
                 </button>
 
                 {/* Submenu Accordion */}
                 {isOpen && group.children && (
-                  <div className="pl-4 pr-1.5 py-1 space-y-0.5 bg-black/35 rounded-xl my-0.5 border border-white/[0.05]">
+                  <div className={currentTheme.submenuContainer}>
                     {group.children.map((child) => {
-                      const childBase = child.path.split('?')[0];
-                      const currentBase = location.pathname;
-                      const hasQuery = child.path.includes('?');
-                      const isActive = hasQuery
-                        ? location.pathname + location.search === child.path ||
-                          (child.path === '/tests?tab=bank' && (location.search === '?tab=bank' || location.search === '?view=bank' || location.search === '?tab=question-bank'))
-                        : currentBase === childBase && !location.search;
+                      const isActive = activeSubItem
+                        ? child.name === activeSubItem
+                        : location.pathname === child.path.split('?')[0];
 
                       return (
                         <Link
                           key={child.name + child.path}
                           to={child.path}
-                          onClick={() => setMobileMenuOpen(false)}
+                          onClick={() => {
+                            setActiveSubItem(child.name);
+                            setMobileMenuOpen(false);
+                          }}
                           className={`flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all duration-150 ${
-                            isActive
-                              ? 'bg-sky-500/20 text-sky-300 font-black border-l-2 border-sky-400 shadow-xs'
-                              : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+                            isActive ? currentTheme.submenuActive : currentTheme.submenuInactive
                           }`}
                         >
                           <span className="truncate">{child.name}</span>
@@ -498,15 +629,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
 
         {/* Bottom User Info, Theme Toggle & Logout */}
-        <div className="p-3 border-t border-white/[0.08] bg-[#060913]">
+        <div className={currentTheme.footerWrapper}>
           <div className="flex items-center justify-between mb-2 px-1">
             <Link to="/settings" className="flex items-center gap-2.5 truncate hover:opacity-85 transition cursor-pointer" title="Profile Settings">
               <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center uppercase shadow-xs shrink-0">
                 {user?.name?.[0] || user?.username?.[0] || 'U'}
               </div>
               <div className="truncate">
-                <p className="text-xs font-bold text-white truncate leading-tight">{user?.name || user?.username}</p>
-                <p className="text-[10px] text-sky-400 uppercase tracking-wider font-mono">{user?.user_type}</p>
+                <p className={`text-xs font-bold truncate leading-tight ${currentTheme.footerUserName}`}>{user?.name || user?.username}</p>
+                <p className={`text-[10px] uppercase tracking-wider font-mono ${currentTheme.footerUserRole}`}>{formatRoleLabel(user?.user_type)}</p>
               </div>
             </Link>
 
@@ -514,17 +645,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <button
               onClick={toggleTheme}
               title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition cursor-pointer"
             >
-              {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-sky-300" />}
+              {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-sky-500" />}
             </button>
           </div>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold text-rose-300 hover:text-white hover:bg-rose-500/20 transition cursor-pointer border border-rose-500/20"
+            className={`w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border ${currentTheme.footerLogoutBtn}`}
           >
-            <LogOut className="w-3.5 h-3.5 text-rose-400" />
+            <LogOut className="w-3.5 h-3.5" />
             <span>Logout</span>
           </button>
         </div>
@@ -601,6 +732,55 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
           {/* Right Action Bar */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Sidebar Theme Quick Palette Switcher (for Admin/Staff) */}
+            {!isStudent && (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowPalettePopover(!showPalettePopover)}
+                  title="Customize Sidebar Color"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition cursor-pointer"
+                >
+                  <Palette className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                  <span className="hidden sm:inline text-[11px] capitalize">{SIDEBAR_THEMES[sidebarTheme]?.name || 'Sidebar'}</span>
+                </button>
+
+                {showPalettePopover && (
+                  <div
+                    className="absolute right-0 mt-2 w-52 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 z-50 space-y-1"
+                    onMouseLeave={() => setShowPalettePopover(false)}
+                  >
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1">Sidebar Color</p>
+                    {(Object.keys(SIDEBAR_THEMES) as SidebarTheme[]).map((tKey) => {
+                      const t = SIDEBAR_THEMES[tKey];
+                      const isSelected = sidebarTheme === tKey;
+                      return (
+                        <button
+                          key={tKey}
+                          type="button"
+                          onClick={() => {
+                            changeSidebarTheme(tKey);
+                            setShowPalettePopover(false);
+                          }}
+                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
+                            isSelected
+                              ? 'bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 font-bold'
+                              : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className={`w-3.5 h-3.5 rounded-full ${t.dotBg}`} />
+                            <span>{t.name}</span>
+                          </div>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-sky-500" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Dark Mode Toggle Button */}
             <button
               onClick={toggleTheme}

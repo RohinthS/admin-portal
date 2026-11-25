@@ -9,7 +9,8 @@
     "start": "node index.js",
     "build:frontend": "npm --prefix frontend install --include=dev && npm --prefix frontend run build",
     "build:backend": "npm --prefix backend install && npm --prefix backend run build",
-    "start:backend": "cd backend && node dist/main.js",
-    "start:frontend": "node index.js"
+    "start:backend": "node backend/dist/main.js",
+    "start:frontend": "node index.js",
+    "reset:db": "npm --prefix backend run reset:db"
   }
 }

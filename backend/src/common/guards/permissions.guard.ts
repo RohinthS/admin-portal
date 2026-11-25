@@ -30,8 +30,9 @@ export class PermissionsGuard implements CanActivate {
       throw new ForbiddenException('User context missing');
     }
 
-    // Superadmin bypasses all checks
-    if (user.user_type === 'admin' || user.is_superadmin) {
+    // Superadmin, Admin, MD, GM bypass all checks
+    const userRole = (user.user_type || '').toLowerCase().trim();
+    if (['admin', 'md', 'gm'].includes(userRole) || user.is_superadmin) {
       return true;
     }
 

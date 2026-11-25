@@ -15,6 +15,7 @@ import { TasksModule } from './modules/tasks/tasks.module';
 import { TestsModule } from './modules/tests/tests.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
+import { StaffModule } from './modules/staff/staff.module';
 import { ReportsModule } from './modules/reports/reports.module';
 import { CreditsModule } from './modules/credits/credits.module';
 
@@ -39,6 +40,7 @@ import { CreditsModule } from './modules/credits/credits.module';
     TestsModule,
     ExpensesModule,
     PayrollModule,
+    StaffModule,
     ReportsModule,
     CreditsModule,
   ],

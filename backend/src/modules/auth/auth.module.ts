@@ -7,7 +7,7 @@ import { AuthController } from './auth.controller';
 import { UsersController } from './users.controller';
 import { User, UserSchema } from '../../schemas/user.schema';
 import { Company, CompanySchema } from '../../schemas/company.schema';
-import { RolePermission, RolePermissionSchema } from '../../schemas/role.schema';
+import { Role, RoleSchema, RolePermission, RolePermissionSchema } from '../../schemas/role.schema';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Module({
@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Company.name, schema: CompanySchema },
+      { name: Role.name, schema: RoleSchema },
       { name: RolePermission.name, schema: RolePermissionSchema },
     ]),
     JwtModule.registerAsync({

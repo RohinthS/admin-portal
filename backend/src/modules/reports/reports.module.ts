@@ -12,6 +12,8 @@ import { DailyReport, DailyReportSchema } from '../../schemas/daily-report.schem
 import { Installment, InstallmentSchema } from '../../schemas/installment.schema';
 import { LeaveRequest, LeaveRequestSchema } from '../../schemas/leave.schema';
 import { Course, CourseSchema } from '../../schemas/course.schema';
+import { Staff, StaffSchema } from '../../schemas/staff.schema';
+import { User, UserSchema } from '../../schemas/user.schema';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
@@ -27,6 +29,8 @@ import { AuthModule } from '../auth/auth.module';
       { name: Installment.name, schema: InstallmentSchema },
       { name: LeaveRequest.name, schema: LeaveRequestSchema },
       { name: Course.name, schema: CourseSchema },
+      { name: Staff.name, schema: StaffSchema },
+      { name: User.name, schema: UserSchema },
     ]),
     AuthModule,
   ],

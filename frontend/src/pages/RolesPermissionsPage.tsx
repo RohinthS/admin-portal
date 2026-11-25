@@ -20,12 +20,35 @@ export const RolesPermissionsPage: React.FC = () => {
     const fetchRoles = async () => {
       try {
         const res = await api.get('/roles');
-        setRoles(res.data || []);
-        if (res.data?.length > 0) {
+        if (res.data && res.data.length > 0) {
+          setRoles(res.data);
           setSelectedRoleId(res.data[0]._id);
+        } else {
+          const defaultRoles = [
+            { _id: 'admin', role_name: 'Admin', role_title: 'Super Administrator' },
+            { _id: 'manager', role_name: 'Manager', role_title: 'Branch Operations Manager' },
+            { _id: 'gm', role_name: 'GM', role_title: 'General Manager' },
+            { _id: 'md', role_name: 'MD', role_title: 'Managing Director' },
+            { _id: 'staff', role_name: 'Staff', role_title: 'Faculty & Operations Staff' },
+            { _id: 'hr', role_name: 'HR', role_title: 'Human Resources & Payroll' },
+            { _id: 'student', role_name: 'Student', role_title: 'Enrolled Campus Student' },
+          ];
+          setRoles(defaultRoles);
+          setSelectedRoleId('admin');
         }
       } catch (err) {
-        console.error('Failed to load roles', err);
+        console.error('Failed to load roles, using default roles list', err);
+        const defaultRoles = [
+          { _id: 'admin', role_name: 'Admin', role_title: 'Super Administrator' },
+          { _id: 'manager', role_name: 'Manager', role_title: 'Branch Operations Manager' },
+          { _id: 'gm', role_name: 'GM', role_title: 'General Manager' },
+          { _id: 'md', role_name: 'MD', role_title: 'Managing Director' },
+          { _id: 'staff', role_name: 'Staff', role_title: 'Faculty & Operations Staff' },
+          { _id: 'hr', role_name: 'HR', role_title: 'Human Resources & Payroll' },
+          { _id: 'student', role_name: 'Student', role_title: 'Enrolled Campus Student' },
+        ];
+        setRoles(defaultRoles);
+        setSelectedRoleId('admin');
       }
     };
     fetchRoles();

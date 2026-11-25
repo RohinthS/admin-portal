@@ -11,6 +11,7 @@ import { SupabaseService } from './supabase.service';
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI') || 'mongodb://127.0.0.1:27017/wegrow_admin',
         autoIndex: true,
+        serverSelectionTimeoutMS: 5000,
       }),
       inject: [ConfigService],
     }),
